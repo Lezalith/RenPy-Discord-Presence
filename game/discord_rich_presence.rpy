@@ -2,7 +2,8 @@
 define rich_presence.application_id = "1020817080838262795"
 
 # Dict with all the properties of the presence state displayed when the game is launched.
-define rich_presence.initial_state = { "state" : "Testing Discord Rich Presence 2."}
+define rich_presence.initial_state = { "details" : "Testing Discord Rich Presence.",
+                                       "state" : "It's super easy in Ren'Py 8!"}
 
 init -10 python:
 
@@ -39,14 +40,14 @@ init -10 python:
 
         # Updates the state to provided properties. The *state* field is required.
         # Current timestamp is kept if keep_time is True, and is reset to 0.0 if keep_time is False.
-        def update(self, state, keep_time = True, **fields):
+        def update(self, keep_time = True, **fields):
 
             # Resets the time if it's not to be kept.
             if not keep_time:
                 self.time = time.time()
 
             # Update the presence.
-            self.presence.update(state = state, start = self.time, **fields)
+            self.presence.update(start = self.time, **fields)
 
 # The object for interacting with Rich Presence defined.
 default discord = RenPyDiscord()
