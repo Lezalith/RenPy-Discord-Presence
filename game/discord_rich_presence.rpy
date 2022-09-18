@@ -57,7 +57,7 @@ init -10 python:
             self.update(**rich_presence.initial_state)
 
         # Updates the state to provided properties. The *state* field is required.
-        # Current timestamp is kept if keep_time is True, and is reset to 0.0 if keep_time is False.
+        # Current timestamp is kept if keep_time is True, and is reset to 0:0 if keep_time is False.
         def update(self, keep_time = True, **fields):
 
             # Records all the properties passed to the Presence.
@@ -71,10 +71,14 @@ init -10 python:
             self.presence.update(start = self.time, **self.properties)
 
         # Changes the Time Elapsed, while keeping everything else untouched.
-        def change_time(self, timestamp):
+        # timestamp is None by default, which resets the time to 0:0.
+        def change_time(self, timestamp = None):
 
-            # Records the new time.
-            self.time = timestamp
+            if timestamp is None:
+                self.time = time.time()
+
+            else:
+                self.time = timestamp
 
             # Update the Presence with new time and current properties.
             self.presence.update(start = self.time, **self.properties)

@@ -12,7 +12,7 @@
 
     "I'll now try to change the time!"
 
-    $ discord.change_time("1663461531")
+    $ discord.change_time()
 
     "Did it work?"
 
