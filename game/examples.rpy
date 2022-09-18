@@ -5,6 +5,7 @@
 ## https://www.renpy.org/doc/html/screen_special.html#main-menu
 
 define g = Solid("808080")
+define f = Frame("gui/frame.png")
 
 screen main_menu():
 
@@ -12,13 +13,16 @@ screen main_menu():
 
     frame:
         align (0.5, 0.5)
-        xysize (1100, 650)
-        background "gui/frame.png"
+        xysize (1280, 720)
+        padding (20, 20)
+        background f
 
         vbox:
             align (0.5, 0.5)
 
-            text "Welcome to a preview of Discord Rich Presence in Ren'Py!"
+            text "Welcome to a preview of Discord Rich Presence in Ren'Py!" xalign 0.5
+
+            null height 30
 
             text "Below you can see how easy it is to change the presence through screen buttons."
             text "The first_example should already be set, as it's the default when the game is launched!"
@@ -31,9 +35,20 @@ screen main_menu():
                 selected discord.properties == rich_presence.second_example
 
             textbutton "See examples inside a label.":
-                action Start()
+                action Start(label = "label_example")
 
-label start:
+screen screen_example():
+
+    vbox:
+        align (0.5, 0.5)
+
+        textbutton "This one sets the state only.":
+            action Function(discord.set, state = "Example State.")
+
+        textbutton "This sets details and leaves the state alone.":
+            action Function(discord.update, details = "Example Details.")
+
+label label_example():
 
     "This label shows how discord presence can be changed inside labels!"
 
