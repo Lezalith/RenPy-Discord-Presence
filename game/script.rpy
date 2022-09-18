@@ -2,12 +2,18 @@
 
     "So far, the state is still the same from the project launch."
 
-    $ discord.update("First update, with the time kept.")
+    $ discord.update(state = "First update, with the time kept.")
 
     "State was now updated, time kept."
 
-    $ discord.update("Second update, with the time reset.", keep_time = False)
+    $ discord.update(state = "Second update, with the time reset.", keep_time = False)
 
     "State updated again, time reset."
+
+    "I'll now try to change the time!"
+
+    $ discord.change_time("1663461531")
+
+    "Did it work?"
 
     return

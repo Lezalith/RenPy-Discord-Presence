@@ -40,6 +40,9 @@ init -10 python:
             # This is so that the same time can be kept upon updating the presence.
             self.time = time.time()
 
+            # Dict of current Presence properties.
+            self.properties = {}
+
             # Runs the first setup.
             self.first_setup()
 
@@ -56,12 +59,24 @@ init -10 python:
         # Current timestamp is kept if keep_time is True, and is reset to 0.0 if keep_time is False.
         def update(self, keep_time = True, **fields):
 
+            # Records all the properties passed to the Presence.
+            self.properties = fields
+
             # Resets the time if it's not to be kept.
             if not keep_time:
                 self.time = time.time()
 
             # Update the presence.
-            self.presence.update(start = self.time, **fields)
+            self.presence.update(start = self.time, **self.properties)
+
+        # Changes the Time Elapsed, while keeping everything else untouched.
+        def change_time(self, timestamp):
+
+            # Records the new time.
+            self.time = timestamp
+
+            # Update the Presence with new time and current properties.
+            self.presence.update(start = self.time, **self.properties)
 
 # The object for interacting with Rich Presence defined.
 default discord = RenPyDiscord()
