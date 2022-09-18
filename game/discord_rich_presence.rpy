@@ -2,8 +2,22 @@
 define rich_presence.application_id = "1020817080838262795"
 
 # Dict with all the properties of the presence state displayed when the game is launched.
+# keys correspond not to Presence Fields, but to pypresence arguments! Here is the list of them:
+#
+# state (str) – the user’s current status
+# details (str) – what the player is currently doing
+# start (int) – epoch time for game start
+# end (int) – epoch time for game end
+# large_image (str) – name of the uploaded image for the large profile artwork
+# large_text (str) – tooltip for the large image
+# small_image (str) – name of the uploaded image for the small profile artwork
+# small_text (str) – tootltip for the small image
+# party_id (str) – id of the player’s party, lobby, or group
+# party_size (list) – current size of the player’s party, lobby, or group, and the max in this format: [1,4]
+# buttons (list) – list of dicts for buttons on your profile in the format [{"label": "My Website", "url": "https://qtqt.cf"}, ...], can list up to two buttons
 define rich_presence.initial_state = { "details" : "Testing Discord Rich Presence.",
-                                       "state" : "It's super easy in Ren'Py 8!"}
+                                       "state" : "It's super easy in Ren'Py 8!",
+                                       "large_image" : "lezalith" }
 
 init -10 python:
 
