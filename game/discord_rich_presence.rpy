@@ -101,5 +101,16 @@ init -10 python:
             # Update the Presence with new time and current properties.
             self.presence.update(start = self.time, **self.properties)
 
+        # Clears all the info in the presence.
+        def clear(self):
+
+            self.presence.clear()
+
+        ## NOTE: clear seems to have its effect delayed if called too soon
+        ##       after establishing the connection (first_setup) or another clear call.
+        ## 
+        ##       The delay seems to be about 10s on average, and the "too soon" time is about 15s.
+        ##
+        ##       Same happens with the close method defined below.
 # The object for interacting with Rich Presence defined.
 default discord = RenPyDiscord()
