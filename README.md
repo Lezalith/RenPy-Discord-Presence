@@ -1,7 +1,12 @@
 # Discord Rich Presence Support for Ren'Py Projects
 This script creates a **RenPyDiscord** object stored in the **discord** variable, which can be used to interact with Discord Rich Presence. All it requires is an Application set up on the [Discord Developer Portal](https://discord.com/developers) and it's **Application ID**.
 
-Upon launching the project, Presence status is set to values stored in the **initial_state** variable. After that, it can changed at any time by calling the **discord.update** method.
+Upon launching the project, Presence status is set to values stored in the **initial_state** variable. After that, it can changed at any time by calling one of the bound methods.
+
+# set and update Methods
+**discord.set** and **discord.update** are two ways of changing the Presence. They both take the **keep_time** argument to determine whether the Elapsed Time should be reset to 0:0 with this change, and all following arguments should correspond to Presence Elements - all are listed below.
+
+The difference between the two methods is that while **set** sets the properties only to those given, **update** updates the given properties and leaves others already set alone.
 
 # Basic Rich Presence Elements
 There are many things that can be shown in Rich Presence. In this screenshot, individual elements of the Presence are highlighted and their **argument** equivalent for **discord.update** method listed at the bottom.
@@ -41,10 +46,10 @@ discord.update(small_image = "lezalith")
 
 Overall, state shown on the screenshot can be accomplished with the following:
 ```py
-discord.update(details = "Testing Discord Rich Presence.",
+discord.set(details = "Testing Discord Rich Presence.",
                state = "It's super easy in Ren'Py 8!",
                large_image = "lezalith",
-               large_text = "Large Image Tooltip!"
+               large_text = "Large Image Tooltip!",
                small_image = "lezalith",
                small_text = "Small Image Tooltip!")
 ```
@@ -63,8 +68,10 @@ discord.update(end = time.time() + 3000)
 ```
 
 **party_size** takes a **list** of two **ints**. This is used for multiplayer games, where the two numbers would represent the current party size and max party size respectively. We can still use it with visual novels if we're clever enough.
+
+For the **party_size** to be visible, **state** has to be also provided.
 ```py
-discord.update(party_size = [1, 5])
+discord.update(state = "Reading a Chapter", party_size = [1, 5])
 ```
 
 **buttons** takes a **list** of **up to two dicts**, and allows for buttons to be added into the Presence. The dict consists of two keys, **label** being the text written on the button, and **url** being the url opened upon clicking it. 
@@ -78,7 +85,7 @@ discord.update("buttons" : [ {"label" : "Discord Presence Example Button", "url"
 
 Putting all of that together, state shown on the screenshot was created with these properties:
 ```py
-discord.update(state = "Reading a Chapter",
+discord.set(state = "Reading a Chapter",
                end = time.time() + 3000,
                party_size = [1, 5],
                buttons = [ {"label" : "Discord Presence Example Button", "url" : "https://github.com/Lezalith/RenPy_Discord_Presence"},
