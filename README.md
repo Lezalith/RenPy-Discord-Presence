@@ -24,7 +24,7 @@ All are defined within the **rich_presence** namespace, on top of the file. Here
 
 **application_id** takes a **string** with an Application ID of the Application set up on Discord Developer Portal. This process is described above. 
 ```py
-define rich_presence.application_id = "1020817<six letters left out>262795"
+define rich_presence.application_id = "1020817abcdef262795"
 ```
 
 **initial_state** takes a dictionary. Keys are **strings** of properties corresponding to presence elements (listed below), and values are **strings** of their values.

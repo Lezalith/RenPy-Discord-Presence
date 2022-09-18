@@ -1,5 +1,5 @@
 ﻿# Application Id - This is gotten Discord's Developer Portal.
-define rich_presence.application_id = "1020817080838262795"
+define rich_presence.application_id = "YOUR_APP_ID_HERE"
 
 
 # Dict with all the properties of the presence state displayed when the game is launched.
