@@ -40,8 +40,10 @@ discord.update(large_image = "lezalith")
 
 **small_image** takes a **string** that needs to correspond with an image uploaded onto the Discord Application.
 It is the smaller image, shown at the bottom right of the **large_image**.
+
+If no **large_image** is set, **small_image** is used in it's place instead of being the miniature at the botoom right as it should be.
 ```py
-discord.update(small_image = "lezalith")
+discord.update(large_image = "lezalith", small_image = "lezalith")
 ```
 
 Overall, state shown on the screenshot can be accomplished with the following:

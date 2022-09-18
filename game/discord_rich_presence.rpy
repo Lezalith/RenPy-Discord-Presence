@@ -3,7 +3,7 @@ define rich_presence.application_id = "1020817080838262795"
 
 
 # Dict with all the properties of the presence state displayed when the game is launched.
-# keys correspond not to Presence Fields, but to pypresence arguments! Here is the list of them:
+# keys correspond not to Presence Fields, but to pypresence arguments! Here is the list of them, from pypresence documentation:
 #
 # state (str) – the user’s current status
 # details (str) – what the player is currently doing
@@ -20,7 +20,7 @@ define rich_presence.application_id = "1020817080838262795"
 define rich_presence.first_example = { "details" : "Testing Discord Rich Presence.",
                                        "state" : "It's super easy in Ren'Py 8!",
                                        "large_image" : "lezalith", 
-                                       "small_image" : "lezalith"}
+                                       "small_image" : "lezalith"} # small_image is not visible without large_image also set.
 
 # Second example featured in Readme.
 define rich_presence.second_example = { "state" : "Reading a Chapter",
