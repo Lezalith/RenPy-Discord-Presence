@@ -43,6 +43,9 @@ init -10 python:
     # Used to display time in the presence.
     import time
 
+    # For copying dictionaries with properties.
+    from copy import deepcopy
+
     # Alpha and Omega of Rich Presence.
     from pypresence import Presence
 
@@ -99,7 +102,7 @@ init -10 python:
         def set(self, keep_time = True, **properties):
 
             # Records all the properties passed to the Presence.
-            self.properties = properties
+            self.properties = deepcopy(properties)
 
             # Resets the time if it's not to be kept.
             if not keep_time:
@@ -110,7 +113,7 @@ init -10 python:
             start_time = self.time
 
             # ...overwritten to None if time property is given...
-            if "time" in self.properties:
+            if "time" in properties:
 
                 # ...so that time is not displayed.
                 if not properties["time"]:
@@ -141,7 +144,7 @@ init -10 python:
             # ...as well as the ALL properties to be shown...
             p = self.properties
 
-            # ...overwritten to None if time property is given or already set...
+            # ...with time overwritten to None if time property is given or already set...
             if "time" in p:
 
                 # ...so that time is not displayed.
