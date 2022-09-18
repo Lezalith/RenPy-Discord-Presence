@@ -12,13 +12,13 @@ define rich_presence.application_id = "1020817080838262795"
 # large_text (str) – tooltip for the large image
 # small_image (str) – name of the uploaded image for the small profile artwork
 # small_text (str) – tootltip for the small image
-# party_id (str) – id of the player’s party, lobby, or group
 # party_size (list) – current size of the player’s party, lobby, or group, and the max in this format: [1,4]
 # buttons (list) – list of dicts for buttons on your profile in the format [{"label": "My Website", "url": "https://qtqt.cf"}, ...], can list up to two buttons
-define rich_presence.initial_state = { "details" : "Testing Discord Rich Presence.",
-                                       "state" : "It's super easy in Ren'Py 8!",
-                                       "large_image" : "lezalith", 
-                                       "small_image" : "lezalith"}
+define rich_presence.initial_state = { "state" : "Reading a Chapter",
+                                       "end" : time.time() + 3000,
+                                       "party_size" : [1, 5],
+                                       "buttons" : [ {"label" : "Discord Presence Example Button", "url" : "https://github.com/Lezalith/RenPy_Discord_Presence"},
+                                                     {"label" : "Lezalith's Promotion Button!", "url" : "https://www.lezcave.com"}]}
 
 init -10 python:
 
