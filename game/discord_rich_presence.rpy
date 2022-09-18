@@ -15,12 +15,14 @@ define rich_presence.application_id = "1020817080838262795"
 # small_text (str) – tootltip for the small image
 # party_size (list) – current size of the player’s party, lobby, or group, and the max in this format: [1,4]
 # buttons (list) – list of dicts for buttons on your profile in the format [{"label": "My Website", "url": "https://qtqt.cf"}, ...], can list up to two buttons
+# time (bool) is a special non-presence property. Giving it the True value displays the Elapsed Time in the presence (default), False hides it.
 
 # First example featured in Readme.
 define rich_presence.first_example = { "details" : "Testing Discord Rich Presence.",
                                        "state" : "It's super easy in Ren'Py 8!",
                                        "large_image" : "lezalith", 
-                                       "small_image" : "lezalith"} # small_image is not visible without large_image also set.
+                                       "small_image" : "lezalith",
+                                       "time" : True} # small_image is not visible without large_image also set.
 
 # Second example featured in Readme.
 define rich_presence.second_example = { "state" : "Reading a Chapter",
@@ -94,17 +96,32 @@ init -10 python:
 
         # Sets the state to provided properties.
         # Current timestamp is kept if keep_time is True, and is reset to 0:0 if keep_time is False.
-        def set(self, keep_time = True, **fields):
+        def set(self, keep_time = True, **properties):
 
             # Records all the properties passed to the Presence.
-            self.properties = fields
+            self.properties = properties
 
             # Resets the time if it's not to be kept.
             if not keep_time:
                 self.time = time.time()
 
+
+            # Time prepared to be shown...
+            start_time = self.time
+
+            # ...overwritten to None if time property is given...
+            if "time" in self.properties:
+
+                # ...so that time is not displayed.
+                if not properties["time"]:
+                    start_time = None
+
+                # time is not a valid property to be passed to presence.update, so we need to remove it.
+                del properties["time"]
+
             # Update the presence.
-            self.presence.update(start = self.time, **self.properties)
+            # self.properties not used because it includes the time property.
+            self.presence.update(start = start_time, **properties)
 
         # Updates the provided properties, while leaving others as they are.
         # Current timestamp is kept if keep_time is True, and is reset to 0:0 if keep_time is False.
@@ -117,8 +134,26 @@ init -10 python:
             if not keep_time:
                 self.time = time.time()
 
+
+            # Time prepared to be shown,...
+            start_time = self.time
+
+            # ...as well as the ALL properties to be shown...
+            p = self.properties
+
+            # ...overwritten to None if time property is given or already set...
+            if "time" in p:
+
+                # ...so that time is not displayed.
+                if not properties["time"]:
+                    start_time = None
+
+                # time is not a valid property to be passed to presence.update, so we need to remove it.
+                del p["time"]
+
+
             # Update the presence.
-            self.presence.update(start = self.time, **self.properties)
+            self.presence.update(start = start_time, **p)
 
         # Changes the Time Elapsed, while keeping everything else untouched.
         # timestamp is None by default, which resets the time to 0:0.
@@ -137,7 +172,7 @@ init -10 python:
         def reset(self):
 
             # Sets the initial state.
-            self.presence.update(**self.original_properties)
+            self.set(keep_time = False, **self.original_properties,)
 
         # Clears all the info in the presence.
         def clear(self):
