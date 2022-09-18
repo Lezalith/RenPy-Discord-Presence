@@ -1,6 +1,7 @@
 ﻿# Application Id - This is gotten Discord's Developer Portal.
 define rich_presence.application_id = "1020817080838262795"
 
+
 # Dict with all the properties of the presence state displayed when the game is launched.
 # keys correspond not to Presence Fields, but to pypresence arguments! Here is the list of them:
 #
@@ -14,11 +15,23 @@ define rich_presence.application_id = "1020817080838262795"
 # small_text (str) – tootltip for the small image
 # party_size (list) – current size of the player’s party, lobby, or group, and the max in this format: [1,4]
 # buttons (list) – list of dicts for buttons on your profile in the format [{"label": "My Website", "url": "https://qtqt.cf"}, ...], can list up to two buttons
-define rich_presence.initial_state = { "state" : "Reading a Chapter",
+
+# First example featured in Readme.
+define rich_presence.first_example = { "details" : "Testing Discord Rich Presence.",
+                                       "state" : "It's super easy in Ren'Py 8!",
+                                       "large_image" : "lezalith", 
+                                       "small_image" : "lezalith"}
+
+# Second example featured in Readme.
+define rich_presence.second_example = { "state" : "Reading a Chapter",
                                        "end" : time.time() + 3000,
                                        "party_size" : [1, 5],
                                        "buttons" : [ {"label" : "Discord Presence Example Button", "url" : "https://github.com/Lezalith/RenPy_Discord_Presence"},
                                                      {"label" : "Lezalith's Promotion Button!", "url" : "https://www.lezcave.com"}]}
+
+# State of the Presence upon the game's launch.
+# Here it refers to one of the examples defined above.
+define rich_presence.initial_state = rich_presence.first_example
 
 init -10 python:
 
