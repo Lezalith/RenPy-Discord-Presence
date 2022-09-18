@@ -1,3 +1,38 @@
+## Main Menu screen ############################################################
+##
+## Used to display the main menu when Ren'Py starts.
+##
+## https://www.renpy.org/doc/html/screen_special.html#main-menu
+
+define g = Solid("808080")
+
+screen main_menu():
+
+    add g
+
+    frame:
+        align (0.5, 0.5)
+        xysize (1100, 650)
+        background "gui/frame.png"
+
+        vbox:
+            align (0.5, 0.5)
+
+            text "Welcome to a preview of Discord Rich Presence in Ren'Py!"
+
+            text "Below you can see how easy it is to change the presence through screen buttons."
+            text "The first_example should already be set, as it's the default when the game is launched!"
+
+            textbutton "Set to First Example":
+                action Function(discord.set, **rich_presence.first_example) 
+                selected discord.properties == rich_presence.first_example
+            textbutton "Set to Second Example":
+                action Function(discord.set, **rich_presence.second_example) 
+                selected discord.properties == rich_presence.second_example
+
+            textbutton "See examples inside a label.":
+                action Start()
+
 label start:
 
     "This label shows how discord presence can be changed inside labels!"
