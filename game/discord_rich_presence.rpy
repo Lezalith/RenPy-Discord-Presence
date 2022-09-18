@@ -26,12 +26,12 @@ define rich_presence.first_example = { "details" : "Testing Discord Rich Presenc
 define rich_presence.second_example = { "state" : "Reading a Chapter",
                                        "end" : time.time() + 3000,
                                        "party_size" : [1, 5],
-                                       "buttons" : [ {"label" : "Discord Presence Example Button", "url" : "https://github.com/Lezalith/RenPy_Discord_Presence"},
-                                                     {"label" : "Lezalith's Promotion Button!", "url" : "https://www.lezcave.com"}]}
+                                       "buttons" : [ dict(label = "Discord Presence Example Button", url = "https://github.com/Lezalith/RenPy_Discord_Presence"),
+                                                     dict(label = "Lezalith's Promotion Button!", url = "https://www.lezcave.com") ]}
 
 # State of the Presence upon the game's launch.
 # Here it refers to one of the examples defined above.
-define rich_presence.initial_state = rich_presence.first_example
+define rich_presence.initial_state = rich_presence.second_example
 
 init -10 python:
 
