@@ -50,8 +50,12 @@ init -10 python:
         # Connects to the Presence App and sets the initial state.
         def first_setup(self):
 
+            print("Attempting to connect to Discord Rich Presence...")
+
             # Connects to the Presence App.
             self.presence.connect()
+
+            print("Successfully connected.")
 
             # Sets the initial state.
             self.update(**rich_presence.initial_state)
