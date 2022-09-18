@@ -81,8 +81,8 @@ discord.update(state = "Reading a Chapter", party_size = [1, 5])
 Note: Clicking buttons in your own Presence does nothing.
 
 ```py
-discord.update("buttons" : [ {"label" : "Discord Presence Example Button", "url" : "https://github.com/Lezalith/RenPy_Discord_Presence"},
-                             {"label" : "Lezalith's Promotion Button!", "url" : "https://www.lezcave.com"}])
+discord.update(buttons = {"buttons" : [ {"label" : "Discord Presence Example Button", "url" : "https://github.com/Lezalith/RenPy_Discord_Presence"},
+                                        {"label" : "Lezalith's Promotion Button!", "url" : "https://www.lezcave.com"} ] }
 ```
 
 Putting all of that together, state shown on the screenshot was created with these properties:
