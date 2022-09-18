@@ -60,7 +60,12 @@ init -10 python:
             # Sets the initial state.
             self.set(**rich_presence.initial_state)
 
-        # Updates the state to provided properties. The *state* field is required.
+            # Appends the close method to exit callbacks,
+            # to run it once the game is exited.
+            # Done here to not overwrite user's define of config.quit_callbacks, if present somewhere.
+            config.quit_callbacks.append(self.close)
+
+        # Sets the state to provided properties.
         # Current timestamp is kept if keep_time is True, and is reset to 0:0 if keep_time is False.
         def set(self, keep_time = True, **fields):
 
@@ -109,8 +114,20 @@ init -10 python:
         ## NOTE: clear seems to have its effect delayed if called too soon
         ##       after establishing the connection (first_setup) or another clear call.
         ## 
-        ##       The delay seems to be about 10s on average, and the "too soon" time is about 15s.
+        ##       The delay seems to be about 10s on average.
+        ##       The minimum wait time to avoid this seems to be about 15s.
         ##
         ##       Same happens with the close method defined below.
+
+        # Properly closes the connection with the Rich Presence.
+        # Internally clears the info, no need to call the clear method.
+        def close(self):
+
+            print("Closing DRP connection.")
+
+            self.presence.close()
+
+            print("Successfully closed.")
+
 # The object for interacting with Rich Presence defined.
 default discord = RenPyDiscord()
