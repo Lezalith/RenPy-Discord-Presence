@@ -133,6 +133,12 @@ init -10 python:
             # Update the Presence with new time and current properties.
             self.presence.update(start = self.time, **self.properties)
 
+        # Resets the presence to the original properties, gotten from rich_presence.initial_state.
+        def reset(self):
+
+            # Sets the initial state.
+            self.presence.update(**self.original_properties)
+
         # Clears all the info in the presence.
         def clear(self):
 
@@ -155,12 +161,6 @@ init -10 python:
             self.presence.close()
 
             print("Successfully closed.")
-
-        # Resets the presence to the original properties, gotten from rich_presence.initial_state.
-        def reset(self):
-
-            # Sets the initial state.
-            self.presence.update(**self.original_properties)
 
 # The object for interacting with Rich Presence defined.
 default discord = RenPyDiscord()
