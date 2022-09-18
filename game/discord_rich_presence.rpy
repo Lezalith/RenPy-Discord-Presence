@@ -148,7 +148,7 @@ init -10 python:
             if "time" in p:
 
                 # ...so that time is not displayed.
-                if not properties["time"]:
+                if not p["time"]:
                     start_time = None
 
                 # time is not a valid property to be passed to presence.update, so we need to remove it.
