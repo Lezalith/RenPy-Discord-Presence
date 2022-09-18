@@ -47,11 +47,11 @@ discord.update(small_image = "lezalith")
 Overall, state shown on the screenshot can be accomplished with the following:
 ```py
 discord.set(details = "Testing Discord Rich Presence.",
-               state = "It's super easy in Ren'Py 8!",
-               large_image = "lezalith",
-               large_text = "Large Image Tooltip!",
-               small_image = "lezalith",
-               small_text = "Small Image Tooltip!")
+            state = "It's super easy in Ren'Py 8!",
+            large_image = "lezalith",
+            large_text = "Large Image Tooltip!",
+            small_image = "lezalith",
+            small_text = "Small Image Tooltip!")
 ```
 
 There are two more variables there that I haven't mentioned - **large_text** and **small_text**. This is a text tooltip that appears when the respective images are hovered.
@@ -86,8 +86,8 @@ discord.update("buttons" : [ {"label" : "Discord Presence Example Button", "url"
 Putting all of that together, state shown on the screenshot was created with these properties:
 ```py
 discord.set(state = "Reading a Chapter",
-               end = time.time() + 3000,
-               party_size = [1, 5],
-               buttons = [ {"label" : "Discord Presence Example Button", "url" : "https://github.com/Lezalith/RenPy_Discord_Presence"},
-                           {"label" : "Lezalith's Promotion Button!", "url" : "https://www.lezcave.com"}])
+            end = time.time() + 3000,
+            party_size = [1, 5],
+            buttons = [ {"label" : "Discord Presence Example Button", "url" : "https://github.com/Lezalith/RenPy_Discord_Presence"},
+                        {"label" : "Lezalith's Promotion Button!", "url" : "https://www.lezcave.com"}])
 ```
