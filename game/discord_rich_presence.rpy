@@ -58,11 +58,11 @@ init -10 python:
             print("Successfully connected.")
 
             # Sets the initial state.
-            self.update(**rich_presence.initial_state)
+            self.set(**rich_presence.initial_state)
 
         # Updates the state to provided properties. The *state* field is required.
         # Current timestamp is kept if keep_time is True, and is reset to 0:0 if keep_time is False.
-        def update(self, keep_time = True, **fields):
+        def set(self, keep_time = True, **fields):
 
             # Records all the properties passed to the Presence.
             self.properties = fields
