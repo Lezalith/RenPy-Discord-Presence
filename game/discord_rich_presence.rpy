@@ -168,6 +168,13 @@ init -10 python:
             else:
                 self.time = timestamp
 
+            # ..Prepare the ALL properties to be shown.
+            p = self.properties
+
+            # if time is present, remove it, as it's not a valid property for presence.update.
+            if "time" in p:
+                del p["time"]
+
             # Update the Presence with new time and current properties.
             self.presence.update(start = self.time, **self.properties)
 
