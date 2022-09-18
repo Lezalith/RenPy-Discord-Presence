@@ -31,7 +31,10 @@ define rich_presence.second_example = { "state" : "Reading a Chapter",
 
 # State of the Presence upon the game's launch.
 # Here it refers to one of the examples defined above.
-define rich_presence.initial_state = rich_presence.second_example
+define rich_presence.initial_state = rich_presence.first_example
+
+# If set to True, entering the Main Menu at any point restores the presence to rich_presence.initial_state.
+define rich_presence.main_menu_initial = True
 
 init -10 python:
 
@@ -54,6 +57,9 @@ init -10 python:
             # This is so that the same time can be kept upon updating the presence.
             self.time = time.time()
 
+            # Dict of properties used in the first_setup.
+            self.original_properties = {}
+
             # Dict of current Presence properties.
             self.properties = {}
 
@@ -70,13 +76,21 @@ init -10 python:
 
             print("Successfully connected.")
 
-            # Sets the initial state.
-            self.set(**rich_presence.initial_state)
+            # Store properties used for the first setup.
+            self.original_properties = rich_presence.initial_state
+
+            # Sets the presence state to the original properties, those just gotten.
+            self.reset()
 
             # Appends the close method to exit callbacks,
             # to run it once the game is exited.
             # Done here to not overwrite user's define of config.quit_callbacks, if present somewhere.
             config.quit_callbacks.append(self.close)
+
+            # Appends the close method to exit callbacks,
+            # to run it once the game ends and returns to the main menu.
+            # Done here to not overwrite user's define of config.quit_callbacks, if present somewhere.
+            config.at_exit_callbacks.append(self.reset)
 
         # Sets the state to provided properties.
         # Current timestamp is kept if keep_time is True, and is reset to 0:0 if keep_time is False.
@@ -141,6 +155,12 @@ init -10 python:
             self.presence.close()
 
             print("Successfully closed.")
+
+        # Resets the presence to the original properties, gotten from rich_presence.initial_state.
+        def reset(self):
+
+            # Sets the initial state.
+            self.presence.update(**self.original_properties)
 
 # The object for interacting with Rich Presence defined.
 default discord = RenPyDiscord()
