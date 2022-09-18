@@ -14,6 +14,10 @@
 
     $ discord.change_time()
 
-    "Did it work?"
+    "Yup, worked!"
+
+    "Now, discord.update."
+
+    $ discord.update(details = "This wasn't here before!")
 
     return

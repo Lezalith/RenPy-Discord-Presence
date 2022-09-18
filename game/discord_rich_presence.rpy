@@ -74,6 +74,20 @@ init -10 python:
             # Update the presence.
             self.presence.update(start = self.time, **self.properties)
 
+        # Updates the provided properties, while leaving others as they are.
+        # Current timestamp is kept if keep_time is True, and is reset to 0:0 if keep_time is False.
+        def update(self, keep_time = True, **properties):
+
+            for p in properties:
+                self.properties[p] = properties[p]
+
+            # Resets the time if it's not to be kept.
+            if not keep_time:
+                self.time = time.time()
+
+            # Update the presence.
+            self.presence.update(start = self.time, **self.properties)
+
         # Changes the Time Elapsed, while keeping everything else untouched.
         # timestamp is None by default, which resets the time to 0:0.
         def change_time(self, timestamp = None):
