@@ -115,7 +115,7 @@ init -10 python:
             # ...overwritten to None if time property is given...
             if "time" in properties:
 
-                # ...so that time is not displayed.
+                # ...so that time is not displayed if it's False.
                 if not properties["time"]:
                     start_time = None
 
@@ -147,7 +147,7 @@ init -10 python:
             # ...with time overwritten to None if time property is given or already set...
             if "time" in p:
 
-                # ...so that time is not displayed.
+                # ...so that time is not displayed if it's False.
                 if not p["time"]:
                     start_time = None
 
