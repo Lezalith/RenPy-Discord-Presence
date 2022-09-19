@@ -1,7 +1,7 @@
 # Discord Rich Presence Support for Ren'Py Projects
 This script creates a **RenPyDiscord** object stored in the **discord** variable, which can be used to interact with Discord Rich Presence. To use it in your project, copy the **discord_rich_presence.rpy** file and the **python-packages** folder - that one contains **pypresence**, the module that handles everything here - from one of the releases into your **game** folder, and set up the necessary variables listed below in **Related Variables** .
 
-An Application set up on the [Discord Developer Portal](https://discord.com/developers) and it's **Application ID** is also required. This is also where all the images you plan on displaying in the presence need to be prepared first.
+An Application set up on the [Discord Developer Portal](https://discord.com/developers) and its **Application ID** is also required. This is also where all the images you plan on displaying in the presence need to be prepared first.
 
 You can find all the necessarry instructions under the **Wiki** tab on this GitHub page.
 
@@ -81,7 +81,7 @@ discord.update(large_image = "lezalith")
 **small_image** takes a **string** that needs to correspond with an image uploaded onto the Discord Application - this process is described above.
 It is the smaller image, shown at the bottom right of the **large_image**.
 
-If no **large_image** is set, **small_image** is used in it's place and no smaller image at the bottom right is shown.
+If no **large_image** is set, **small_image** is used in its place and no smaller image at the bottom right is shown.
 ```py
 discord.update(large_image = "lezalith", small_image = "lezalith")
 ```
@@ -112,9 +112,9 @@ Dictionary with all the properties for this example is stored in the **rich_pres
 
 ![rich_presence_example](https://user-images.githubusercontent.com/56970124/190882416-25642658-8823-4d05-8dd9-ee9f9e6d62bf.png)
 
-**end** takes a **string** with an epoch timestamp and calculates time remaining until that timestamp. 
+**end** takes an epoch timestamp (**float**/**int**) and calculates time remaining until that timestamp. 
 
-Setting this pushed**start** completely aside and the Time Elapsed with it, displaying Time Left instead.
+Setting this pushes **start** completely aside and the Time Elapsed with it, **displaying Time Left instead.**
 ```py
 discord.update(end = time.time() + 3000)
 ```
@@ -135,7 +135,7 @@ discord.update(buttons = [ dict(label = "Discord Presence Example Button", url =
                            dict(label = "Lezalith's Promotion Button!", url = "https://www.lezcave.com") ]
 ```
 
-Putting all of that together, state shown on the screenshot was created with these properties:
+Putting all of that together, state shown on the second example screenshot was created with these properties:
 ```py
 discord.set(state = "Reading a Chapter",
             end = time.time() + 3000,
