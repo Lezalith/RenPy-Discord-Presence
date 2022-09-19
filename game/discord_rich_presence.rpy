@@ -1,4 +1,5 @@
-﻿# Application Id - This is gotten Discord's Developer Portal.
+# Application Id - This is gotten from Discord's Developer Portal. 
+# Process of setting it up is described on GitHub under the Wiki tab, or locally in [TO-BE-WRITTEN].md
 define rich_presence.application_id = "YOUR_APP_ID_HERE"
 
 
@@ -35,6 +36,7 @@ define rich_presence.second_example = { "state" : "Reading a Chapter",
 # Here it refers to one of the examples defined above.
 define rich_presence.initial_state = rich_presence.first_example
 
+define rich_presence.presence_object = Presence(rich_presence.application_id)
 
 init -10 python:
 
@@ -52,9 +54,6 @@ init -10 python:
 
         # Called when defined.
         def __init__(self):
-
-            # Rich Presence object, it controls everything.
-            self.presence = Presence(rich_presence.application_id)
 
             # Records the timestamp currently used in the presence.
             # This is so that the same time can be kept upon updating the presence.
@@ -75,7 +74,7 @@ init -10 python:
             print("Attempting to connect to Discord Rich Presence...")
 
             # Connects to the Presence App.
-            self.presence.connect()
+            rich_presence.presence_object.connect()
 
             print("Successfully connected.")
 
@@ -121,7 +120,7 @@ init -10 python:
 
             # Update the presence.
             # self.properties not used because it includes the time property.
-            self.presence.update(start = start_time, **properties)
+            rich_presence.presence_object.update(start = start_time, **properties)
 
         # Updates the provided properties, while leaving others as they are.
         # Current timestamp is kept if keep_time is True, and is reset to 0:0 if keep_time is False.
@@ -151,9 +150,8 @@ init -10 python:
                 # time is not a valid property to be passed to presence.update, so we need to remove it.
                 del p["time"]
 
-
             # Update the presence.
-            self.presence.update(start = start_time, **p)
+            rich_presence.presence_object.update(start = start_time, **p)
 
         # Changes the Time Elapsed, while keeping everything else untouched.
         # timestamp is None by default, which resets the time to 0:0.
@@ -165,7 +163,7 @@ init -10 python:
             else:
                 self.time = timestamp
 
-            # ..Prepare the ALL properties to be shown.
+            # Prepare the ALL properties to be shown.
             p = self.properties
 
             # if time is present, remove it, as it's not a valid property for presence.update.
@@ -173,7 +171,7 @@ init -10 python:
                 del p["time"]
 
             # Update the Presence with new time and current properties.
-            self.presence.update(start = self.time, **p)
+            rich_presence.presence_object.update(start = self.time, **p)
 
         # Resets the presence to the original properties, gotten from rich_presence.initial_state.
         def reset(self):
@@ -184,7 +182,11 @@ init -10 python:
         # Clears all the info in the presence.
         def clear(self):
 
-            self.presence.clear()
+            rich_presence.presence_object.clear()
+
+            # Clear currently recorded properties and time, too.
+            self.properties = {}
+            self.time = None
 
         ## NOTE: clear seems to have its effect delayed if called too soon
         ##       after establishing the connection (first_setup) or another clear call.
@@ -200,7 +202,7 @@ init -10 python:
 
             print("Closing DRP connection.")
 
-            self.presence.close()
+            rich_presence.presence_object.close()
 
             print("Successfully closed.")
 
