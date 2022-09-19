@@ -35,8 +35,10 @@ define rich_presence.second_example = { "state" : "Reading a Chapter",
 # Here it refers to one of the examples defined above.
 define rich_presence.initial_state = rich_presence.first_example
 
+
 # If set to True, entering the Main Menu at any point restores the presence to rich_presence.initial_state.
 define rich_presence.main_menu_initial = True
+
 
 init -10 python:
 
@@ -103,6 +105,10 @@ init -10 python:
 
             # Records all the properties passed to the Presence.
             self.properties = deepcopy(properties)
+
+            # We need to care of the default of the time property, if it's not given.
+            if not "time" in self.properties:
+                self.properties["time"] = True
 
             # Resets the time if it's not to be kept.
             if not keep_time:
@@ -176,13 +182,13 @@ init -10 python:
                 del p["time"]
 
             # Update the Presence with new time and current properties.
-            self.presence.update(start = self.time, **self.properties)
+            self.presence.update(start = self.time, **p)
 
         # Resets the presence to the original properties, gotten from rich_presence.initial_state.
         def reset(self):
 
             # Sets the initial state.
-            self.set(keep_time = False, **self.original_properties,)
+            self.set(keep_time = False, **self.original_properties)
 
         # Clears all the info in the presence.
         def clear(self):
