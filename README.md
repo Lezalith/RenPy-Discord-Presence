@@ -144,11 +144,22 @@ discord.set(state = "Reading a Chapter",
                         dict(label = "Lezalith's Promotion Button!", url = "https://www.lezcave.com") ])
 ```
 
-# Important Note
+# Important Notes
+## Too Many Connections
 Connecting to the Discord Rich Presence multiple times in quick succession will result in the connection not being established.
 This makes the program unresponsive and unable to being launched again for about the next 30s. I'd imagine it's a precation against malicious exploits on Discord's side, and cannot be affected by code here.
 
-In practice, this can be achieved by quickly launching and quitting the game, or quickly reloading it multiple times.
+In practice, this happens when you...
+- ...launch and quit...
+- ...reload...
+- ...start and return to the main menu in...
+
+...the game too many times too fast.
+
+## Saving and Loading
+All presence properties, along with time property that determines whether Time Elapsed is shown, are saved in save files and restored when the save is loaded.
+
+Upon loading a save, Time Elapsed is reset to 0:0.
 
 # Examples
 Here is an example of two **textbutton**s in a screen, one with **discord.set** and other with **discord.update**.
