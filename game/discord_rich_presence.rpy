@@ -36,10 +36,6 @@ define rich_presence.second_example = { "state" : "Reading a Chapter",
 define rich_presence.initial_state = rich_presence.first_example
 
 
-# If set to True, entering the Main Menu at any point restores the presence to rich_presence.initial_state.
-define rich_presence.main_menu_initial = True
-
-
 init -10 python:
 
     # Used to display time in the presence.
@@ -93,11 +89,6 @@ init -10 python:
             # to run it once the game is exited.
             # Done here to not overwrite user's define of config.quit_callbacks, if present somewhere.
             config.quit_callbacks.append(self.close)
-
-            # Appends the close method to exit callbacks,
-            # to run it once the game ends and returns to the main menu.
-            # Done here to not overwrite user's define of config.quit_callbacks, if present somewhere.
-            config.at_exit_callbacks.append(self.reset)
 
         # Sets the state to provided properties.
         # Current timestamp is kept if keep_time is True, and is reset to 0:0 if keep_time is False.

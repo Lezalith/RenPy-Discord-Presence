@@ -1,44 +1,33 @@
 # Discord Rich Presence Support for Ren'Py Projects
 This script creates a **RenPyDiscord** object stored in the **discord** variable, which can be used to interact with Discord Rich Presence. To use it in your project, copy the **discord_rich_presence.rpy** file and the **python-packages** folder - that one contains **pypresence**, the module that handles everything here - from one of the releases into your **game** folder, and set up the necessary variables listed below in **Related Variables** .
 
-An Application set up on the [Discord Developer Portal](https://discord.com/developers) and it's **Application ID** is also required. How to set it up is described below, in **Setting Up Application on Discord Developer Portal**.
+An Application set up on the [Discord Developer Portal](https://discord.com/developers) and it's **Application ID** is also required. This is also where all the images you plan on displaying in the presence need to be prepared first.
+
+You can find all the necessarry instructions under the **Wiki** tab on this GitHub page.
 
 # This Project
 Downloading a release of this project and launching it will reveal a simple preview. It shows how to update the presence status from both screens and labels, utilizing the **set** and **update** methods.
 
 The **examples.rpy** file contains a custom **main_menu** screen, which shows how the presence can be updated from both a screen and a label. Examples there are the same examples at the bottom of this Readme in **Examples**.
 
-# Setting Up Application on Discord Developer Portal
-Every project that uses the rich presence has to have an Application created on the [Discord Developer Portal](https://discord.com/developers).
-
-[TODO]
-
-# Preparing Images on the Discord Developer Portal
-Every image that you plan to show in the presence has to be uploaded into the Application's Art Assets, under the **Rich Presence** tab.
-
-[TODO]
-
 # Related Variables
 There are couple of variables defined in the **discord_rich_presence.rpy** file that you need to visit before using the code.
 All are defined within the **rich_presence** namespace, on top of the file. Here is what all of them do and what their default value is.
 
-**application_id** takes a **string** with an Application ID of the Application set up on Discord Developer Portal. This process is described above. 
+**application_id** takes a **string** with an Application ID of the Application set up on Discord Developer Portal.
 ```py
 define rich_presence.application_id = "1020817abcdef262795"
 ```
 
-**initial_state** takes a dictionary. Keys are **strings** of properties corresponding to presence elements (listed below), and values are **strings** of their values.
+**initial_state** takes a dictionary. Keys are **strings** of properties corresponding to presence elements (listed below), and values are their values.
 In the example project, two examples are defined separately and **initial_state** refers to one of them.
+
+This is the state shown in the presence anytime the game launches and/or enters the main menu.
 ```py
 define rich_presence.initial_state = { "details" : "Testing Discord Rich Presence.",
                                        "state" : "It's super easy in Ren'Py 8!",
                                        "large_image" : "lezalith", 
                                        "small_image" : "lezalith"}
-```
-
-**main_menu_initial** can be **True** or **False**, determining whether state given in **initial_state** is restored when the game finishes and returns to the main menu. It is **True** by default.
-```py
-define rich_presence.main_menu_initial = True
 ```
 
 # List of Methods
