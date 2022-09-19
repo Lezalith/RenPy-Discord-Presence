@@ -84,10 +84,13 @@ init -10 python:
             # Sets the presence state to the original properties, those just gotten.
             self.reset()
 
-            # Appends the close method to exit callbacks,
-            # to run it once the game is exited.
+            # Appends the close method to exit callbacks, to run it once the game is exited.
             # Done here to not overwrite user's define of config.quit_callbacks, if present somewhere.
             config.quit_callbacks.append(self.close)
+
+            # Appends the close method to after load callbacks, to run it once a game save is loaded.
+            # Done here to not overwrite user's define of config.after_load_callbacks, if present somewhere.
+            config.after_load_callbacks.append(self.update_on_load)
 
         # Sets the state to provided properties.
         # Current timestamp is kept if keep_time is True, and is reset to 0:0 if keep_time is False.
@@ -195,6 +198,17 @@ init -10 python:
         ##       The minimum wait time to avoid this seems to be about 15s.
         ##
         ##       Same happens with the close method defined below.
+
+        # Restores the presence to a state stored in the save file.
+        def update_on_load(self):
+
+            # Right now, Time Elapsed is set to 0:0 upon loading a save file. 
+            #
+            # A workaround here could be nice to solve this, probably by recording the start property
+            # somewhere before the load, and restoring it here afterwards,
+            # but I think it's too little of an issue to be worth solving.
+
+            self.set(keep_time = False, **self.properties)
 
         # Properly closes the connection with the Rich Presence.
         # Internally clears the info, no need to call the clear method.
