@@ -80,12 +80,12 @@ label label_example():
 
     $ discord.update(time = False)
 
-    "Finally, after this line, {b}discord.clear{/b} is called to clear the presence.\nIf {b}rich_presence.main_menu_initial{/b} is set to True, it will get reset again when entering the main menu!"
+    "Finally, after this line, {b}discord.clear{/b} is called to clear the presence."
 
     $ discord.clear()
 
     "Cleared and hidden!"
 
-    "After this line, you will return to the main menu."
+    "After this line, you will return to the main menu, and {b}initial_state{/b} will be restored."
 
     return
