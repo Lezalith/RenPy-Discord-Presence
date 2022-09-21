@@ -31,13 +31,13 @@ init -900:
 define g = Solid("808080")
 define f = Frame("gui/frame.png")
 
-label before_main_menu():
+# label before_main_menu():
 
-    if rich_presence.presence_object is None:
+#     if rich_presence.presence_object is None:
 
-        call screen error_screen
+#         call screen error_screen
 
-    return
+#     return
 
 screen error_screen():
 

@@ -11,23 +11,33 @@
     except pypresence.DiscordNotFound:
         presence_object = None
 
+        print("Discord Desktop App not found. Rich Presence will be disabled.")
+
     # Used to display time in the presence.
     import time
 
     # For copying dictionaries with properties.
     from copy import deepcopy
 
+    # Returns None, no matter the arguments.
+    def return_none(*_args, **_kwargs): pass
+
+    # Is ran before every RenPyDiscord method.
+    # If Discord is not installed, it calls return_none rather than
+    # moving onto the method originally called.
+    def presence_disabled(func):
+
+        if presence_object is None:
+            return return_none
+        
+        else:
+            return func
+
     # Class of object for interacting with the Rich Presence.
     class RenPyDiscord():
 
         # Called when defined.
         def __init__(self):
-
-            # Ignore this entire class 
-            if presence_object is None:
-
-                print("Discord Desktop App not found. Rich Presence will be disabled.")
-                return None
 
             # Records the timestamp currently used in the presence.
             # This is so that the same time can be kept upon updating the presence.
@@ -43,6 +53,7 @@
             self.first_setup()
 
         # Connects to the Presence App and sets the initial state.
+        @presence_disabled
         def first_setup(self):
 
             print("Attempting to connect to Discord Rich Presence...")
@@ -68,6 +79,7 @@
 
         # Sets the state to provided properties.
         # Current timestamp is kept if keep_time is True, and is reset to 0:0 if keep_time is False.
+        @presence_disabled
         def set(self, keep_time = True, **properties):
 
             # Records all the properties passed to the Presence.
@@ -101,6 +113,7 @@
 
         # Updates the provided properties, while leaving others as they are.
         # Current timestamp is kept if keep_time is True, and is reset to 0:0 if keep_time is False.
+        @presence_disabled
         def update(self, keep_time = True, **properties):
 
             for p in properties:
@@ -132,6 +145,7 @@
 
         # Changes the Time Elapsed, while keeping everything else untouched.
         # timestamp is None by default, which resets the time to 0:0.
+        @presence_disabled
         def change_time(self, timestamp = None):
 
             if timestamp is None:
@@ -151,12 +165,14 @@
             presence_object.update(start = self.time, **p)
 
         # Resets the presence to the original properties, gotten from rich_presence.initial_state.
+        @presence_disabled
         def reset(self):
 
             # Sets the initial state.
             self.set(keep_time = False, **self.original_properties)
 
         # Clears all the info in the presence.
+        @presence_disabled
         def clear(self):
 
             presence_object.clear()
@@ -174,6 +190,7 @@
         ##       Same happens with the close method defined below.
 
         # Restores the presence to a state stored in the save file.
+        @presence_disabled
         def update_on_load(self):
 
             # Right now, Time Elapsed is set to 0:0 upon loading a save file. 
@@ -186,6 +203,7 @@
 
         # Properly closes the connection with the Rich Presence.
         # Internally clears the info, no need to call the clear method.
+        @presence_disabled
         def close(self):
 
             print("Closing DRP connection.")
