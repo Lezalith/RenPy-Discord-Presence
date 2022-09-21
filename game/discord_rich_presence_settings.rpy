@@ -27,6 +27,6 @@ define rich_presence.initial_state = { "details" : "Testing Discord Rich Presenc
 # small_image (str) – name of the uploaded image for the small profile artwork
 # small_text (str) – tootltip for the small image
 # party_size (list) – current size of the player’s party, lobby, or group, and the max in this format: [1,4]
-# buttons (list) – list of dicts for buttons on your profile in the format [{"label": "My Website", "url": "https://qtqt.cf"}, ...], can list up to two buttons
+# buttons (list) – list of up to two dicts for buttons, in the format {"label": "My Website", "url": "https://qtqt.cf"}
 # 
 # time (bool) is a special non-presence property. Giving it the True value displays the Elapsed Time in the presence (default), False hides it.
