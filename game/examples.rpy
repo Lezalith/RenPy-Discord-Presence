@@ -24,45 +24,12 @@ init -900:
                                            "buttons" : [ dict(label = "Discord Presence Example Button", url = "https://github.com/Lezalith/RenPy_Discord_Presence"),
                                                          dict(label = "Lezalith's Promotion Button!", url = "https://www.lezcave.com") ]}
 
-    # Originally defined in discord_rich_presence_settings.rpy, it is overwritten in this project
-    # to display one of the two examples defined above.
+    # Originally defined in discord_rich_presence_settings.rpy, it is overwritten for this project
+    # here and controlled from main_menu to display one of the two examples defined above.
     define rich_presence.initial_state = rich_presence.first_example
 
 define g = Solid("808080")
 define f = Frame("gui/frame.png")
-
-# label before_main_menu():
-
-#     if rich_presence.presence_object is None:
-
-#         call screen error_screen
-
-#     return
-
-screen error_screen():
-
-    add g
-
-    frame:
-        align (0.5, 0.5)
-        xysize (1380, 720)
-        padding (20, 20)
-        background f
-
-        vbox:
-            align (0.5, 0.5)
-
-            text "Welcome to a preview of Discord Rich Presence in Ren'Py!" xalign 0.5
-
-            null height 30
-
-            text "It would appear you do not have the Discord Desktop App installed."
-            text "It is required to launch this project."
-
-            null height 30
-
-            text "As for players in your own projects that do not have the App installed, don't worry!"
-            text "The feature simply gets disabled for them and will not bring up any errors."
 
 screen main_menu():
 
@@ -70,40 +37,49 @@ screen main_menu():
 
     frame:
         align (0.5, 0.5)
-        xysize (1280, 720)
-        padding (20, 20)
+        padding (80, 100)
         background f
 
         vbox:
             align (0.5, 0.5)
+            spacing 8
 
-            text "Welcome to a preview of Discord Rich Presence in Ren'Py!" xalign 0.5
+            text "Discord Rich Presence in Ren'Py!" xalign 0.5 underline True
 
             null height 30
 
-            text "Below you can see how easy it is to change the presence through screen buttons."
-            text "The first_example should already be set, as it's the default when the game is launched!"
+            text "{b}Ren'Py Discord Presence{/b} script gives Ren'Py full support for interacting with {b}D{/b}iscord {b}R{/b}ich {b}P{/b}resence."
+            text "{b}DRP{/b} is the status shown in one's Discord profile - Game being played, elapsed time played etc."
 
-            textbutton "Set to First Example":
-                action Function(discord.set, **rich_presence.first_example) 
-                selected discord.properties == rich_presence.first_example
-            textbutton "Set to Second Example":
-                action Function(discord.set, **rich_presence.second_example) 
-                selected discord.properties == rich_presence.second_example
+            null height 30
 
-            textbutton "See examples inside a label.":
-                action Start(label = "label_example")
+            text "To see the script in action just click one of the buttons below and watch your Discord activity info change."
+            text "First Example is set as the default state."
 
-screen screen_example():
+            null height 30
 
-    vbox:
-        align (0.5, 0.5)
+            vbox:
+                xalign 0.5
 
-        textbutton "This one sets the state only.":
-            action Function(discord.set, state = "Example State.")
+                hbox:
+                    xalign 0.5
+                    spacing 100
 
-        textbutton "This sets details and leaves the state alone.":
-            action Function(discord.update, details = "Example Details.")
+                    textbutton "Set to First Example":
+                        action Function(discord.set, **rich_presence.first_example) 
+                        selected discord.properties == rich_presence.first_example
+                    textbutton "Set to Second Example":
+                        action Function(discord.set, **rich_presence.second_example) 
+                        selected discord.properties == rich_presence.second_example
+
+                textbutton "See a dialogue showcasing the script!":
+                    xalign 0.5
+                    action Start(label = "label_example")
+
+            null height 30
+
+            text "Do not forget that this is just a preview!"
+            text "For full instructions on how to use this script, check out its Readme, ideally on {a=https://github.com/Lezalith/RenPy_Discord_Presence}the GitHub page{/a}."
 
 label label_example():
 
@@ -127,9 +103,11 @@ label label_example():
 
     "Presence now contains one more piece of info."
 
-    "After this line, {b}discord.change_time{/b} is called to change the Time Elapsed shown. The time is reset and 50 mins are added to it."
+    "After this line, {b}discord.change_time{/b} is called to change the Time Elapsed shown. The time is reset and 3000 seconds are added to it."
 
     $ discord.change_time(timestamp = time.time() - 3000)
+
+    "3000 seconds is 50 minutes, so that's what Time Elapsed got set to."
 
     "By default, the Time Elapsed is shown. It can be hidden by setting the {b}time{/b} property to False."
 
@@ -137,11 +115,13 @@ label label_example():
 
     $ discord.update(time = False)
 
+    "As you can see, Time Elapsed is no longer visible."
+
     "Finally, after this line, {b}discord.clear{/b} is called to clear the presence."
 
     $ discord.clear()
 
-    "Cleared and hidden!"
+    "Presence all cleared and hidden!"
 
     "After this line, you will return to the main menu, and {b}initial_state{/b} will be restored."
 

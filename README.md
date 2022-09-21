@@ -147,7 +147,7 @@ discord.set(state = "Reading a Chapter",
 # Important Notes
 ## Too Many Connections
 Connecting to the Discord Rich Presence multiple times in quick succession will result in the connection not being established.
-This makes the program unresponsive and unable to being launched again for about the next 30s. I'd imagine it's a precation against malicious exploits on Discord's side, and cannot be affected by code here.
+This makes the program unresponsive and unable to be launched again for about the next 30s. I'd imagine it's a precation against malicious exploits on Discord's side, and cannot be affected by Python code.
 
 In practice, this happens when you...
 - ...launch and quit...
