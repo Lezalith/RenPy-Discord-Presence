@@ -1,21 +1,21 @@
-﻿init -10 python:
-
-    # Used to display time in the presence.
-    import time
-
-    # For copying dictionaries with properties.
-    from copy import deepcopy
+﻿init -950 python in rich_presence:
 
     # Alpha and Omega of Rich Presence.
     import pypresence
 
     # Try to set up the Discord Presence object.
     try:
-        store.rich_presence.presence_object = pypresence.Presence(rich_presence.application_id)
+        presence_object = pypresence.Presence(application_id)
 
     # Discord Desktop App was not found installed:
     except pypresence.DiscordNotFound:
-        store.rich_presence.presence_object = None
+        presence_object = None
+
+    # Used to display time in the presence.
+    import time
+
+    # For copying dictionaries with properties.
+    from copy import deepcopy
 
     # Class of object for interacting with the Rich Presence.
     class RenPyDiscord():
@@ -24,7 +24,7 @@
         def __init__(self):
 
             # Ignore this entire class 
-            if rich_presence.presence_object is None:
+            if presence_object is None:
 
                 print("Discord Desktop App not found. Rich Presence will be disabled.")
                 return None
@@ -48,23 +48,23 @@
             print("Attempting to connect to Discord Rich Presence...")
 
             # Connects to the Presence App.
-            rich_presence.presence_object.connect()
+            presence_object.connect()
 
             print("Successfully connected.")
 
             # Store properties used for the first setup.
-            self.original_properties = rich_presence.initial_state
+            self.original_properties = initial_state
 
             # Sets the presence state to the original properties, those just gotten.
             self.reset()
 
             # Appends the close method to exit callbacks, to run it once the game is exited.
             # Done here to not overwrite user's define of config.quit_callbacks, if present somewhere.
-            config.quit_callbacks.append(self.close)
+            renpy.config.quit_callbacks.append(self.close)
 
             # Appends the close method to after load callbacks, to run it once a game save is loaded.
             # Done here to not overwrite user's define of config.after_load_callbacks, if present somewhere.
-            config.after_load_callbacks.append(self.update_on_load)
+            renpy.config.after_load_callbacks.append(self.update_on_load)
 
         # Sets the state to provided properties.
         # Current timestamp is kept if keep_time is True, and is reset to 0:0 if keep_time is False.
@@ -97,7 +97,7 @@
 
             # Update the presence.
             # self.properties not used because it includes the time property.
-            rich_presence.presence_object.update(start = start_time, **properties)
+            presence_object.update(start = start_time, **properties)
 
         # Updates the provided properties, while leaving others as they are.
         # Current timestamp is kept if keep_time is True, and is reset to 0:0 if keep_time is False.
@@ -128,7 +128,7 @@
                 del p["time"]
 
             # Update the presence.
-            rich_presence.presence_object.update(start = start_time, **p)
+            presence_object.update(start = start_time, **p)
 
         # Changes the Time Elapsed, while keeping everything else untouched.
         # timestamp is None by default, which resets the time to 0:0.
@@ -148,7 +148,7 @@
                 del p["time"]
 
             # Update the Presence with new time and current properties.
-            rich_presence.presence_object.update(start = self.time, **p)
+            presence_object.update(start = self.time, **p)
 
         # Resets the presence to the original properties, gotten from rich_presence.initial_state.
         def reset(self):
@@ -159,7 +159,7 @@
         # Clears all the info in the presence.
         def clear(self):
 
-            rich_presence.presence_object.clear()
+            presence_object.clear()
 
             # Clear currently recorded properties and time, too.
             self.properties = {}
@@ -190,9 +190,9 @@
 
             print("Closing DRP connection.")
 
-            rich_presence.presence_object.close()
+            presence_object.close()
 
             print("Successfully closed.")
 
 # The object for interacting with Rich Presence defined.
-default discord = RenPyDiscord()
+default discord = rich_presence.RenPyDiscord()
