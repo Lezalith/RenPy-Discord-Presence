@@ -7,6 +7,39 @@
 define g = Solid("808080")
 define f = Frame("gui/frame.png")
 
+label before_main_menu():
+
+    if rich_presence.presence_object is None:
+
+        call screen error_screen
+
+    return
+
+screen error_screen():
+
+    add g
+
+    frame:
+        align (0.5, 0.5)
+        xysize (1380, 720)
+        padding (20, 20)
+        background f
+
+        vbox:
+            align (0.5, 0.5)
+
+            text "Welcome to a preview of Discord Rich Presence in Ren'Py!" xalign 0.5
+
+            null height 30
+
+            text "It would appear you do not have the Discord Desktop App installed."
+            text "It is required to launch this project."
+
+            null height 30
+
+            text "As for players in your own projects that do not have the App installed, don't worry!"
+            text "The feature simply gets disabled for them and will not bring up any errors."
+
 screen main_menu():
 
     add g
