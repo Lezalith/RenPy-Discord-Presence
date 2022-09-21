@@ -4,6 +4,30 @@
 ##
 ## https://www.renpy.org/doc/html/screen_special.html#main-menu
 
+init -900:
+
+    # First example featured in Readme.
+    define rich_presence.first_example = { "details" : "Testing Discord Rich Presence.",
+                                           "state" : "It's super easy in Ren'Py 8!",
+                                           "large_image" : "lezalith", 
+                                           "small_image" : "lezalith",
+                                           "time" : True} # small_image is not visible without large_image also set.
+
+    # time gets the timestamp for end property.
+    python:
+        import time
+
+    # Second example featured in Readme.
+    define rich_presence.second_example = { "state" : "Reading a Chapter",
+                                           "end" : time.time() + 3000,
+                                           "party_size" : [1, 5],
+                                           "buttons" : [ dict(label = "Discord Presence Example Button", url = "https://github.com/Lezalith/RenPy_Discord_Presence"),
+                                                         dict(label = "Lezalith's Promotion Button!", url = "https://www.lezcave.com") ]}
+
+    # Originally defined in discord_rich_presence_settings.rpy, it is overwritten in this project
+    # to display one of the two examples defined above.
+    define rich_presence.initial_state = rich_presence.first_example
+
 define g = Solid("808080")
 define f = Frame("gui/frame.png")
 
