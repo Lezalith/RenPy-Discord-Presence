@@ -73,7 +73,7 @@
             # Done here to not overwrite user's define of config.quit_callbacks, if present somewhere.
             renpy.config.quit_callbacks.append(self.close)
 
-            # Appends the close method to after load callbacks, to run it once a game save is loaded.
+            # Appends the update_on_load method to after load callbacks, to run it once a game save is loaded.
             # Done here to not overwrite user's define of config.after_load_callbacks, if present somewhere.
             renpy.config.after_load_callbacks.append(self.update_on_load)
 
