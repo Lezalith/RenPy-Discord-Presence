@@ -22,14 +22,11 @@
     # Returns None, no matter the arguments.
     def return_none(*_args, **_kwargs): pass
 
-    # Is ran before every RenPyDiscord method.
-    # If Discord is not installed, it calls return_none rather than
-    # moving onto the method originally called.
+    # Decorator that is called before every RenPyDiscord method.
+    # If Discord is not installed, it calls return_none rather than moving onto the method called originally.
     def presence_disabled(func):
-
         if presence_object is None:
             return return_none
-        
         else:
             return func
 
@@ -85,7 +82,7 @@
             # Records all the properties passed to the Presence.
             self.properties = deepcopy(properties)
 
-            # We need to care of the default of the time property, if it's not given.
+            # We need to take care of the default of the time property, if it's not given.
             if not "time" in self.properties:
                 self.properties["time"] = True
 
@@ -93,14 +90,13 @@
             if not keep_time:
                 self.time = time.time()
 
-
             # Time prepared to be shown...
             start_time = self.time
 
-            # ...overwritten to None if time property is given...
+            # ...refers to the time property...
             if "time" in properties:
 
-                # ...so that time is not displayed if it's False.
+                # ...and if it's False, overwrite start_time to None, so that time is not displayed.
                 if not properties["time"]:
                     start_time = None
 
@@ -127,13 +123,13 @@
             # Time prepared to be shown,...
             start_time = self.time
 
-            # ...as well as the ALL properties to be shown...
+            # ...as well as the ALL properties to be shown.
             p = self.properties
 
-            # ...with time overwritten to None if time property is given or already set...
+            # First, refer to the time property...
             if "time" in p:
 
-                # ...so that time is not displayed if it's False.
+                # ...and if it's False, overwrite start_time to None, so that time is not displayed.
                 if not p["time"]:
                     start_time = None
 
@@ -154,7 +150,7 @@
             else:
                 self.time = timestamp
 
-            # Prepare the ALL properties to be shown.
+            # Prepare ALL the properties to be shown.
             p = self.properties
 
             # if time is present, remove it, as it's not a valid property for presence.update.
