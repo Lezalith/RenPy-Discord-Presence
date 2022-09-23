@@ -1,3 +1,4 @@
+# Ran before discord_rich_presence present on -950.
 init offset = -960
 
 # Application Id - This is gotten from Discord's Developer Portal. 
@@ -29,4 +30,4 @@ define rich_presence.initial_state = { "details" : "Testing Discord Rich Presenc
 # party_size (list) – current size of the player’s party, lobby, or group, and the max in this format: [1,4]
 # buttons (list) – list of up to two dicts for buttons, in the format {"label": "My Website", "url": "https://qtqt.cf"}
 # 
-# time (bool) is a special non-presence property. Giving it the True value displays the Elapsed Time in the presence (default), False hides it.
+# time (bool) is a special non-pypresence property. Giving it the True value displays the Elapsed Time in the presence (default), False hides it.
