@@ -3,9 +3,9 @@ This script creates a `RenPyDiscord` object stored in the `discord` variable, wh
 
 To use it in your project, copy the necessary files to your **game** folder:
 - **python-packages** folder - contains the **pypresence** module that handles everything Discord-related
-- **RenPy-Discord-Presence** folder, containing this script's files:
-    - **discord_rich_presence.rpy**  holds the entire script code
-    - **discord_rich_presence_settings.rpy** contains the two **Related Variables** described below.
+- **RenPy_Discord_Presence** folder, containing this script's files:
+    - **rich_presence.rpy**  holds the entire script code
+    - **settings.rpy** contains the two **Related Variables** described below.
     - **discord_developer_portal.md** is a local copy of the **Wiki** tab on this GitHub page, containing instructions on interacting with the **Discord Developer Portal**.
 
 An Application set up on the [Discord Developer Portal](https://discord.com/developers) is required for every game supporting Rich Presence. After the App is created, you will receive the necessary **Application ID** to insert into **discord_rich_presence_settings.rpy**, and it is also where all the images you plan on displaying in the presence need to be uploaded first.
