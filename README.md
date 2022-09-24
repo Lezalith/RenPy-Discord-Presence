@@ -3,24 +3,24 @@ This script creates a `RenPyDiscord` object stored in the `discord` variable, wh
 
 An Application set up on the [Discord Developer Portal](https://discord.com/developers) is required for every game supporting Rich Presence. After the App is created, you will receive the necessary **Application ID** to insert into **settings.rpy**, and it is also where all the images you plan on displaying in the presence need to be uploaded first.
 
-Instructions on how all of that is done are found under the **Wiki** tab on this GitHub page, local copy of which is included in the code files, as mentioned above.
+Instructions on how all of that is done are found [under the **Wiki** tab](https://github.com/Lezalith/RenPy_Discord_Presence/wiki/Interacting-with-Discord-Developer-Portal) on this GitHub page, local copy of which is included in the code files.
 
 # Download
-To get the script, download one of the releases on the right side of the GitHub page, under the **Releases** section. Here are the files that you need to put into your **game** folder:
+To get the script, download one of the releases on the right side of the GitHub page, under the [**Releases** section](https://github.com/Lezalith/RenPy_Discord_Presence/releases). Here are the files that you need to put into your **game** folder:
 
 - **python-packages** folder - contains the **pypresence** module that handles everything Discord-related
 - **RenPy_Discord_Presence** folder, containing this script's files:
     - **rich_presence.rpy**  holds the entire script code
-    - **settings.rpy** contains the two **Related Variables** described below.
-    - **discord_developer_portal.md** is a local copy of the **Wiki** tab on this GitHub page.
+    - **settings.rpy** contains the two [**Related Variables**](https://github.com/Lezalith/RenPy_Discord_Presence/wiki/Interacting-with-Discord-Developer-Portal#related-variables) described below.
+    - **discord_developer_portal.md** is a local copy of the [**Wiki** tab](https://github.com/Lezalith/RenPy_Discord_Presence/wiki/Interacting-with-Discord-Developer-Portal), as already mentioned.
 
 There are two versions for every release:
 
 ## Project Version
-**Project Version** contains the whole code of this repository. It is a project that can be launched from the Ren'Py Launcher and that shows how simple it is to update the presence status from both **screens** and **labels**, utilizing the `set` and `update` methods. Simply launch the project and keep an eye out on your Discord profile.
+**Project Version** contains the whole code of this repository. It is a project that can be launched from the Ren'Py Launcher and that shows how simple it is to update the presence status from both **screens** and **labels**, utilizing the `set` and `update` [methods described below](https://github.com/Lezalith/RenPy_Discord_Presence/wiki/Interacting-with-Discord-Developer-Portal#list-of-methods). Simply launch the project and keep an eye out on your Discord profile.
 
 ## Standalone Version
-**Standalone Version** does not contain the project files and only contains what you need, that is the files listed above.
+**Standalone Version** does not contain the project files and only contains the files listed [above](https://github.com/Lezalith/RenPy_Discord_Presence/wiki/Interacting-with-Discord-Developer-Portal#download).
 
 # Related Variables
 There are two variables defined in the **settings.rpy** file that you need to set before using the code. Here is what they do and what their default value is:
@@ -30,7 +30,7 @@ There are two variables defined in the **settings.rpy** file that you need to se
 define rich_presence.application_id = "10208ABCDEFGHIJ2795"
 ```
 
-`initial_state` takes a dictionary. Keys are **strings** of properties corresponding to presence elements (listed below), and values are their values.
+`initial_state` takes a dictionary. Keys are **strings** of properties corresponding to [presence elements](https://github.com/Lezalith/RenPy_Discord_Presence/wiki/Interacting-with-Discord-Developer-Portal#basic-rich-presence-elements), and values are their values.
 
 This is the state shown in the presence anytime the game launches and/or enters the main menu.
 ```py
