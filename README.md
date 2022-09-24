@@ -11,16 +11,16 @@ To get the script, download one of the releases on the right side of the GitHub 
 - **python-packages** folder contains the **pypresence** module that handles everything Discord-related
 - **RenPy_Discord_Presence** folder contains this script's files:
     - **rich_presence.rpy**  holds the entire script code
-    - **settings.rpy** contains the two [**Related Variables**](https://github.com/Lezalith/RenPy_Discord_Presence/wiki/Interacting-with-Discord-Developer-Portal#related-variables) described below.
+    - **settings.rpy** contains the two [**Related Variables**](https://github.com/Lezalith/RenPy_Discord_Presence#related-variables) described below.
     - **discord_developer_portal.md** is a local copy of the [**Wiki** tab](https://github.com/Lezalith/RenPy_Discord_Presence/wiki/Interacting-with-Discord-Developer-Portal), as already mentioned.
 
 There are two versions for every release:
 
 ## Project Version
-**Project Version** contains the whole code of this repository. It is a project that can be launched from the Ren'Py Launcher and that shows how simple it is to update the presence status from both **screens** and **labels**, utilizing the `set` and `update` [methods described below](https://github.com/Lezalith/RenPy_Discord_Presence/wiki/Interacting-with-Discord-Developer-Portal#list-of-methods). Simply launch the project and keep an eye out on your Discord profile.
+**Project Version** contains the whole code of this repository. It is a project that can be launched from the Ren'Py Launcher and that shows how simple it is to update the presence status from both **screens** and **labels**, utilizing the `set` and `update` [methods described below](https://github.com/Lezalith/RenPy_Discord_Presence#list-of-methods). Simply launch the project and keep an eye out on your Discord profile.
 
 ## Standalone Version
-**Standalone Version** does not contain the project files and only contains the files listed [above](https://github.com/Lezalith/RenPy_Discord_Presence/wiki/Interacting-with-Discord-Developer-Portal#download).
+**Standalone Version** does not contain the project files and only contains the files listed [above](https://github.com/Lezalith/RenPy_Discord_Presence#download).
 
 # Related Variables
 There are two variables defined in the **settings.rpy** file that you need to set before using the code. Here is what they do and what their default value is:
@@ -30,7 +30,7 @@ There are two variables defined in the **settings.rpy** file that you need to se
 define rich_presence.application_id = "10208ABCDEFGHIJ2795"
 ```
 
-`initial_state` takes a dictionary. Keys are **strings** of properties corresponding to [presence elements](https://github.com/Lezalith/RenPy_Discord_Presence/wiki/Interacting-with-Discord-Developer-Portal#basic-rich-presence-elements), and values are their values.
+`initial_state` takes a dictionary. Keys are **strings** of properties corresponding to [presence elements](https://github.com/Lezalith/RenPy_Discord_Presence#basic-rich-presence-elements), and values are their values.
 
 This is the state shown in the presence anytime the game launches and/or enters the main menu.
 ```py
@@ -45,7 +45,7 @@ Methods used to interact with the presence are bound to a defined `RenPyDiscord`
 Here are the core three:
 
 `discord.set` takes the `keep_time` argument which is `True` by default, to determine whether the Elapsed Time shown should be reset to 0:0 with this change.
-As for the arguments that follow, they should correspond to presence elements - [all are listed below](https://github.com/Lezalith/RenPy_Discord_Presence/wiki/Interacting-with-Discord-Developer-Portal#basic-rich-presence-elements).
+As for the arguments that follow, they should correspond to presence elements - [all are listed below](https://github.com/Lezalith/RenPy_Discord_Presence#basic-rich-presence-elements).
 If some properties are already set in the presence, they are discarded, and only the passed properties are kept.
 ```py
 discord.set(keep_time = False, details = "Setting new Discord Rich Presence.")
@@ -81,7 +81,7 @@ discord.update(details = "Testing Discord Rich Presence.")
 discord.update(state = "It's super easy in Ren'Py 8!")
 ```
 
-`start` takes an epoch timestamp from which it counts the Time Elapsed. However, `start` should only be changed with the specialized `change_time` method [described above](https://github.com/Lezalith/RenPy_Discord_Presence/wiki/Interacting-with-Discord-Developer-Portal#list-of-methods) in **List of Methods**. 
+`start` takes an epoch timestamp from which it counts the Time Elapsed. However, `start` should only be changed with the specialized `change_time` method [described above](https://github.com/Lezalith/RenPy_Discord_Presence#list-of-methods) in **List of Methods**. 
 
 Snippet below shows it with the `timestamp` not provided, causing it to set Time Elapsed to 0:0.
 ```py
