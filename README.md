@@ -3,24 +3,24 @@ This script creates a `RenPyDiscord` object stored in the `discord` variable, wh
 
 An Application set up on the [Discord Developer Portal](https://discord.com/developers) is required for every game supporting Rich Presence. After the App is created, you will receive the necessary **Application ID** to insert into **settings.rpy**, and it is also where all the images you plan on displaying in the presence need to be uploaded first.
 
-Instructions on how all of that is done are found under the **Wiki** tab on this GitHub page, local copy of which is included in the code files, as mentioned above.
+Instructions on how all of that is done are found [under the **Wiki** tab](https://github.com/Lezalith/RenPy_Discord_Presence/wiki/Interacting-with-Discord-Developer-Portal) on this GitHub page, local copy of which is included in the code files.
 
 # Download
-To get the script, download one of the releases on the right side of the GitHub page, under the **Releases** section. Here are the files that you need to put into your **game** folder:
+To get the script, download one of the releases on the right side of the GitHub page, under the [**Releases** section](https://github.com/Lezalith/RenPy_Discord_Presence/releases). Here are the files that you need to put into your **game** folder:
 
-- **python-packages** folder - contains the **pypresence** module that handles everything Discord-related
-- **RenPy_Discord_Presence** folder, containing this script's files:
+- **python-packages** folder contains the **pypresence** module that handles everything Discord-related
+- **RenPy_Discord_Presence** folder contains this script's files:
     - **rich_presence.rpy**  holds the entire script code
-    - **settings.rpy** contains the two **Related Variables** described below.
-    - **discord_developer_portal.md** is a local copy of the **Wiki** tab on this GitHub page.
+    - **settings.rpy** contains the two [**Related Variables**](https://github.com/Lezalith/RenPy_Discord_Presence/wiki/Interacting-with-Discord-Developer-Portal#related-variables) described below.
+    - **discord_developer_portal.md** is a local copy of the [**Wiki** tab](https://github.com/Lezalith/RenPy_Discord_Presence/wiki/Interacting-with-Discord-Developer-Portal), as already mentioned.
 
 There are two versions for every release:
 
 ## Project Version
-**Project Version** contains the whole code of this repository. It is a project that can be launched from the Ren'Py Launcher and that shows how simple it is to update the presence status from both **screens** and **labels**, utilizing the `set` and `update` methods. Simply launch the project and keep an eye out on your Discord profile.
+**Project Version** contains the whole code of this repository. It is a project that can be launched from the Ren'Py Launcher and that shows how simple it is to update the presence status from both **screens** and **labels**, utilizing the `set` and `update` [methods described below](https://github.com/Lezalith/RenPy_Discord_Presence/wiki/Interacting-with-Discord-Developer-Portal#list-of-methods). Simply launch the project and keep an eye out on your Discord profile.
 
 ## Standalone Version
-**Standalone Version** does not contain the project files and only contains what you need, that is the files listed above.
+**Standalone Version** does not contain the project files and only contains the files listed [above](https://github.com/Lezalith/RenPy_Discord_Presence/wiki/Interacting-with-Discord-Developer-Portal#download).
 
 # Related Variables
 There are two variables defined in the **settings.rpy** file that you need to set before using the code. Here is what they do and what their default value is:
@@ -30,7 +30,7 @@ There are two variables defined in the **settings.rpy** file that you need to se
 define rich_presence.application_id = "10208ABCDEFGHIJ2795"
 ```
 
-`initial_state` takes a dictionary. Keys are **strings** of properties corresponding to presence elements (listed below), and values are their values.
+`initial_state` takes a dictionary. Keys are **strings** of properties corresponding to [presence elements](https://github.com/Lezalith/RenPy_Discord_Presence/wiki/Interacting-with-Discord-Developer-Portal#basic-rich-presence-elements), and values are their values.
 
 This is the state shown in the presence anytime the game launches and/or enters the main menu.
 ```py
@@ -45,7 +45,7 @@ Methods used to interact with the presence are bound to a defined `RenPyDiscord`
 Here are the core three:
 
 `discord.set` takes the `keep_time` argument which is `True` by default, to determine whether the Elapsed Time shown should be reset to 0:0 with this change.
-As for the arguments that follow, they should correspond to presence elements - all are listed below. 
+As for the arguments that follow, they should correspond to presence elements - [all are listed below](https://github.com/Lezalith/RenPy_Discord_Presence/wiki/Interacting-with-Discord-Developer-Portal#basic-rich-presence-elements).
 If some properties are already set in the presence, they are discarded, and only the passed properties are kept.
 ```py
 discord.set(keep_time = False, details = "Setting new Discord Rich Presence.")
@@ -67,7 +67,7 @@ discord.change_time(timestamp = time.time() + 600)
 # Basic Rich Presence Elements
 There are many things that can be shown inside Rich Presence. Below is a screenshot of a couple elements of Rich Presence highlighted, with their **property** name equivalent below. They are all listed below the screenshot with a short example using `discord.update`.
 
-In the preview project, dictionary with all the properties for this example is stored in the `rich_presence.first_example` variable, and `rich_presence.initial_state` is redirected to it.
+In the preview project, dictionary with all the properties for this example is stored in the `rich_presence.first_example` variable, and `rich_presence.initial_state` is redirected to it, both inside **script.rpy**.
 
 ![rich_presence_example](https://user-images.githubusercontent.com/56970124/190881237-3f1e0b72-d954-4af2-8a93-a35e59bdf51e.png)
 
@@ -81,23 +81,23 @@ discord.update(details = "Testing Discord Rich Presence.")
 discord.update(state = "It's super easy in Ren'Py 8!")
 ```
 
-`start` takes an epoch timestamp from which it counts the Time Elapsed. However, `start` should only be changed with the specialized `change_time` method described above in **List of Methods**. 
+`start` takes an epoch timestamp from which it counts the Time Elapsed. However, `start` should only be changed with the specialized `change_time` method [described above](https://github.com/Lezalith/RenPy_Discord_Presence/wiki/Interacting-with-Discord-Developer-Portal#list-of-methods) in **List of Methods**. 
 
-Snippet below shows it with the `timestamp` not given, causing it to set Time Elapsed to 0:0.
+Snippet below shows it with the `timestamp` not provided, causing it to set Time Elapsed to 0:0.
 ```py
 discord.change_time()
 ```
 
-`large_image` takes a **string** that needs to correspond with an image uploaded onto the Discord Application.
+`large_image` takes a **string** that needs to correspond with an image uploaded onto the Discord Application. If it doesn't find an image with that name, it simply displays nothing, as if it wasn't provided.
 It is the large image shown on the left side.
 ```py
 discord.update(large_image = "lezalith")
 ```
 
-`small_image` takes a **string** that needs to correspond with an image uploaded onto the Discord Application.
+`small_image` takes a **string** that needs to correspond with an image uploaded onto the Discord Application. As is the case with `large_image`, it also displays nothing if it doesn't find an image with that name.
 It is the smaller image, shown at the bottom right of the `large_image`.
 
-If no `large_image` is set, `small_image` is used in its place and no smaller image at the bottom right is shown.
+If no `large_image` is set or the image was not found, `small_image` is used in its place and no smaller image at the bottom right is shown.
 ```py
 discord.update(large_image = "lezalith", small_image = "lezalith")
 ```
@@ -124,7 +124,7 @@ As you can see, there are two more variables included there that I haven't menti
 # Advanced Rich Presence Elements
 Another screenshot covers all the remaining rich presence properties. `state` was covered above, however it is required for the `party_size` property to work.
 
-In the preview project, dictionary with all the properties for this example is stored in the `rich_presence.second_example` variable.
+In the preview project, dictionary with all the properties for this example is stored in the `rich_presence.second_example` variable inside **script.rpy**.
 
 ![rich_presence_example](https://user-images.githubusercontent.com/56970124/190882416-25642658-8823-4d05-8dd9-ee9f9e6d62bf.png)
 
@@ -162,7 +162,7 @@ discord.set(state = "Reading a Chapter",
 
 # Important Notes
 ## Discord Not Installed
-Discord presence only gets updated for users who have the Discord desktop application installed. For players that do not have Discord installed, this entire code will simply do nothing. `discord` variable is still defined as the `RenPyDiscord` object, but none of its methods does anything.
+Discord presence only works for users who have the Discord desktop application installed. For players that do not have Discord installed, this entire code will simply do nothing. `discord` variable is still defined as the `RenPyDiscord` object, but none of its methods do anything.
 
 This means that players with Discord can enjoy the benefits, and those who do not have it aren't hindered in any way.
 
