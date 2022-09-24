@@ -6,9 +6,11 @@ To use it in your project, copy the necessary files to your **game** folder:
 - **RenPy_Discord_Presence** folder, containing this script's files:
     - **rich_presence.rpy**  holds the entire script code
     - **settings.rpy** contains the two **Related Variables** described below.
-    - **discord_developer_portal.md** is a local copy of the **Wiki** tab on this GitHub page, containing instructions on interacting with the **Discord Developer Portal**.
+    - **discord_developer_portal.md** is a local copy of the **Wiki** tab on this GitHub page.
 
 An Application set up on the [Discord Developer Portal](https://discord.com/developers) is required for every game supporting Rich Presence. After the App is created, you will receive the necessary **Application ID** to insert into **discord_rich_presence_settings.rpy**, and it is also where all the images you plan on displaying in the presence need to be uploaded first.
+
+Instructions on how all of that is done are found under the **Wiki** tab on this GitHub page, local copy of which is included in the code files, as mentioned above.
 
 # This Project
 Downloading a release of this project and launching it will reveal a simple preview. It shows how to update the presence status from both **screens** and **labels**, utilizing the `set` and `update` methods.
