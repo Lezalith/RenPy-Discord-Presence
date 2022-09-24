@@ -1,24 +1,29 @@
 # Discord Rich Presence Support for Ren'Py Projects
-This script creates a `RenPyDiscord` object stored in the `discord` variable, which can be used to interact with Discord Rich Presence. 
+This script creates a `RenPyDiscord` object stored in the `discord` variable, which can be used to interact with Discord Rich Presence. It can only be run on Ren'Py 8 - Unlike Ren'Py 7, that one runs on Python 3, and the module this script depends on only has a Py3 version.
 
-To use it in your project, copy the necessary files to your **game** folder:
+An Application set up on the [Discord Developer Portal](https://discord.com/developers) is required for every game supporting Rich Presence. After the App is created, you will receive the necessary **Application ID** to insert into **settings.rpy**, and it is also where all the images you plan on displaying in the presence need to be uploaded first.
+
+Instructions on how all of that is done are found under the **Wiki** tab on this GitHub page, local copy of which is included in the code files, as mentioned above.
+
+# Download
+To get the script, download one of the releases on the right side of the GitHub page, under the **Releases** section. Here are the files that you need to put into your **game** folder:
+
 - **python-packages** folder - contains the **pypresence** module that handles everything Discord-related
 - **RenPy_Discord_Presence** folder, containing this script's files:
     - **rich_presence.rpy**  holds the entire script code
     - **settings.rpy** contains the two **Related Variables** described below.
     - **discord_developer_portal.md** is a local copy of the **Wiki** tab on this GitHub page.
 
-An Application set up on the [Discord Developer Portal](https://discord.com/developers) is required for every game supporting Rich Presence. After the App is created, you will receive the necessary **Application ID** to insert into **discord_rich_presence_settings.rpy**, and it is also where all the images you plan on displaying in the presence need to be uploaded first.
+There are two versions for every release:
 
-Instructions on how all of that is done are found under the **Wiki** tab on this GitHub page, local copy of which is included in the code files, as mentioned above.
+## Project Version
+**Project Version** contains the whole code of this repository. It is a project that can be launched from the Ren'Py Launcher and that shows how simple it is to update the presence status from both **screens** and **labels**, utilizing the `set` and `update` methods. Simply launch the project and keep an eye out on your Discord profile.
 
-# This Project
-Downloading a release of this project and launching it will reveal a simple preview. It shows how to update the presence status from both **screens** and **labels**, utilizing the `set` and `update` methods.
-
-The **examples.rpy** file contains a custom `main_menu` screen, which shows how the presence can be updated from both a screen and a label. Examples there are the same examples at the bottom of this Readme in **Examples**.
+## Standalone Version
+**Standalone Version** does not contain the project files and only contains what you need, that is the files listed above.
 
 # Related Variables
-There are two variables defined in the **discord_rich_presence_settings.rpy** file that you need to set before using the code. Here is what they do and what their default value is:
+There are two variables defined in the **settings.rpy** file that you need to set before using the code. Here is what they do and what their default value is:
 
 `application_id` takes a **string** with an Application ID of your Application set up on Discord Developer Portal.
 ```py
@@ -37,7 +42,7 @@ define rich_presence.initial_state = { "details" : "Testing Discord Rich Presenc
 
 # List of Methods
 Methods used to interact with the presence are bound to a defined `RenPyDiscord` instance stored in the `discord` variable.
-Three core methods are described below.
+Here are the core three:
 
 `discord.set` takes the `keep_time` argument which is `True` by default, to determine whether the Elapsed Time shown should be reset to 0:0 with this change.
 As for the arguments that follow, they should correspond to presence elements - all are listed below. 
@@ -179,6 +184,7 @@ In practice, this happens when you...
 - ...start and return to the main menu in...
 
 ...the game too many times too fast.
+
 # Examples
 Here is an example of two `textbutton`s in a screen, one with `discord.set` and other with `discord.update`.
 ```py
