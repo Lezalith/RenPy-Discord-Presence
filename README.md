@@ -8,7 +8,8 @@ Instructions on how all of that is done are found [under the **Wiki** tab](https
 # Download
 To get the script, download one of the releases on the right side of the GitHub page, under the [**Releases** section](https://github.com/Lezalith/RenPy_Discord_Presence/releases). Here are the files that you need to put into your **game** folder:
 
-- **python-packages** folder contains the **pypresence** module that handles everything Discord-related
+- **python-packages** folder contains the **pypresence** module that handles everything Discord-related: [![pypresence](https://img.shields.io/badge/using-pypresence-00bb88.svg?style=for-the-badge&logo=discord&logoWidth=20)](https://github.com/qwertyquerty/pypresence)
+
 - **RenPy_Discord_Presence** folder contains this script's files:
     - **rich_presence.rpy**  holds the entire script code
     - **settings.rpy** contains the two [**Related Variables**](https://github.com/Lezalith/RenPy_Discord_Presence#related-variables) described below.
