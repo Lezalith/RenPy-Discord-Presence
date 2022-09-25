@@ -8,7 +8,7 @@ Finally, this project is under the **MIT License**. This means you can use, modi
 # Download
 To get the script, download one of the releases on the right side of the GitHub page, under the [**Releases** section](https://github.com/Lezalith/RenPy_Discord_Presence/releases). Here are the files that you need to put into your **game** folder:
 
-- **python-packages** folder contains the **pypresence** module that handles everything Discord-related: [![pypresence](https://img.shields.io/badge/using-pypresence-00bb88.svg?style=for-the-badge&logo=discord&logoWidth=20)](https://github.com/qwertyquerty/pypresence)
+- **python-packages** folder contains the **pypresence** module that handles everything Discord-related. [![pypresence](https://img.shields.io/badge/using-pypresence-00bb88.svg?style=for-the-badge&logo=discord&logoWidth=20)](https://github.com/qwertyquerty/pypresence)
 
 - **RenPy_Discord_Presence** folder contains this script's files:
     - **rich_presence.rpy**  holds the entire script code
@@ -18,7 +18,7 @@ To get the script, download one of the releases on the right side of the GitHub 
 There are two versions for every release:
 
 ## Project Version
-**Project Version** contains the whole code of this repository. It is a project that can be launched from the Ren'Py Launcher and that shows how simple it is to update the presence status from both **screens** and **labels**, utilizing the `set` and `update` [methods described below](https://github.com/Lezalith/RenPy_Discord_Presence#list-of-methods). Simply launch the project and keep an eye out on your Discord profile.
+**Project Version** contains the whole code of this repository. It is a project that can be launched from the Ren'Py Launcher and that shows how simple it is to update the presence status from both **screens** and **labels**, utilizing the `set` and `update` [methods described below](https://github.com/Lezalith/RenPy_Discord_Presence#list-of-methods). Simply launch the project and keep an eye on your Discord profile.
 
 ## Clean Version
 **Clean Version** does not contain project files and only contains the files listed [above](https://github.com/Lezalith/RenPy_Discord_Presence#download).
