@@ -81,7 +81,7 @@ discord.update(details = "Testing Discord Rich Presence.")
 discord.update(state = "It's super easy in Ren'Py 8!")
 ```
 
-`start` takes an epoch timestamp from which it counts the Time Elapsed. However, `start` should only be changed with the specialized `change_time` method [described above](https://github.com/Lezalith/RenPy_Discord_Presence#list-of-methods) in **List of Methods**. 
+`start` takes an epoch timestamp from which it counts the Time Elapsed. However, `start` should only be changed with the specialized `change_time` method described above in [**List of Methods**](https://github.com/Lezalith/RenPy_Discord_Presence#list-of-methods). 
 
 Snippet below shows it with the `timestamp` not provided, causing it to set Time Elapsed to 0:0.
 ```py
