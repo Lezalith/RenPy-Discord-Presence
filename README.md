@@ -5,6 +5,8 @@ An Application set up on the [Discord Developer Portal](https://discord.com/deve
 
 Instructions on how all of that is done are found [under the **Wiki** tab](https://github.com/Lezalith/RenPy_Discord_Presence/wiki/Interacting-with-Discord-Developer-Portal) on this GitHub page, local copy of which is included in the code files.
 
+Finally, you can use, modify and/or distribute this script, as long as I am credited ("Lezalith" is enough, but a link to my website with Ren'py content, LezCave.com is greatly appreciated!) and as long as the **LICENSES.txt** file stays included.
+
 # Download
 To get the script, download one of the releases on the right side of the GitHub page, under the [**Releases** section](https://github.com/Lezalith/RenPy_Discord_Presence/releases). Here are the files that you need to put into your **game** folder:
 
