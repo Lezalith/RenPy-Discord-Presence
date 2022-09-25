@@ -88,14 +88,14 @@ Snippet below shows it with the `timestamp` argument not provided, causing it to
 discord.change_time()
 ```
 
-`large_image` takes a **string** that needs to correspond with an image uploaded onto the Discord Application. If it doesn't find an image with that name, it simply displays nothing, as if it wasn't provided.
-It is the larger image shown on the left side.
+`large_image` takes a **string** that needs to correspond with an image uploaded onto the Discord Application.
+It is the larger image shown on the left side. If it doesn't find an image with that name, it displays a placeholder question mark image.
 ```py
 discord.update(large_image = "lezalith")
 ```
 
-`small_image` takes a **string** that needs to correspond with an image uploaded onto the Discord Application. As is the case with `large_image`, it also displays nothing if it doesn't find an image with that name.
-It is the smaller image, shown at the bottom right of the `large_image`.
+`small_image` takes a **string** that needs to correspond with an image uploaded onto the Discord Application. 
+It is the smaller image, shown at the bottom right of the `large_image`. Unlike `large_image`, if it doesn't find an image with that name it shows nothing.
 
 If no `large_image` is set or found, `small_image` is used in its place and no smaller image at the bottom right is shown.
 ```py
