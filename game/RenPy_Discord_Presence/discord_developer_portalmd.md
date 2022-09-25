@@ -23,7 +23,7 @@ Top of the main page contains a couple of things:
 - ...and so are the **Tags**.
 
 Finally:
-- **Application ID.** This is the most important thing of all, you need to copy it over to **settings.rpy** in the script files, into the **application_id** variable. Simply put: Your game uses this to communicate with this application, and this application has the ability to change presence in user's profiles. And don't worry about this being in your code, it cannot be used for anything malicious!
+- **Application ID.** This is the most important thing of all, you need to copy it over to **settings.rpy** as a value for the **application_id** variable. Simply put: Your game uses this to communicate with this application, and this application has the ability to change presence in user's profiles. And don't worry about this being in your code, it cannot be used for anything malicious!
 
 After you copy the **App ID** to the **settings.rpy** file, you're ready to start using this script.
 
@@ -34,7 +34,7 @@ On the left side, there is a menu with the **Rich Presence** tab. Clicking it ta
 
 This is where you need to upload all the images that you want to show in the presence. Since your game communicates with the application and not the presence, it cannot tell presence what image to show. Instead, your game tells the application which image to show, and the app displays it inside the presence.
 
-To upload an image, click the blue **Add Image(s)** button, which will prompt you to select one or more files. As the note says, they have to be of **.png**, **.jpg** or **.jpeg** format, and are recommended to be **1024x1024** in size. They don't have to be that big, but they have to be at least **512x512**.
+To upload an image, click the blue **Add Image(s)** button, which will prompt you to select one or more files. As the note next to the button says, they have to be in the **.png**, **.jpg** or **.jpeg** format, and are recommended to be **1024x1024** in size. They don't have to be that big, but they have to be at least **512x512**.
 
 After the files are done uploading, they will appear under **Rich Presence Assets** with editable names. This is the name that you'll be using in your code to refer to them, so be short and descriptive. The name **cannot be changed later**, but if you do mess up, you can delete the image and re-upload it.
 
@@ -45,7 +45,7 @@ Once you've named the image(s), you can click the green **Save Changes** button 
 ![6](https://user-images.githubusercontent.com/56970124/192093946-ed45c714-b3a4-4a81-8c21-24d6068c9bb7.png)
 
 # Visualizer
-One more cool feature that I wanted to mention in this doc is the **Visualizer** sub-tab in the left-side menu. Here, you can see what the user's presence looks like when playing your game. If you're just starting out with **RenPy Discord Presence**, this can help you, well, visualize, how the presence will look with your code!
+One more cool feature that I want to mention in this doc is the **Visualizer** sub-tab in the left-side menu. Here, you can see what the user's presence looks like when playing your game. If you're just starting out with **RenPy Discord Presence**, this can help you, well, visualize how the presence will look with your code!
 
 ![7](https://user-images.githubusercontent.com/56970124/192094127-2fabea63-b3b5-472d-9479-b6cf57f75e38.png)
 
