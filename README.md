@@ -35,10 +35,9 @@ define rich_presence.application_id = "10208ABCDEFGHIJ2795"
 
 This is the state shown in the presence anytime the game launches and/or enters the main menu. Below is what it looks like by default.
 ```py
-define rich_presence.initial_state = { "details" : "Testing Discord Rich Presence.",
-                                       "state" : "It's super easy in Ren'Py 8!",
+define rich_presence.initial_state = { "details" : "Demonstrating Discord Presence.",
                                        "large_image" : "lezalith", 
-                                       "small_image" : "lezalith"}
+                                       "time" : True}
 ```
 
 # List of Methods
@@ -103,8 +102,8 @@ If no `large_image` is set or found, `small_image` is used in its place and no s
 discord.update(large_image = "lezalith", small_image = "lezalith")
 ```
 
-`time` is a special non-pypresence property that can be `True` or `False`.
-If `True` (the default), Elapsed Time is shown in the presence. If `False`, it is hidden.
+`time` is a special non-pypresence property that can be `True` or `False`, and determines whether Elapsed Time is shown in the presence.
+As it's `True` by default it doesn't have to be included, but I do like to include it so that it's clear from the outset that Time Elapsed is shown.
 ```py
 discord.update(time = False)
 ```

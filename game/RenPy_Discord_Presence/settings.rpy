@@ -9,10 +9,8 @@ define rich_presence.application_id = "1020817080838262795"
 
 # State of the Presence upon the game's launch.
 # In the preview project, it is overwritten in script.rpy to refer one of the two defined examples.
-define rich_presence.initial_state = { "details" : "Testing Discord Rich Presence.",
-                                       "state" : "It's super easy in Ren'Py 8!",
+define rich_presence.initial_state = { "details" : "Demonstrating Discord Presence.",
                                        "large_image" : "lezalith", 
-                                       "small_image" : "lezalith",
                                        "time" : True}
 
 # The state is basically a Dict with all the properties of the presence state displayed when the game is launched.
