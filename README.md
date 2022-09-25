@@ -1,11 +1,9 @@
 # Discord Rich Presence Support for Ren'Py Projects
 This script creates a `RenPyDiscord` object stored in the `discord` variable, which can be used to interact with Discord Rich Presence. It can only be run on Ren'Py 8 - Unlike Ren'Py 7, that one runs on Python 3, and the module this script depends on only has a Py3 version.
 
-An Application set up on the [Discord Developer Portal](https://discord.com/developers) is required for every game supporting Rich Presence. After the App is created, you will receive the necessary **Application ID** to insert into **settings.rpy**, and it is also where all the images you plan on displaying in the presence need to be uploaded first.
+An Application set up on the [Discord Developer Portal](https://discord.com/developers) is required for every game supporting Rich Presence. After the App is created, you will receive the necessary **Application ID** to insert into **settings.rpy**, and it is also where all the images you plan on displaying in the presence need to be uploaded first. What it is and how to work with it is covered [under the **Wiki** tab](https://github.com/Lezalith/RenPy_Discord_Presence/wiki/Interacting-with-Discord-Developer-Portal) on this GitHub page, local copy of which is included in the code files.
 
-Instructions on how all of that is done are found [under the **Wiki** tab](https://github.com/Lezalith/RenPy_Discord_Presence/wiki/Interacting-with-Discord-Developer-Portal) on this GitHub page, local copy of which is included in the code files.
-
-Finally, you can use, modify and/or distribute this script, as long as I am credited ("Lezalith" is enough, but a link to my website with Ren'py content, LezCave.com is greatly appreciated!) and as long as the **LICENSES.txt** file stays included.
+Finally, this project is under the **MIT License**. This means you can use, modify and/or distribute this script, as long as I am credited ("Lezalith" is enough, but a link to my website with Ren'Py content, LezCave.com, is greatly appreciated!) and as long as the **LICENSE.txt** file stays included.
 
 # Download
 To get the script, download one of the releases on the right side of the GitHub page, under the [**Releases** section](https://github.com/Lezalith/RenPy_Discord_Presence/releases). Here are the files that you need to put into your **game** folder:
@@ -22,20 +20,20 @@ There are two versions for every release:
 ## Project Version
 **Project Version** contains the whole code of this repository. It is a project that can be launched from the Ren'Py Launcher and that shows how simple it is to update the presence status from both **screens** and **labels**, utilizing the `set` and `update` [methods described below](https://github.com/Lezalith/RenPy_Discord_Presence#list-of-methods). Simply launch the project and keep an eye out on your Discord profile.
 
-## Standalone Version
-**Standalone Version** does not contain the project files and only contains the files listed [above](https://github.com/Lezalith/RenPy_Discord_Presence#download).
+## Clean Version
+**Clean Version** does not contain project files and only contains the files listed [above](https://github.com/Lezalith/RenPy_Discord_Presence#download).
 
 # Related Variables
-There are two variables defined in the **settings.rpy** file that you need to set before using the code. Here is what they do and what their default value is:
+There are two important variables defined in the **settings.rpy** file. Here is what they do:
 
-`application_id` takes a **string** with an Application ID of your Application set up on Discord Developer Portal.
+`application_id` takes a **string** with an Application ID of your Application set up on Discord Developer Portal. This **has to** be set in order for this script to work, having an invalid ID set **will throw an error** when launching the game.
 ```py
 define rich_presence.application_id = "10208ABCDEFGHIJ2795"
 ```
 
 `initial_state` takes a dictionary. Keys are **strings** of properties corresponding to [presence elements](https://github.com/Lezalith/RenPy_Discord_Presence#basic-rich-presence-elements), and values are their values.
 
-This is the state shown in the presence anytime the game launches and/or enters the main menu.
+This is the state shown in the presence anytime the game launches and/or enters the main menu. Below is what it looks like by default.
 ```py
 define rich_presence.initial_state = { "details" : "Testing Discord Rich Presence.",
                                        "state" : "It's super easy in Ren'Py 8!",
@@ -47,15 +45,15 @@ define rich_presence.initial_state = { "details" : "Testing Discord Rich Presenc
 Methods used to interact with the presence are bound to a defined `RenPyDiscord` instance stored in the `discord` variable.
 Here are the core three:
 
-`discord.set` takes the `keep_time` argument which is `True` by default, to determine whether the Elapsed Time shown should be reset to 0:0 with this change.
-As for the arguments that follow, they should correspond to presence elements - [all are listed below](https://github.com/Lezalith/RenPy_Discord_Presence#basic-rich-presence-elements).
+`discord.set` takes the optional `keep_time` argument which is `True` by default, to determine whether the Elapsed Time shown should be reset to 0:0 with this change.
+As for other arguments that can be passed to the method, they should be **property names** corresponding to presence elements - [all are listed below](https://github.com/Lezalith/RenPy_Discord_Presence#basic-rich-presence-elements).
 If some properties are already set in the presence, they are discarded, and only the passed properties are kept.
 ```py
 discord.set(keep_time = False, details = "Setting new Discord Rich Presence.")
 ```
 
-`discord.update` takes `keep_time` with default `True` and properties corresponding to presence elements just like `discord.set` does.
-Difference between the two is that `discord.update` keeps the current properties and only sets the ones provided.
+`discord.update` optionally takes `keep_time` with default of `True` and **property names** the same way `discord.set` does.
+Difference between the two is that `discord.update` keeps the current properties and only changes the ones provided.
 ```py
 discord.set(details = "Setting new Discord Rich Presence.")
 discord.update(state = "State got changed while details stayed the same!")
@@ -68,9 +66,9 @@ discord.change_time(timestamp = time.time() + 600)
 ```
 
 # Basic Rich Presence Elements
-There are many things that can be shown inside Rich Presence. Below is a screenshot of a couple elements of Rich Presence highlighted, with their **property** name equivalent below. They are all listed below the screenshot with a short example using `discord.update`.
+There are many things that can be shown inside Rich Presence. Below is a screenshot of a couple elements of Rich Presence highlighted, with their **property name** equivalent below. All the **property names** are listed below the screenshot with a short example using `discord.update`.
 
-In the preview project, dictionary with all the properties for this example is stored in the `rich_presence.first_example` variable, and `rich_presence.initial_state` is redirected to it, both inside **script.rpy**.
+In the preview project, dictionary with all the properties for this example is stored in the `rich_presence.first_example` variable, and `rich_presence.initial_state` is redirected to it - both happens inside **script.rpy**.
 
 ![rich_presence_example](https://user-images.githubusercontent.com/56970124/190881237-3f1e0b72-d954-4af2-8a93-a35e59bdf51e.png)
 
@@ -86,13 +84,13 @@ discord.update(state = "It's super easy in Ren'Py 8!")
 
 `start` takes an epoch timestamp from which it counts the Time Elapsed. However, `start` should only be changed with the specialized `change_time` method described above in [**List of Methods**](https://github.com/Lezalith/RenPy_Discord_Presence#list-of-methods). 
 
-Snippet below shows it with the `timestamp` not provided, causing it to set Time Elapsed to 0:0.
+Snippet below shows it with the `timestamp` argument not provided, causing it to set Time Elapsed to 0:0.
 ```py
 discord.change_time()
 ```
 
 `large_image` takes a **string** that needs to correspond with an image uploaded onto the Discord Application. If it doesn't find an image with that name, it simply displays nothing, as if it wasn't provided.
-It is the large image shown on the left side.
+It is the larger image shown on the left side.
 ```py
 discord.update(large_image = "lezalith")
 ```
@@ -100,7 +98,7 @@ discord.update(large_image = "lezalith")
 `small_image` takes a **string** that needs to correspond with an image uploaded onto the Discord Application. As is the case with `large_image`, it also displays nothing if it doesn't find an image with that name.
 It is the smaller image, shown at the bottom right of the `large_image`.
 
-If no `large_image` is set or the image was not found, `small_image` is used in its place and no smaller image at the bottom right is shown.
+If no `large_image` is set or found, `small_image` is used in its place and no smaller image at the bottom right is shown.
 ```py
 discord.update(large_image = "lezalith", small_image = "lezalith")
 ```
@@ -122,18 +120,18 @@ discord.set(details = "Testing Discord Rich Presence.",
             time = True)
 ```
 
-As you can see, there are two more variables included there that I haven't mentioned - `large_text` and `small_text`. These are text tooltips that appear when the respective images are hovered by a cursor.
+As you can see, there are two more **property names** included there that I haven't mentioned - `large_text` and `small_text`. These are text tooltips that appear when the respective images are hovered by a cursor.
 
 # Advanced Rich Presence Elements
-Another screenshot covers all the remaining rich presence properties. `state` was covered above, however it is required for the `party_size` property to work.
+The final screenshot covers all the remaining rich presence properties. `state` was already covered above, however it is required for the `party_size` property to work.
 
-In the preview project, dictionary with all the properties for this example is stored in the `rich_presence.second_example` variable inside **script.rpy**.
+In the preview project, dictionary with all the properties for this example is stored in the `rich_presence.second_example` variable, again done in **script.rpy**.
 
 ![rich_presence_example](https://user-images.githubusercontent.com/56970124/190882416-25642658-8823-4d05-8dd9-ee9f9e6d62bf.png)
 
 `end` takes an epoch timestamp and calculates Time Left until that timestamp. 
 
-Setting this pushes `start` completely aside and the Time Elapsed with it, **displaying Time Left instead.**
+Setting this pushes `start` completely aside and Time Elapsed with it (even if **time** is set to **True**) and **displays Time Left instead.**
 ```py
 discord.update(end = time.time() + 3000)
 ```
@@ -145,9 +143,9 @@ For the `party_size` to be visible, `state` has to be also provided.
 discord.update(state = "Reading a Chapter", party_size = [1, 5])
 ```
 
-`buttons` takes a **list** of **up to two dicts**, and allows for buttons to be added into the Presence. The dict consists of two keys, `label` being the text written on the button, and `url` being the url opened upon clicking it. 
+`buttons` takes a **list** of **up to two dicts**, and allows for buttons to be added into the Presence. The dict consists of two keys, `label` being the text written inside the button, and `url` being the link opened upon clicking it. 
 
-Note: Clicking buttons in your own Presence - i.e. in your own profile - does nothing.
+Note: Clicking buttons in the Presence in your own profile does nothing.
 
 ```py
 discord.update(buttons = [ dict(label = "Discord Presence Example Button", url = "https://github.com/Lezalith/RenPy_Discord_Presence"),
@@ -165,9 +163,9 @@ discord.set(state = "Reading a Chapter",
 
 # Important Notes
 ## Discord Not Installed
-Discord presence only works for users who have the Discord desktop application installed. For players that do not have Discord installed, this entire code will simply do nothing. `discord` variable is still defined as the `RenPyDiscord` object, but none of its methods do anything.
+Discord presence only works for users who have the Discord desktop application installed. For players that do not have Discord installed, this entire code will simply do nothing. `discord` variable is still defined as an instance of a `RenPyDiscord` object, but none of its methods do anything.
 
-This means that players with Discord can enjoy the benefits, and those who do not have it aren't hindered in any way.
+This means that players with Discord can enjoy the benefits while those who do not aren't hindered in any way.
 
 ## Saving and Loading
 All presence properties, along with time property that determines whether Time Elapsed is shown, are saved in save files and restored when the save is loaded.
@@ -179,7 +177,7 @@ The presence *should* be fully compatible with rollback and rollforward features
 
 ## Too Many Connections
 Connecting to the Discord Rich Presence multiple times in quick succession will result in the connection not being established.
-This makes the program unresponsive and unable to be launched again for about the next 30s. I'd imagine it's a precation against malicious exploits on Discord's side, and cannot be affected by Python code.
+This makes the game unresponsive and unable to be launched again for about the next 30s. My guess is that it's a precation against malicious exploits on Discord's side, and cannot be affected by Python code.
 
 In practice, this happens when you...
 - ...launch and quit...
