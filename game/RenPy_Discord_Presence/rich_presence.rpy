@@ -3,15 +3,24 @@
     # Alpha and Omega of Rich Presence.
     import pypresence
 
-    # Try to set up the Discord Presence object.
+    # Try to set up the Presence object and connect through it to the Discord Presence App.
     try:
+        print("Attempting to connect to Discord Rich Presence...")
         presence_object = pypresence.Presence(application_id)
+        presence_object.connect()
+        print("Successfully connected.")
 
-    # Discord Desktop App was not found installed:
+    # Discord Desktop App was not found installed.
     except pypresence.DiscordNotFound:
+        print("Discord Desktop App not found. Rich Presence will be disabled.")
         presence_object = None
 
-        print("Discord Desktop App not found. Rich Presence will be disabled.")
+    # Error occured while connecting to the Presence App.
+    # Note: This is also raised when the Desktop App is installed but no account is logged in.
+    except pypresence.DiscordError:
+        print("Error occured during connection. Rich Presence will be disabled.")
+        presence_object = None
+
 
     # Used to display time in the presence.
     import time
@@ -49,16 +58,9 @@
             # Runs the first setup.
             self.first_setup()
 
-        # Connects to the Presence App and sets the initial state.
+        # Sets the initial state and callbacks.
         @presence_disabled
         def first_setup(self):
-
-            print("Attempting to connect to Discord Rich Presence...")
-
-            # Connects to the Presence App.
-            presence_object.connect()
-
-            print("Successfully connected.")
 
             # Store properties used for the first setup.
             self.original_properties = initial_state
