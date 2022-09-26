@@ -124,7 +124,7 @@ As you can see, there are two more **property names** included there that I have
 # Advanced Rich Presence Elements
 The final screenshot covers all the remaining rich presence properties. `state` was already covered above, however it is required for the `party_size` property to work.
 
-In the preview project, dictionary with all the properties for this example is stored in the `rich_presence.second_example` variable, again done in **script.rpy**.
+In the preview project, dictionary with all the properties for this example is stored in the `rich_presence.second_example` variable, once again done in **script.rpy**.
 
 ![rich_presence_example](https://user-images.githubusercontent.com/56970124/190882416-25642658-8823-4d05-8dd9-ee9f9e6d62bf.png)
 
@@ -164,7 +164,7 @@ discord.set(state = "Reading a Chapter",
 ## Discord Not Installed
 Discord presence only works for users who have the Discord desktop application installed. For players that do not have Discord installed, this entire code will simply do nothing. `discord` variable is still defined as an instance of a `RenPyDiscord` object, but none of its methods do anything.
 
-This means that players with Discord can enjoy the benefits while those who do not aren't hindered in any way.
+This means that players who have Discord can enjoy the benefits while those who do not aren't hindered in any way.
 
 ## Saving and Loading
 All presence properties, along with time property that determines whether Time Elapsed is shown, are saved in save files and restored when the save is loaded.
