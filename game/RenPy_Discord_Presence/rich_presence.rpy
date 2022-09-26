@@ -32,14 +32,14 @@
     def return_none(*_args, **_kwargs): pass
 
     # Decorator that is called before every RenPyDiscord method.
-    # If Discord is not installed, it calls return_none rather than moving onto the method called originally.
+    # If DiscordNotFound or DiscordError were encountered during init, return_none follows rather than the method called originally.
     def presence_disabled(func):
         if presence_object is None:
             return return_none
         else:
             return func
 
-    # Class of object for interacting with the Rich Presence.
+    # Class of object used for interacting with the Rich Presence.
     class RenPyDiscord():
 
         # Called when defined.
@@ -52,7 +52,7 @@
             # Dict of properties used in the first_setup.
             self.original_properties = {}
 
-            # Dict of current Presence properties.
+            # Dict of currently used Presence properties.
             self.properties = {}
 
             # Runs the first setup.
@@ -69,11 +69,11 @@
             self.reset()
 
             # Appends the close method to exit callbacks, to run it once the game is exited.
-            # Done here to not overwrite user's define of config.quit_callbacks, if present somewhere.
+            # Done here to not overwrite user's define of config.quit_callbacks if present somewhere.
             renpy.config.quit_callbacks.append(self.close)
 
             # Appends the update_on_load method to after load callbacks, to run it once a game save is loaded.
-            # Done here to not overwrite user's define of config.after_load_callbacks, if present somewhere.
+            # Done here to not overwrite user's define of config.after_load_callbacks if present somewhere.
             renpy.config.after_load_callbacks.append(self.update_on_load)
 
         # Sets the state to provided properties.
