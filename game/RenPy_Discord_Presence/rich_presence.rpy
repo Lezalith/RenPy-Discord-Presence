@@ -182,9 +182,6 @@ init -950 python in rich_presence:
             if "time" in p:
                 del p["time"]
 
-            # Record the updated properties into a global var.
-            self.backup_properties()
-
             # Update the Presence with new time and current properties.
             global presence_object
             presence_object.update(start = self.time, **p)
@@ -237,25 +234,19 @@ init -950 python in rich_presence:
             print("Properties recorded: {}".format(properties_copy))
 
         # Compares the properties to their rollback-able version and updates the presence accordingly if they do not match.
-        # This is for the purpose of making the script rollback/rollforward compatible.
+        # This is what makes the script rollback/rollforward compatible.
         @presence_disabled
         def rollback_check(self):
 
             global properties_copy
 
-            print("Comparison:")
-            print("Copy: {}".format(properties_copy))
-            print("This: {}".format(self.properties))
-
             if self.properties != properties_copy:
 
-                print("Properties do not match.")
+                print("Properties do not match during this interaction. They will be set to Copy.")
+                print("Copy: {}".format(properties_copy))
+                print("This: {}\n".format(self.properties))
 
-            else:
-                pass
-                # print("Interaction callback with True outcome.")
-
-            print("")
+                self.set(keep_time = True, **properties_copy)
 
         # Properly closes the connection with the Rich Presence.
         # Internally clears the info, no need to call the clear method prior.
