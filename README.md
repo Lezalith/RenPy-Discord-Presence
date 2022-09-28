@@ -174,16 +174,25 @@ Upon loading a save, Time Elapsed is reset to 0:0.
 ## Rollback
 The presence *should* be fully compatible with rollback and rollforward features of Ren'Py. 
 
-## Too Many Connections
-Connecting to the Discord Rich Presence multiple times in quick succession will result in the connection not being established.
-This makes the game unresponsive and unable to be launched again for about the next 30s. My guess is that it's a precation against malicious exploits on Discord's side, and cannot be affected by Python code.
+## Limitations
 
-In practice, this happens when you...
+### Update Delays
+A Discord Desktop Application running on the same machine as the game that's updating the presence, has updates on the player's profile shown instantly. This is not always the case for other Discord Desktop Apps - even ones where the account of the **player** is logged in, curiously enough.
+
+How often this delay occurs seems to correlate with the frequency of the presence updates, but you shouldn't worry about it too much, as it seems to be about 12s on average when it does occur.
+
+### Too Many Connections
+Connecting to the Discord Rich Presence multiple times in quick succession will result in the connection not being established. In practice, this happens when you...
+
 - ...launch and quit...
 - ...reload...
 - ...start and return to the main menu in...
 
-...the game too many times too fast.
+...the game too many (approximately 4) times too fast (span of approximately 40s).
+
+This makes the game unresponsive for the approximate span since the oldest successful connection. Restarting the game doesn't fix this, and the game won't launch again until the timer runs out. 
+
+My guess is that it's a precaution against malicious exploits on Discord's part and cannot be affected by Python code, but as is the case with [Update Delays](https://github.com/Lezalith/RenPy_Discord_Presence#update-delays) it's not a big issue - players should fulfill these requirements incredibly rarely, if ever.
 
 # Examples
 Here is an example of two `textbutton`s in a screen, one with `discord.set` and other with `discord.update`.
