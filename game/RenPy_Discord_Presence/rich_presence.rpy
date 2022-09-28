@@ -1,4 +1,5 @@
 ﻿# TODO: time in second_example stays the same.
+# TODO: keep_time = True in on_load ?
 
 init -950 python in rich_presence:
 
@@ -144,7 +145,7 @@ init -950 python in rich_presence:
             start_time = self.time
 
             # ...as well as the ALL properties to be shown.
-            p = self.properties
+            p = deepcopy(self.properties)
 
             # First, refer to the time property...
             if "time" in p:
@@ -175,7 +176,7 @@ init -950 python in rich_presence:
                 self.time = timestamp
 
             # Prepare ALL the properties to be shown.
-            p = self.properties
+            p = deepcopy(self.properties)
 
             # if time is present, remove it, as it's not a valid property for presence.update.
             if "time" in p:
