@@ -1,6 +1,4 @@
-﻿# TODO: HOLY HELL ADD SOME GLOBAL STATEMENTS
-# TODO: time in second_example stays the same.
-# TODO: Inconsistent updates??
+﻿# TODO: time in second_example stays the same.
 
 init -950 python in rich_presence:
 
@@ -40,6 +38,7 @@ init -950 python in rich_presence:
     # Decorator that is called before every RenPyDiscord method.
     # If DiscordNotFound or DiscordError were encountered during init, return_none follows rather than the method called originally.
     def presence_disabled(func):
+        global presence_object
         if presence_object is None:
             return return_none
         else:
@@ -118,6 +117,7 @@ init -950 python in rich_presence:
 
             # Update the presence.
             # self.properties not used because it includes the time property.
+            global presence_object
             presence_object.update(start = start_time, **properties)
 
         # Updates the provided properties, while leaving others as they are.
@@ -150,6 +150,7 @@ init -950 python in rich_presence:
                 del p["time"]
 
             # Update the presence.
+            global presence_object
             presence_object.update(start = start_time, **p)
 
         # Changes the Time Elapsed, while keeping everything else untouched.
@@ -171,6 +172,7 @@ init -950 python in rich_presence:
                 del p["time"]
 
             # Update the Presence with new time and current properties.
+            global presence_object
             presence_object.update(start = self.time, **p)
 
         # Resets the presence to the original properties, gotten from rich_presence.initial_state.
@@ -184,6 +186,7 @@ init -950 python in rich_presence:
         @presence_disabled
         def clear(self):
 
+            global presence_object
             presence_object.clear()
 
             # Clear currently recorded properties and time, too.
@@ -234,6 +237,7 @@ init -950 python in rich_presence:
 
             print("Closing DRP connection.")
 
+            global presence_object
             presence_object.close()
 
             print("Successfully closed.")
