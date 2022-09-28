@@ -74,13 +74,18 @@ init -950 python in rich_presence:
             # Sets the presence state to the original properties, those just gotten.
             self.reset()
 
-            # Appends the close method to exit callbacks, to run it once the game is exited.
+            # Appends the close method to quit callbacks, to run it once the game is quit.
             # Done here to not overwrite user's define of config.quit_callbacks if present somewhere.
             renpy.config.quit_callbacks.append(self.close)
 
-            # Appends the update_on_load method to after load callbacks, to run it once a game save is loaded.
+            # Appends the update_on_load method to after-load callbacks, to run it once a game save is loaded.
             # Done here to not overwrite user's define of config.after_load_callbacks if present somewhere.
             renpy.config.after_load_callbacks.append(self.update_on_load)
+
+            # Appends the rollback_check method to interaction callbacks, to run it when an interaction begins.
+            # This is to keep track of a possible rollback.
+            # Done here to not overwrite user's define of config.after_load_callbacks if present somewhere.
+            renpy.config.interact_callbacks.append(self.rollback_check)
 
         # Sets the state to provided properties.
         # Current timestamp is kept if keep_time is True, and is reset to 0:0 if keep_time is False.
@@ -205,6 +210,23 @@ init -950 python in rich_presence:
 
             self.set(keep_time = False, **self.properties)
 
+        # Compares the properties to their rollback-able version and updates the presence accordingly if they do not match.
+        # This is for the purpose of making the script rollback/rollforward compatible.
+        @presence_disabled
+        def rollback_check(self):
+
+            global properties_copy
+
+            if self.properties != properties_copy:
+
+                properties_copy = self.properties
+
+                print("Interaction callback with False outcome.")
+
+            else:
+
+                print("Interaction callback with True outcome.")
+
         # Properly closes the connection with the Rich Presence.
         # Internally clears the info, no need to call the clear method.
         @presence_disabled
@@ -218,3 +240,5 @@ init -950 python in rich_presence:
 
 # The object for interacting with Rich Presence defined.
 default discord = rich_presence.RenPyDiscord()
+
+default rich_presence.properties_copy = {}
