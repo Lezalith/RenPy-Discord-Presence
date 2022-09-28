@@ -1,4 +1,8 @@
-﻿init -950 python in rich_presence:
+﻿# TODO: HOLY HELL ADD SOME GLOBAL STATEMENTS
+# TODO: time in second_example stays the same.
+# TODO: Inconsistent updates??
+
+init -950 python in rich_presence:
 
     # Alpha and Omega of Rich Presence.
     import pypresence
@@ -21,6 +25,8 @@
         print("Error occured during connection. Rich Presence will be disabled.")
         presence_object = None
 
+    # For interacting with Rollback.
+    from store import NoRollback
 
     # Used to display time in the presence.
     import time
@@ -40,7 +46,7 @@
             return func
 
     # Class of object used for interacting with the Rich Presence.
-    class RenPyDiscord():
+    class RenPyDiscord(NoRollback):
 
         # Called when defined.
         def __init__(self):

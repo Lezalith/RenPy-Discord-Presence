@@ -22,7 +22,8 @@ init -900:
                                            "end" : time.time() + 3000,
                                            "party_size" : [1, 5],
                                            "buttons" : [ dict(label = "Discord Presence Example Button", url = "https://github.com/Lezalith/RenPy_Discord_Presence"),
-                                                         dict(label = "Lezalith's Promotion Button!", url = "https://www.lezcave.com") ]}
+                                                         dict(label = "Lezalith's Promotion Button!", url = "https://www.lezcave.com") ],
+                                            "time" : False} # Included even with `end` overwriting it because the `selected` property of textbutton wouldn't work - `time` is *always* present in discord.properties.
 
     # Originally defined in discord_rich_presence_settings.rpy, it is overwritten for this project
     # here and controlled from main_menu to display one of the two examples defined above.
