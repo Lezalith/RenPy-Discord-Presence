@@ -73,18 +73,22 @@ init -950 python in rich_presence:
             # Sets the presence state to the original properties, those just gotten.
             self.reset()
 
-            # Appends the close method to quit callbacks, to run it once the game is quit.
-            # Done here to not overwrite user's define of config.quit_callbacks if present somewhere.
+            # Following are all methods being appended to different callbacks.
+            # Callbacks are lists of methods that are ran when something happens.
+            # As players can define them themselves, they're accessed here and changed rather than overwritten.
+
+            # quit_callbacks trigger when quitting the game. Serves to properly close the connection to the Presence.
             renpy.config.quit_callbacks.append(self.close)
 
-            # Appends the update_on_load method to after-load callbacks, to run it once a game save is loaded.
-            # Done here to not overwrite user's define of config.after_load_callbacks if present somewhere.
+            # after_load_callbacks trigger when a game is loaded. Updates properties to the ones in a save file.
             renpy.config.after_load_callbacks.append(self.update_on_load)
 
-            # Appends the rollback_check method to interaction callbacks, to run it when an interaction begins.
-            # This is to keep track of a possible rollback.
-            # Done here to not overwrite user's define of config.after_load_callbacks if present somewhere.
+            # interact_callbacks trigger on every interaction. This keeps a track of rollback.
             renpy.config.interact_callbacks.append(self.rollback_check)
+
+            # start_callbacks trigger when the game is done launching. Records the presence's initial properties.
+            # Even though backup_properties is triggered during init, the global var is overwritten afterwards by a default statement.
+            renpy.config.start_callbacks.append(self.backup_properties)
 
         # Sets the state to provided properties.
         # Current timestamp is kept if keep_time is True, and is reset to 0:0 if keep_time is False.
@@ -114,6 +118,9 @@ init -950 python in rich_presence:
 
                 # time is not a valid property to be passed to presence.update, so we need to remove it.
                 del properties["time"]
+
+            # Record the updated properties into a global var.
+            self.backup_properties()
 
             # Update the presence.
             # self.properties not used because it includes the time property.
@@ -149,6 +156,9 @@ init -950 python in rich_presence:
                 # time is not a valid property to be passed to presence.update, so we need to remove it.
                 del p["time"]
 
+            # Record the updated properties into a global var.
+            self.backup_properties()
+
             # Update the presence.
             global presence_object
             presence_object.update(start = start_time, **p)
@@ -170,6 +180,9 @@ init -950 python in rich_presence:
             # if time is present, remove it, as it's not a valid property for presence.update.
             if "time" in p:
                 del p["time"]
+
+            # Record the updated properties into a global var.
+            self.backup_properties()
 
             # Update the Presence with new time and current properties.
             global presence_object
@@ -213,6 +226,15 @@ init -950 python in rich_presence:
 
             self.set(keep_time = False, **self.properties)
 
+        # Records present properties into a global var.
+        # This var is rollback compatible, unlike this object, and is what makes rollback_check below work.
+        # Decorator excluded, it's only used in methods that have the decorator already.
+        def backup_properties(self):
+
+            global properties_copy
+            properties_copy = deepcopy(self.properties)
+            print("Properties recorded: {}".format(properties_copy))
+
         # Compares the properties to their rollback-able version and updates the presence accordingly if they do not match.
         # This is for the purpose of making the script rollback/rollforward compatible.
         @presence_disabled
@@ -220,18 +242,22 @@ init -950 python in rich_presence:
 
             global properties_copy
 
+            print("Comparison:")
+            print("Copy: {}".format(properties_copy))
+            print("This: {}".format(self.properties))
+
             if self.properties != properties_copy:
 
-                properties_copy = self.properties
-
-                print("Interaction callback with False outcome.")
+                print("Properties do not match.")
 
             else:
+                pass
+                # print("Interaction callback with True outcome.")
 
-                print("Interaction callback with True outcome.")
+            print("")
 
         # Properly closes the connection with the Rich Presence.
-        # Internally clears the info, no need to call the clear method.
+        # Internally clears the info, no need to call the clear method prior.
         @presence_disabled
         def close(self):
 
