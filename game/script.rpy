@@ -29,6 +29,8 @@ init -900:
     # here and controlled from main_menu to display one of the two examples defined above.
     define rich_presence.initial_state = rich_presence.first_example
 
+# TODO: Mention saving/loading in the preview, maybe make a separate label for people to try it out?
+
 define g = Solid("808080")
 define f = Frame("gui/frame.png")
 
