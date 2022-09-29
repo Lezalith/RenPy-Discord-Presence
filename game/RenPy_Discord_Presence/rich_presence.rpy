@@ -3,25 +3,32 @@
 
 init -950 python in rich_presence:
 
+    # Used instead of regular print across this code.
+    # Difference is that it only prints out text if `log` is set to True in settings.rpy
+    def rich_print(s):
+        global log
+        if log is True:
+            print(s)
+
     # Alpha and Omega of Rich Presence.
     import pypresence
 
     # Try to set up the Presence object and connect through it to the Discord Presence App.
     try:
-        print("Attempting to connect to Discord Rich Presence...")
+        rich_print("Attempting to connect to Discord Rich Presence...")
         presence_object = pypresence.Presence(application_id)
         presence_object.connect()
-        print("Successfully connected.")
+        rich_print("Successfully connected.")
 
     # Discord Desktop App was not found installed.
     except pypresence.DiscordNotFound:
-        print("Discord Desktop App not found. Rich Presence will be disabled.")
+        rich_print("Discord Desktop App not found. Rich Presence will be disabled.")
         presence_object = None
 
     # Error occured while connecting to the Presence App.
     # Note: This is also raised when the Desktop App is installed but no account is logged in.
     except pypresence.DiscordError:
-        print("Error occured during connection. Rich Presence will be disabled.")
+        rich_print("Error occured during connection. Rich Presence will be disabled.")
         presence_object = None
 
     # For interacting with Rollback.
@@ -253,12 +260,12 @@ init -950 python in rich_presence:
         @presence_disabled
         def close(self):
 
-            print("Closing DRP connection.")
+            rich_print("Closing DRP connection.")
 
             global presence_object
             presence_object.close()
 
-            print("Successfully closed.")
+            rich_print("Successfully closed.")
 
 # The object for interacting with Rich Presence defined.
 default discord = rich_presence.RenPyDiscord()

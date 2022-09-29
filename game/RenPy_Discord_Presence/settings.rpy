@@ -29,3 +29,10 @@ define rich_presence.initial_state = { "details" : "Demonstrating Discord Presen
 # buttons (list) – list of up to two dicts for buttons, in the format {"label": "My Website", "url": "https://qtqt.cf"}
 # 
 # time (bool) is a special non-pypresence property. Giving it the True value displays the Elapsed Time in the presence (default), False hides it.
+
+#####################################################################################################################################
+
+# Controls the print functions across this script. They work if True, they're ignored if False.
+# There are only a few and all important, for example whether presence was started successfully on launch.
+# Prints are shown inside game's console (if turned on) and in the game's log.txt file.
+define rich_presence.log = True

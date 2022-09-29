@@ -24,7 +24,7 @@ There are two versions for every release:
 **Clean Version** does not contain project files and only contains the files listed [above](https://github.com/Lezalith/RenPy_Discord_Presence#download).
 
 # Related Variables
-There are two important variables defined in the **settings.rpy** file. Here is what they do:
+There are two important variables in the **settings.rpy** file that you need to visit. Here is what they do:
 
 `application_id` takes a **string** with an Application ID of your Application set up on Discord Developer Portal. This **has to** be set in order for this script to work, having an invalid ID set **will throw an error** when launching the game.
 ```py
