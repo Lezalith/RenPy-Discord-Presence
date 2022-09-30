@@ -31,13 +31,21 @@ There are two important variables in the **settings.rpy** file that you need to 
 define rich_presence.application_id = "10208ABCDEFGHIJ2795"
 ```
 
-`initial_state` takes a dictionary. Keys are **strings** of properties corresponding to [presence elements](https://github.com/Lezalith/RenPy_Discord_Presence#basic-rich-presence-elements), and values are their values.
+`main_menu_state` takes a dictionary. Keys are **strings** of properties corresponding to [presence elements](https://github.com/Lezalith/RenPy_Discord_Presence#basic-rich-presence-elements), and values are their values.
 
 This is the state shown in the presence anytime the game launches and/or enters the main menu. Below is what it looks like by default.
 ```py
-define rich_presence.initial_state = { "details" : "Demonstrating Discord Presence.",
-                                       "large_image" : "lezalith", 
-                                       "time" : True}
+define rich_presence.main_menu_state = { "details" : "In the Main Menu.",
+                                       "large_image" : "lezalith"}
+```
+
+There's also the `start_state`. Just like `main_menu_state`, this is a set of properties, ones that are set when the game starts.
+Script acknowledges this by reaching the start label, name of which you should set in the `start_label` variable.
+```py
+define rich_presence.start_state = { "details" : "Reading the Story.",
+                                       "large_image" : "lezalith"}
+
+define rich_presence.start_label = "label_example"
 ```
 
 # List of Methods
@@ -67,7 +75,7 @@ discord.change_time(timestamp = time.time() + 600)
 # Basic Rich Presence Elements
 There are many things that can be shown inside Rich Presence. Below is a screenshot of a couple elements of Rich Presence highlighted, with their **property name** equivalent below. All the **property names** are listed below the screenshot with a short example using `discord.update`.
 
-In the preview project, dictionary with all the properties for this example is stored in the `rich_presence.first_example` variable, and `rich_presence.initial_state` is redirected to it - both happens inside **script.rpy**.
+In the preview project, dictionary with all the properties for this example is stored in the `rich_presence.first_example` variable, and `rich_presence.main_menu_state` is redirected to it - both happens inside **script.rpy**.
 
 ![rich_presence_example](https://user-images.githubusercontent.com/56970124/190881237-3f1e0b72-d954-4af2-8a93-a35e59bdf51e.png)
 
@@ -253,7 +261,7 @@ label label_example():
 
     "Presence all cleared and hidden!"
 
-    "After this line, you will return to the main menu, and {b}initial_state{/b} will be restored."
+    "After this line, you will return to the main menu, and {b}main_menu_state{/b} will be restored."
 
     return
 ```

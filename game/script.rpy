@@ -94,9 +94,13 @@ label label_example():
 
     "And it is so. Elapsed Time stayed the same."
 
-    "After this line, {b}discord.set{/b} is called again, with {b}keep_time = False{/b} argument passed, so that the time gets set to 0:0."
+    "After this line, {b}discord.set{/b} is called again, and {b}state{/b} is changed for a second time."
 
-    $ discord.set(state = "Second update, with the time reset.", keep_time = False)
+    $ discord.set(state = "Second update, with the time reset.")
+
+    # "After this line, {b}discord.set{/b} is called again, with {b}keep_time = False{/b} argument passed, so that the time gets set to 0:0."
+
+    # $ discord.set(state = "Second update, with the time reset.", keep_time = False)
 
     "State updated and Elapsed Time reset."
 
@@ -126,6 +130,6 @@ label label_example():
 
     "Presence all cleared and hidden!"
 
-    "After this line, you will return to the main menu, and {b}initial_state{/b} will be restored."
+    "You will now return to the main menu. {b}main_menu_state{/b} will be restored and Time Elapsed will go back to the time of first launch."
 
     return

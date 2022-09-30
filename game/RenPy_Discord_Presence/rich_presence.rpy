@@ -1,5 +1,6 @@
 ﻿# TODO: time in second_example stays the same.
 # TODO: keep_time = True in on_load ?
+# TODO: label_callback is NOT a list!
 
 init -950 python in rich_presence:
 
@@ -76,14 +77,15 @@ init -950 python in rich_presence:
         def first_setup(self):
 
             # Store properties used for the first setup.
-            self.original_properties = initial_state
+            global main_menu_state
+            self.original_properties = main_menu_state
 
             # Sets the presence state to the original properties, those just gotten.
             self.reset()
 
             # Following are all methods being appended to different callbacks.
             # Callbacks are lists of methods that are ran when something happens.
-            # As players can define them themselves, they're accessed here and changed rather than overwritten.
+            # As creators can define them themselves, they're accessed here and changed rather than overwritten.
 
             # quit_callbacks trigger when quitting the game. Serves to properly close the connection to the Presence.
             renpy.config.quit_callbacks.append(self.close)
@@ -94,9 +96,12 @@ init -950 python in rich_presence:
             # interact_callbacks trigger on every interaction. This keeps a track of rollback.
             renpy.config.interact_callbacks.append(self.rollback_check)
 
-            # start_callbacks trigger when the game is done launching. Records the presence's initial properties.
+            # start_callbacks trigger when the game is done launching. Records the presence's initial properties into a global var.
             # Even though backup_properties is triggered during init, the global var is overwritten afterwards by a default statement.
             renpy.config.start_callbacks.append(self.backup_properties)
+
+            # start_callbacks trigger when the game is done launching. Records the presence's initial properties into a global var.
+            renpy.config.label_callback = self.set_start
 
         # Sets the state to provided properties.
         # Current timestamp is kept if keep_time is True, and is reset to 0:0 if keep_time is False.
@@ -193,7 +198,7 @@ init -950 python in rich_presence:
             global presence_object
             presence_object.update(start = self.time, **p)
 
-        # Resets the presence to the original properties, gotten from rich_presence.initial_state.
+        # Resets the presence to the original properties, gotten from rich_presence.main_menu_state.
         @presence_disabled
         def reset(self):
 
@@ -231,7 +236,17 @@ init -950 python in rich_presence:
 
             self.set(keep_time = False, **self.properties)
 
-        # Records present properties into a global var.
+        # Sets the Presence to start_state properties.
+        @presence_disabled
+        def set_start(self, label_name, interaction):
+
+            global start_state, start_label
+
+            if label_name == start_label:
+                self.set(keep_time = False, **start_state)
+
+
+        # Sets the properties to those from start_state and records properties into a global var.
         # This var is rollback compatible, unlike this object, and is what makes rollback_check below work.
         # Decorator excluded, it's only used in methods that have the decorator already.
         def backup_properties(self):

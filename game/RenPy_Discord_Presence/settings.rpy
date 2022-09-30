@@ -9,9 +9,17 @@ define rich_presence.application_id = "1020817080838262795"
 
 # State of the Presence upon the game's launch.
 # In the preview project, it is overwritten in script.rpy to refer one of the two defined examples.
-define rich_presence.initial_state = { "details" : "Demonstrating Discord Presence.",
+define rich_presence.main_menu_state = { "details" : "In the Main Menu.",
                                        "large_image" : "lezalith", 
                                        "time" : True}
+
+# State of the Presence when the game is started.
+define rich_presence.start_state = { "details" : "Reading the Story.",
+                                       "large_image" : "lezalith", 
+                                       "time" : True}
+
+# Name of the label that should update Presence to`start_state` when entered.
+define rich_presence.start_label = "label_example"
 
 # The state is basically a Dict with all the properties of the presence state displayed when the game is launched.
 # keys correspond not to Presence Fields, but to pypresence arguments! 
