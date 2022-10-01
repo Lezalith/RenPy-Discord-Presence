@@ -10,8 +10,7 @@ init -900:
     define rich_presence.first_example = { "details" : "Testing Discord Rich Presence.",
                                            "state" : "It's super easy in Ren'Py 8!",
                                            "large_image" : "lezalith", 
-                                           "small_image" : "lezalith",
-                                           "time" : True} # small_image is not visible without large_image also set.
+                                           "small_image" : "lezalith"} # small_image is not visible without large_image also set.
 
     # time gets the timestamp for end property.
     python:
@@ -22,8 +21,7 @@ init -900:
                                            "end" : time.time() + 3000,
                                            "party_size" : [1, 5],
                                            "buttons" : [ dict(label = "Discord Presence Example Button", url = "https://github.com/Lezalith/RenPy_Discord_Presence"),
-                                                         dict(label = "Lezalith's Promotion Button!", url = "https://www.lezcave.com") ],
-                                            "time" : False} # Included even with `end` overwriting it because the `selected` property of textbutton wouldn't work - `time` is *always* present in discord.properties.
+                                                         dict(label = "Lezalith's Promotion Button!", url = "https://www.lezcave.com") ]}
 
     # Originally defined in discord_rich_presence_settings.rpy, it is overwritten for this project
     # here and controlled from main_menu to display one of the two examples defined above.
@@ -88,43 +86,39 @@ label label_example():
 
     "This label shows how discord presence can be changed inside labels!"
 
+    "Since it is set as the {b}start_label{/b} in {b}settings.rpy{/b}, entering it sets the presence to {b}start_state{/b}."
+
     "After this line, {b}discord.set{/b} will be called to set presence to only contain a {b}state{/b} text line."
 
     $ discord.set(state = "Update after the first line.")
 
-    "And it is so. Elapsed Time stayed the same."
+    "And it is so."
 
-    "After this line, {b}discord.set{/b} is called again, and {b}state{/b} is changed for a second time."
-
-    $ discord.set(state = "Second update, with the time reset.")
-
-    # "After this line, {b}discord.set{/b} is called again, with {b}keep_time = False{/b} argument passed, so that the time gets set to 0:0."
-
-    # $ discord.set(state = "Second update, with the time reset.", keep_time = False)
-
-    "State updated and Elapsed Time reset."
-
-    "After this line, {b}discord.update{/b} is called to change the {b}details{/b} property, while keeping others ({b}state{/b} and {b}time{/b}) as they are."
+    "After this line, {b}discord.update{/b} is called to change the {b}details{/b} property, while keeping others as they are."
 
     $ discord.update(details = "This wasn't here before!")
 
     "Presence now contains one more piece of info."
 
-    "After this line, {b}discord.change_time{/b} is called to change the Time Elapsed shown. The time is reset and 3000 seconds are added to it."
+    "After this line, {b}start{/b} property is changed to {b}\"new_time\"{/b}, which will reset Time Elapsed to 0:0."
 
-    $ discord.change_time(timestamp = time.time() - 3000)
+    $ discord.update(start = "new_time")
 
-    "3000 seconds is 50 minutes, so that's what Time Elapsed got set to."
+    "The time since the first launch can always be restored by changing {b}start{/b} property to {b}\"start_time\"{/b}"
 
-    "By default, the Time Elapsed is shown. It can be hidden by setting the {b}time{/b} property to False."
+    "Done after this line."
 
-    "It is done with {b}discord.update{/b} after this line."
+    $ discord.update(start = "start_time")
 
-    $ discord.update(time = False)
+    "Finally, changing the {b}start{/b} property to {b}None{/b} hides Time Elapsed altogether."
+
+    "Again, done after this line."
+
+    $ discord.update(start = None)
 
     "As you can see, Time Elapsed is no longer visible."
 
-    "Finally, after this line, {b}discord.clear{/b} is called to clear the presence."
+    "Last method is {b}discord.clear{/b}, which can be called to clear the presence."
 
     $ discord.clear()
 

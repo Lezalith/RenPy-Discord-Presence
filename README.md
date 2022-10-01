@@ -20,11 +20,13 @@ There are two versions for every release:
 ## Project Version
 **Project Version** contains the whole code of this repository. It is a project that can be launched from the Ren'Py Launcher and that shows how simple it is to update the presence status from both **screens** and **labels**, utilizing the `set` and `update` [methods described below](https://github.com/Lezalith/RenPy_Discord_Presence#list-of-methods). Simply launch the project and keep an eye on your Discord profile.
 
+All of the project's code is located in its **script.rpy** file.
+
 ## Clean Version
-**Clean Version** does not contain project files and only contains the files listed [above](https://github.com/Lezalith/RenPy_Discord_Presence#download).
+**Clean Version** does not contain project files and only contains the files listed [above](https://github.com/Lezalith/RenPy_Discord_Presence#download), meaning you can just copy everything over to your own project and you're good to go!
 
 # Related Variables
-There are two important variables in the **settings.rpy** file that you need to visit. Here is what they do:
+There are some important variables in the **settings.rpy** file that you need to visit. Here is what they do:
 
 `application_id` takes a **string** with an Application ID of your Application set up on Discord Developer Portal. This **has to** be set in order for this script to work, having an invalid ID set **will throw an error** when launching the game.
 ```py
@@ -50,32 +52,27 @@ define rich_presence.start_label = "label_example"
 
 # List of Methods
 Methods used to interact with the presence are bound to a defined `RenPyDiscord` instance stored in the `discord` variable.
-Here are the core three:
+Here are the core two:
 
-`discord.set` takes the optional `keep_time` argument which is `True` by default, to determine whether the Elapsed Time shown should be reset to 0:0 with this change.
-As for other arguments that can be passed to the method, they should be **property names** corresponding to presence elements - [all are listed below](https://github.com/Lezalith/RenPy_Discord_Presence#basic-rich-presence-elements).
-If some properties are already set in the presence, they are discarded, and only the passed properties are kept.
+`discord.set` takes **property names** corresponding to presence elements for arguments. All elements [are listed below](https://github.com/Lezalith/RenPy_Discord_Presence#basic-rich-presence-elements).
+If some properties are already set in the presence, they are discarded and only the passed properties are kept.
+
+An exception to this is the `start` property, which sticks to time since the first launch unless specified.
 ```py
-discord.set(keep_time = False, details = "Setting new Discord Rich Presence.")
+discord.set(details = "Setting new Discord Rich Presence.")
 ```
 
-`discord.update` optionally takes `keep_time` with default of `True` and **property names** the same way `discord.set` does.
-Difference between the two is that `discord.update` keeps the current properties and only changes the ones provided.
+`discord.update` takes **property names** for arguments the same way `discord.set` does.
+Difference between the two is that `discord.update` keeps the current properties as they are and only changes the ones provided.
 ```py
 discord.set(details = "Setting new Discord Rich Presence.")
 discord.update(state = "State got changed while details stayed the same!")
 ```
 
-Finally, `discord.change_time` is a method specialized in changing the Time Elapsed. It takes the optional `timestamp` argument, which is an epoch timestamp from which Time Elapsed is calculated. If it's `None`, as it is by default, the time gets reset to 0:0.
-```py
-discord.set(details = "Let's set Time Elapsed to 600 seconds, aka 10 minutes!")
-discord.change_time(timestamp = time.time() + 600)
-```
-
 # Basic Rich Presence Elements
 There are many things that can be shown inside Rich Presence. Below is a screenshot of a couple elements of Rich Presence highlighted, with their **property name** equivalent below. All the **property names** are listed below the screenshot with a short example using `discord.update`.
 
-In the preview project, dictionary with all the properties for this example is stored in the `rich_presence.first_example` variable, and `rich_presence.main_menu_state` is redirected to it - both happens inside **script.rpy**.
+In the preview project, dictionary with all the properties for this example is stored in the `rich_presence.first_example` variable, and `rich_presence.main_menu_state` is redirected to it.
 
 ![rich_presence_example](https://user-images.githubusercontent.com/56970124/190881237-3f1e0b72-d954-4af2-8a93-a35e59bdf51e.png)
 
@@ -89,11 +86,14 @@ discord.update(details = "Testing Discord Rich Presence.")
 discord.update(state = "It's super easy in Ren'Py 8!")
 ```
 
-`start` takes an epoch timestamp from which it counts the Time Elapsed. However, `start` should only be changed with the specialized `change_time` method described above in [**List of Methods**](https://github.com/Lezalith/RenPy_Discord_Presence#list-of-methods). 
+`start` is a time from which Time Elapsed is calculated. It can take four different values:
 
-Snippet below shows it with the `timestamp` argument not provided, causing it to set Time Elapsed to 0:0.
+- `"start_time"` which sets Time Elapsed to the time since the game's launch.
+- `"new_time"` which resets Time Elapsed to 0:0. It does **not** overwrite the recorded `start_time`.
+- `None` which results in Time Elapsed being **hidden**.
+- **Unix timestamp** from which Time Elapsed is calculated.
 ```py
-discord.change_time()
+discord.update(start = "start_time")
 ```
 
 `large_image` takes a **string** that needs to correspond with an image uploaded onto the Discord Application.
@@ -110,12 +110,6 @@ If no `large_image` is set or found, `small_image` is used in its place and no s
 discord.update(large_image = "lezalith", small_image = "lezalith")
 ```
 
-`time` is a special non-pypresence property that can be `True` or `False`, and determines whether Elapsed Time is shown in the presence.
-As it's `True` by default it doesn't have to be included, but I do like to include it so that it's clear from the outset that Time Elapsed is shown.
-```py
-discord.update(time = False)
-```
-
 Overall, state shown on the screenshot can be accomplished with the following properties passed:
 ```py
 discord.set(details = "Testing Discord Rich Presence.",
@@ -123,8 +117,7 @@ discord.set(details = "Testing Discord Rich Presence.",
             large_image = "lezalith",
             large_text = "Large Image Tooltip!",
             small_image = "lezalith",
-            small_text = "Small Image Tooltip!",
-            time = True)
+            small_text = "Small Image Tooltip!")
 ```
 
 As you can see, there are two more **property names** included there that I haven't mentioned - `large_text` and `small_text`. These are text tooltips that appear when the respective images are hovered by a cursor.
@@ -132,13 +125,13 @@ As you can see, there are two more **property names** included there that I have
 # Advanced Rich Presence Elements
 The final screenshot covers all the remaining rich presence properties. `state` was already covered above, however it is required for the `party_size` property to work.
 
-In the preview project, dictionary with all the properties for this example is stored in the `rich_presence.second_example` variable, once again done in **script.rpy**.
+In the preview project, dictionary with all the properties for this example is stored in the `rich_presence.second_example` variable.
 
 ![rich_presence_example](https://user-images.githubusercontent.com/56970124/190882416-25642658-8823-4d05-8dd9-ee9f9e6d62bf.png)
 
-`end` takes an epoch timestamp and calculates Time Left until that timestamp. 
+`end` takes an **unix timestamp** and calculates Time Left until that timestamp. 
 
-Setting this pushes `start` completely aside and Time Elapsed with it (even if **time** is set to **True**) and **displays Time Left instead.**
+Setting this pushes `start` completely aside and Time Elapsed with it and **displays Time Left instead.**
 ```py
 discord.update(end = time.time() + 3000)
 ```
@@ -223,45 +216,45 @@ label label_example():
 
     "This label shows how discord presence can be changed inside labels!"
 
+    "Since it is set as the {b}start_label{/b} in {b}settings.rpy{/b}, entering it sets the presence to {b}start_state{/b}."
+
     "After this line, {b}discord.set{/b} will be called to set presence to only contain a {b}state{/b} text line."
 
     $ discord.set(state = "Update after the first line.")
 
-    "And it is so. Elapsed Time stayed the same."
+    "And it is so."
 
-    "After this line, {b}discord.set{/b} is called again, with {b}keep_time = False{/b} argument passed, so that the time gets set to 0:0."
-
-    $ discord.set(state = "Second update, with the time reset.", keep_time = False)
-
-    "State updated and Elapsed Time reset."
-
-    "After this line, {b}discord.update{/b} is called to change the {b}details{/b} property, while keeping others ({b}state{/b} and {b}time{/b}) as they are."
+    "After this line, {b}discord.update{/b} is called to change the {b}details{/b} property, while keeping others as they are."
 
     $ discord.update(details = "This wasn't here before!")
 
     "Presence now contains one more piece of info."
 
-    "After this line, {b}discord.change_time{/b} is called to change the Time Elapsed shown. The time is reset and 3000 seconds are added to it."
+    "After this line, {b}start{/b} property is changed to {b}\"new_time\"{/b}, which will reset Time Elapsed to 0:0."
 
-    $ discord.change_time(timestamp = time.time() - 3000)
+    $ discord.update(start = "new_time")
 
-    "3000 seconds is 50 minutes, so that's what Time Elapsed got set to."
+    "The time since the first launch can always be restored by changing {b}start{/b} property to {b}\"start_time\"{/b}"
 
-    "By default, the Time Elapsed is shown. It can be hidden by setting the {b}time{/b} property to False."
+    "Done after this line."
 
-    "It is done with {b}discord.update{/b} after this line."
+    $ discord.update(start = "start_time")
 
-    $ discord.update(time = False)
+    "Finally, changing the {b}start{/b} property to {b}None{/b} hides Time Elapsed altogether."
+
+    "Again, done after this line."
+
+    $ discord.update(start = None)
 
     "As you can see, Time Elapsed is no longer visible."
 
-    "Finally, after this line, {b}discord.clear{/b} is called to clear the presence."
+    "Last method is {b}discord.clear{/b}, which can be called to clear the presence."
 
     $ discord.clear()
 
     "Presence all cleared and hidden!"
 
-    "After this line, you will return to the main menu, and {b}main_menu_state{/b} will be restored."
+    "You will now return to the main menu. {b}main_menu_state{/b} will be restored and Time Elapsed will go back to the time of first launch."
 
     return
 ```

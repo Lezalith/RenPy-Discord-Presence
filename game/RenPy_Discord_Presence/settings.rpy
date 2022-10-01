@@ -10,13 +10,11 @@ define rich_presence.application_id = "1020817080838262795"
 # State of the Presence upon the game's launch.
 # In the preview project, it is overwritten in script.rpy to refer one of the two defined examples.
 define rich_presence.main_menu_state = { "details" : "In the Main Menu.",
-                                       "large_image" : "lezalith", 
-                                       "time" : True}
+                                       "large_image" : "lezalith"}
 
 # State of the Presence when the game is started.
 define rich_presence.start_state = { "details" : "Reading the Story.",
-                                       "large_image" : "lezalith", 
-                                       "time" : True}
+                                       "large_image" : "lezalith"}
 
 # Name of the label that should update Presence to`start_state` when entered.
 define rich_presence.start_label = "label_example"
