@@ -95,10 +95,10 @@ init -950 python in rich_presence:
             # quit_callbacks trigger when quitting the game. Serves to properly close the connection to the Presence.
             renpy.config.quit_callbacks.append(self.close)
 
-            # after_load_callbacks trigger when a game is loaded. Updates properties to the ones in a save file.
-            renpy.config.after_load_callbacks.append(self.update_on_load)
-
-            # interact_callbacks trigger on every interaction. This keeps a track of rollback.
+            # rollback_check is what makes rollback and save/load work.
+            # after_load_callbacks trigger when a game is loaded.
+            renpy.config.after_load_callbacks.append(self.rollback_check)
+            # interact_callbacks trigger on every interaction.
             renpy.config.interact_callbacks.append(self.rollback_check)
 
             # start_callbacks trigger when the game is done launching. Records the presence's initial properties into a global var.
@@ -195,19 +195,19 @@ init -950 python in rich_presence:
         ##
         ##       Same happens with the close method defined below.
 
-        # Restores the presence to a state stored in the save file.
-        @presence_disabled
-        def update_on_load(self):
-
-            self.set(**self.properties)
-
         # Sets the Presence to start_state properties.
         @presence_disabled
         def set_start(self, label_name, interaction):
 
             global start_state, start_label
 
-            if label_name == start_label:
+            # If there are multiple start labels:
+            if isinstance(start_label, list):
+                if label_name in start_label:
+                    self.set(**start_state)
+
+            # If there is only one start label:
+            elif label_name == start_label:
                 self.set(**start_state)
 
         # Sets the properties to those from start_state and records properties into a global var.
@@ -230,7 +230,7 @@ init -950 python in rich_presence:
 
                 print("Properties do not match during this interaction. They will be set to Copy.")
                 print("Copy: {}".format(properties_copy))
-                print("This: {}\n".format(self.properties))
+                print("This: {}".format(self.properties))
 
                 self.set(**properties_copy)
 
