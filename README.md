@@ -212,7 +212,7 @@ screen screen_example():
 
 And here is the example **label** used inside the preview project that showcases all of the functions. Everything is explained by the dialogue lines.
 ```py
-label label_example():
+label functionality_example():
 
     "This label shows how discord presence can be changed inside labels!"
 

@@ -1,5 +1,5 @@
 ﻿# TODO: time in second_example stays the same.
-# TODO: label_callback is NOT a list!
+# TODO: label_callback is NOT a list! BUT NEW VAR GOT ADDED NOT REMOVED SO ITS PROBABLY OKAY.
 
 init -950 python in rich_presence:
 

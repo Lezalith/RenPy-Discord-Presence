@@ -17,7 +17,7 @@ define rich_presence.start_state = { "details" : "Reading the Story.",
                                        "large_image" : "lezalith"}
 
 # Name of the label that should update Presence to`start_state` when entered.
-define rich_presence.start_label = "label_example"
+define rich_presence.start_label = "functionality_example"
 
 # The state is basically a Dict with all the properties of the presence state displayed when the game is launched.
 # keys correspond not to Presence Fields, but to pypresence arguments! 
