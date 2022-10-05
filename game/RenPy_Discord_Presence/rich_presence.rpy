@@ -62,6 +62,8 @@ init -950 python in rich_presence:
         # Called when defined.
         def __init__(self):
 
+            print("init")
+
             # Dict of properties used in the first_setup.
             self.original_properties = {}
 
@@ -74,6 +76,8 @@ init -950 python in rich_presence:
         # Sets the initial state and callbacks.
         @presence_disabled
         def first_setup(self):
+
+            print("first_setup")
 
             # Store properties used for the first setup.
             global main_menu_state
@@ -110,9 +114,13 @@ init -950 python in rich_presence:
             # Prepared for Ren'Py 8.0.4
             # renpy.config.label_callbacks.append(self.set_start)
 
+            rich_print("RenPyDiscord object initialized successfully. Presence is now active.")
+
         # Sets the state to provided properties.
         @presence_disabled
         def set(self, **properties):
+
+            print("set")
 
             # Records all the properties passed to the Presence.
             self.properties = deepcopy(properties)
@@ -133,6 +141,8 @@ init -950 python in rich_presence:
             # If "start" for calculating elapsed time is not provided in the state,
             # set it here to the recorded start_time.
             else:
+
+                # if properties:
                 self.properties["start"] = start_time
 
             # Record the updated properties into a global var.
@@ -145,6 +155,8 @@ init -950 python in rich_presence:
         # Updates the provided properties, while leaving others as they are.
         @presence_disabled
         def update(self, **properties):
+
+            print("update")
 
             global start_time
 
@@ -176,18 +188,29 @@ init -950 python in rich_presence:
         @presence_disabled
         def reset(self):
 
+            print("reset")
+
             # Sets the initial state.
             self.set(**self.original_properties)
 
-        # Clears all the info in the presence.
+        # Clears all the info in the presence, hiding the game being played.
         @presence_disabled
         def clear(self):
 
-            global presence_object
-            presence_object.clear()
+            print("clear called.")
+
+            # First, get rid of images if they're present.
+            # presence_object.update(large_image = None, small_image = None)
 
             # Clear currently recorded properties.
             self.properties = {}
+            
+            self.backup_properties()
+            # global properties_copy
+            # properties_copy = {}
+
+            global presence_object
+            presence_object.clear()
 
         ## NOTE: clear seems to have its effect delayed if called too soon
         ##       after establishing the connection (first_setup) or another clear call.
@@ -200,6 +223,8 @@ init -950 python in rich_presence:
         # Sets the Presence to start_state properties.
         @presence_disabled
         def set_start(self, label_name, interaction):
+
+            print("set start")
 
             global start_state, start_label
 
@@ -226,6 +251,8 @@ init -950 python in rich_presence:
         @presence_disabled
         def rollback_check(self):
 
+            print("rollback_check (interaction_callback)")
+
             global properties_copy
 
             if self.properties != properties_copy:
@@ -251,4 +278,5 @@ init -950 python in rich_presence:
 # The object for interacting with Rich Presence defined.
 default discord = rich_presence.RenPyDiscord()
 
+# Dictionary mirroring the properties for Rollback reasons.
 default rich_presence.properties_copy = {}
