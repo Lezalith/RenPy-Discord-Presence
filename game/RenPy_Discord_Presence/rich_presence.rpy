@@ -107,6 +107,8 @@ init -950 python in rich_presence:
 
             # start_callbacks trigger when the game is done launching. Records the presence's initial properties into a global var.
             renpy.config.label_callback = self.set_start
+            # Prepared for Ren'Py 8.0.4
+            # renpy.config.label_callbacks.append(self.set_start)
 
         # Sets the state to provided properties.
         @presence_disabled
