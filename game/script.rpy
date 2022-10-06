@@ -65,10 +65,10 @@ screen main_menu():
 
                 textbutton "Set to First Example":
                     action Function(discord.set, **discord.first_example) 
-                    selected discord.properties == discord.first_example
+                    selected discord.no_rollback.properties == discord.first_example
                 textbutton "Set to Second Example":
                     action Function(discord.set, **discord.second_example) 
-                    selected discord.properties == discord.second_example
+                    selected discord.no_rollback.properties == discord.second_example
 
             null height 30
 
