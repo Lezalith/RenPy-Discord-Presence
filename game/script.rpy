@@ -131,8 +131,11 @@ label functionality_example():
 
     "As you can see, Time Elapsed is no longer visible."
 
-    "Last method is {b}discord.clear{/b}, which can be called to clear the presence."
+    "Last method is {b}discord.clear{/b}, which can be called to clear the presence of all properties."
 
+    "This hides the game completely, as if nothing was being played."
+
+    $ print("\n\n")
     $ discord.clear()
 
     "Presence all cleared and hidden!"

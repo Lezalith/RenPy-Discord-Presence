@@ -133,6 +133,8 @@ init -950 python in rich_presence:
             # If "start" for calculating elapsed time is not provided in the state,
             # set it here to the recorded start_time.
             else:
+
+                # if properties:
                 self.properties["start"] = start_time
 
             # Record the updated properties into a global var.
@@ -179,15 +181,24 @@ init -950 python in rich_presence:
             # Sets the initial state.
             self.set(**self.original_properties)
 
-        # Clears all the info in the presence.
+        # Clears all the info in the presence, hiding the game being played.
         @presence_disabled
         def clear(self):
 
-            global presence_object
-            presence_object.clear()
+            print("clear called.")
+
+            # First, get rid of images if they're present.
+            # presence_object.update(large_image = None, small_image = None)
 
             # Clear currently recorded properties.
             self.properties = {}
+            
+            self.backup_properties()
+            # global properties_copy
+            # properties_copy = {}
+
+            global presence_object
+            presence_object.clear()
 
         ## NOTE: clear seems to have its effect delayed if called too soon
         ##       after establishing the connection (first_setup) or another clear call.
@@ -251,4 +262,5 @@ init -950 python in rich_presence:
 # The object for interacting with Rich Presence defined.
 default discord = rich_presence.RenPyDiscord()
 
+# Dictionary mirroring the properties for Rollback reasons.
 default rich_presence.properties_copy = {}
