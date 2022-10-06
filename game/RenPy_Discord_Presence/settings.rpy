@@ -3,22 +3,22 @@ init offset = -960
 
 # Application Id - This is gotten from Discord's Developer Portal. 
 # Process of setting it up is described on GitHub under the Wiki tab, or locally in [TO-BE-WRITTEN].md
-define rich_presence.application_id = "1020817080838262795"
+define discord.application_id = "1020817080838262795"
 
 #####################################################################################################################################
 
 # State of the Presence upon the game's launch.
 # In the preview project, it is overwritten in script.rpy to refer one of the two defined examples.
-define rich_presence.main_menu_state = { "details" : "In the Main Menu.",
+define discord.main_menu_state = { "details" : "In the Main Menu.",
                                        "large_image" : "lezalith"}
 
 # State of the Presence when the game is started.
-define rich_presence.start_state = { "details" : "Reading the Story.",
+define discord.start_state = { "details" : "Reading the Story.",
                                        "large_image" : "lezalith"}
 
 # Name of the label that should update Presence to`start_state` when entered.
 # Can also be a list label names, if you have multiple start labels. 
-define rich_presence.start_label = "functionality_example"
+define discord.start_label = "functionality_example"
 
 # The state is basically a Dict with all the properties of the presence state displayed when the game is launched.
 # keys correspond not to Presence Fields, but to pypresence arguments! 
@@ -42,4 +42,4 @@ define rich_presence.start_label = "functionality_example"
 # Controls the print functions across this script. They work if True, they're ignored if False.
 # There are only a few and all important, for example whether presence was started successfully on launch.
 # Prints are shown inside game's console (if turned on) and in the game's log.txt file.
-define rich_presence.log = True
+define discord.log = True

@@ -7,7 +7,7 @@
 init -900:
 
     # First example featured in Readme.
-    define rich_presence.first_example = { "details" : "Testing Discord Rich Presence.",
+    define discord.first_example = { "details" : "Testing Discord Rich Presence.",
                                            "state" : "It's super easy in Ren'Py 8!",
                                            "large_image" : "lezalith", 
                                            "small_image" : "lezalith"} # small_image is not visible without large_image also set.
@@ -17,15 +17,15 @@ init -900:
         import time
 
     # Second example featured in Readme.
-    define rich_presence.second_example = { "state" : "Reading a Chapter",
+    define discord.second_example = { "state" : "Reading a Chapter",
                                            "end" : time.time() + 3000,
                                            "party_size" : [1, 5],
                                            "buttons" : [ dict(label = "Discord Presence Example Button", url = "https://github.com/Lezalith/RenPy_Discord_Presence"),
                                                          dict(label = "Lezalith's Promotion Button!", url = "https://www.lezcave.com") ]}
 
-    # Originally defined in discord_rich_presence_settings.rpy, it is overwritten for this project
+    # Originally defined in settings.rpy, it is overwritten for this project
     # here and controlled from main_menu to display one of the two examples defined above.
-    define rich_presence.initial_state = rich_presence.first_example
+    define discord.initial_state = discord.first_example
 
 # TODO: Mention saving/loading in the preview, maybe make a separate label for people to try it out?
 
@@ -64,11 +64,11 @@ screen main_menu():
                 spacing 100
 
                 textbutton "Set to First Example":
-                    action Function(discord.set, **rich_presence.first_example) 
-                    selected discord.properties == rich_presence.first_example
+                    action Function(discord.set, **discord.first_example) 
+                    selected discord.properties == discord.first_example
                 textbutton "Set to Second Example":
-                    action Function(discord.set, **rich_presence.second_example) 
-                    selected discord.properties == rich_presence.second_example
+                    action Function(discord.set, **discord.second_example) 
+                    selected discord.properties == discord.second_example
 
             null height 30
 

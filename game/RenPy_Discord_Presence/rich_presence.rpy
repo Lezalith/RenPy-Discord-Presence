@@ -1,7 +1,29 @@
 ﻿# TODO: time in second_example stays the same.
 # TODO: label_callback is NOT a list! BUT NEW VAR GOT ADDED NOT REMOVED SO ITS PROBABLY OKAY.
 
-init -950 python in rich_presence:
+# Following are all methods being appended to different callbacks.
+# Callbacks are lists of methods that are ran when something happens.
+# As creators can define them themselves, they're accessed here and changed rather than overwritten.
+
+# quit_callbacks trigger when quitting the game. Serves to properly close the connection to the Presence.
+
+# rollback_check is what makes rollback and save/load work.
+# after_load_callbacks trigger when a game is loaded.
+# interact_callbacks trigger on every interaction.
+
+# start_callbacks trigger when the game is done launching. Records the presence's initial properties into a global var.
+# Even though backup_properties is triggered during init, the global var is overwritten afterwards by a default statement.
+
+# start_callbacks trigger when the game is done launching. Records the presence's initial properties into a global var.
+
+define config.quit_callbacks = [discord.close]
+define config.after_load_callbacks = [discord.rollback_check]
+define config.interact_callbacks = [discord.rollback_check]
+define config.start_callbacks = [discord.reset]
+define config.label_callback = discord.set_start
+# define config.label_callbacks = [discord.set_start]
+
+init -950 python in discord:
 
     # Used instead of regular print across this code.
     # Difference is that it only prints out text if `log` is set to True in settings.rpy
@@ -56,211 +78,177 @@ init -950 python in rich_presence:
         else:
             return func
 
+    # REWRITE
+    def backup_properties():
+
+        global properties, properties_copy
+        properties_copy = deepcopy(properties)
+        print("Properties recorded: {}".format(properties_copy))
+
+    # Sets the state to provided properties.
+    @presence_disabled
+    def set(**props):
+
+        # Records all the properties passed to the Presence.
+        global properties
+        properties = deepcopy(props)
+
+        global start_time
+
+        # If start is specified in the passed properties:
+        if "start" in properties:
+
+            # First special argument, restores start_time
+            if properties["start"] == "start_time":
+                properties["start"] = start_time
+
+            # Second special argument, resets time to 0:0.
+            elif properties["start"] == "new_time":
+                properties["start"] = time.time()
+
+        # If "start" for calculating elapsed time is not provided in the state,
+        # set it here to the recorded start_time.
+        else:
+
+            # if properties:
+            properties["start"] = start_time
+
+        # Record the updated properties into a global var.
+        backup_properties()
+
+        # Update the presence.
+        global presence_object
+        presence_object.update(**properties)
+
+    # Updates the provided properties, while leaving others as they are.
+    @presence_disabled
+    def update(**props):
+
+        global properties, start_time
+
+        # If start is specified in the passed properties:
+        if "start" in props:
+
+            # First special argument, restores start_time
+            if props["start"] == "start_time":
+                properties["start"] = start_time
+                del props["start"]    
+
+            # Second special argument, resets time to 0:0.
+            elif props["start"] == "new_time":
+                properties["start"] = time.time()
+                del props["start"]          
+
+        # Update properties passed.
+        for p in props:
+            properties[p] = props[p]
+
+        # Record the updated properties into a global var.
+        backup_properties()
+
+        # Update the presence.
+        global presence_object
+        presence_object.update(**properties)
+
+    # Resets the presence to the original properties, gotten from discord.main_menu_state.
+    @presence_disabled
+    def reset():
+
+        # Sets the initial state.
+        global original_properties
+        set(**original_properties)
+
+    # Compares the properties to their rollback-able version and updates the presence accordingly if they do not match.
+    # This is what makes the script rollback/rollforward compatible.
+    @presence_disabled
+    def rollback_check():
+
+        global properties, properties_copy
+
+        if properties != properties_copy:
+
+            print("Properties do not match during this interaction. They will be set to Copy.")
+            print("Copy: {}".format(properties_copy))
+            print("This: {}".format(properties))
+
+            set(**properties_copy)
+
+    # Properly closes the connection with the Rich Presence.
+    # Internally clears the info, no need to call the clear method prior.
+    @presence_disabled
+    def close():
+
+        rich_print("Closing DRP connection.")
+
+        global presence_object
+        presence_object.close()
+
+        rich_print("Successfully closed.")
+
+    # Sets the Presence to start_state properties.
+    @presence_disabled
+    def set_start(label_name, interaction):
+
+        global start_state, start_label
+
+        # If there are multiple start labels:
+        if isinstance(start_label, list):
+            if label_name in start_label:
+                set(**start_state)
+
+        # If there is only one start label:
+        elif label_name == start_label:
+            set(**start_state)
+
+
+    ## NOTE: clear seems to have its effect delayed if called too soon
+    ##       after establishing the connection (first_setup) or another clear call.
+    ## 
+    ##       The delay seems to be about 10s on average.
+    ##       The minimum wait time to avoid this seems to be about 15s.
+    ##
+    ##       Same happens with the close method defined below.
+
+    # Clears all the info in the presence, hiding the game being played.
+    @presence_disabled
+    def clear():
+
+        global properties
+
+        print("clear called.")
+
+        # First, get rid of images if they're present.
+        # presence_object.update(large_image = None, small_image = None)
+
+        # Clear currently recorded properties.
+        properties = {}
+        
+        backup_properties()
+        # global properties_copy
+        # properties_copy = {}
+
+        global presence_object
+        presence_object.clear()
+
+
     # Class of object used for interacting with the Rich Presence.
     class RenPyDiscord(NoRollback):
 
         # Called when defined.
         def __init__(self):
-
-            # Dict of properties used in the first_setup.
-            self.original_properties = {}
-
-            # Dict of currently used Presence properties.
             self.properties = {}
 
-            # Runs the first setup.
-            self.first_setup()
+    # Current properties of the presence.
+    global properties
+    properties = {} 
 
-        # Sets the initial state and callbacks.
-        @presence_disabled
-        def first_setup(self):
+    # First properties displayed.
+    global original_properties, main_menu_state    
+    original_properties = deepcopy(main_menu_state)
 
-            # Store properties used for the first setup.
-            global main_menu_state
-            self.original_properties = main_menu_state
-
-            # If "start" for calculating elapsed time is not provided in the state,
-            # set it here to the recorded start_time.
-            global start_time
-            if not "start" in self.original_properties:
-                self.original_properties["start"] = start_time
-
-            # Sets the presence state to the original properties, those just gotten.
-            self.reset()
-
-            # Following are all methods being appended to different callbacks.
-            # Callbacks are lists of methods that are ran when something happens.
-            # As creators can define them themselves, they're accessed here and changed rather than overwritten.
-
-            # quit_callbacks trigger when quitting the game. Serves to properly close the connection to the Presence.
-            renpy.config.quit_callbacks.append(self.close)
-
-            # rollback_check is what makes rollback and save/load work.
-            # after_load_callbacks trigger when a game is loaded.
-            renpy.config.after_load_callbacks.append(self.rollback_check)
-            # interact_callbacks trigger on every interaction.
-            renpy.config.interact_callbacks.append(self.rollback_check)
-
-            # start_callbacks trigger when the game is done launching. Records the presence's initial properties into a global var.
-            # Even though backup_properties is triggered during init, the global var is overwritten afterwards by a default statement.
-            renpy.config.start_callbacks.append(self.backup_properties)
-
-            # start_callbacks trigger when the game is done launching. Records the presence's initial properties into a global var.
-            renpy.config.label_callback = self.set_start
-            # Prepared for Ren'Py 8.0.4
-            # renpy.config.label_callbacks.append(self.set_start)
-
-        # Sets the state to provided properties.
-        @presence_disabled
-        def set(self, **properties):
-
-            # Records all the properties passed to the Presence.
-            self.properties = deepcopy(properties)
-
-            global start_time
-
-            # If start is specified in the passed properties:
-            if "start" in self.properties:
-
-                # First special argument, restores start_time
-                if self.properties["start"] == "start_time":
-                    self.properties["start"] = start_time
-
-                # Second special argument, resets time to 0:0.
-                elif properties["start"] == "new_time":
-                    self.properties["start"] = time.time()
-
-            # If "start" for calculating elapsed time is not provided in the state,
-            # set it here to the recorded start_time.
-            else:
-
-                # if properties:
-                self.properties["start"] = start_time
-
-            # Record the updated properties into a global var.
-            self.backup_properties()
-
-            # Update the presence.
-            global presence_object
-            presence_object.update(**self.properties)
-
-        # Updates the provided properties, while leaving others as they are.
-        @presence_disabled
-        def update(self, **properties):
-
-            global start_time
-
-            # If start is specified in the passed properties:
-            if "start" in properties:
-
-                # First special argument, restores start_time
-                if properties["start"] == "start_time":
-                    self.properties["start"] = start_time
-                    del properties["start"]    
-
-                # Second special argument, resets time to 0:0.
-                elif properties["start"] == "new_time":
-                    self.properties["start"] = time.time()
-                    del properties["start"]          
- 
-            # Update properties passed.
-            for p in properties:
-                self.properties[p] = properties[p]
-
-            # Record the updated properties into a global var.
-            self.backup_properties()
-
-            # Update the presence.
-            global presence_object
-            presence_object.update(**self.properties)
-
-        # Resets the presence to the original properties, gotten from rich_presence.main_menu_state.
-        @presence_disabled
-        def reset(self):
-
-            # Sets the initial state.
-            self.set(**self.original_properties)
-
-        # Clears all the info in the presence, hiding the game being played.
-        @presence_disabled
-        def clear(self):
-
-            print("clear called.")
-
-            # First, get rid of images if they're present.
-            # presence_object.update(large_image = None, small_image = None)
-
-            # Clear currently recorded properties.
-            self.properties = {}
-            
-            self.backup_properties()
-            # global properties_copy
-            # properties_copy = {}
-
-            global presence_object
-            presence_object.clear()
-
-        ## NOTE: clear seems to have its effect delayed if called too soon
-        ##       after establishing the connection (first_setup) or another clear call.
-        ## 
-        ##       The delay seems to be about 10s on average.
-        ##       The minimum wait time to avoid this seems to be about 15s.
-        ##
-        ##       Same happens with the close method defined below.
-
-        # Sets the Presence to start_state properties.
-        @presence_disabled
-        def set_start(self, label_name, interaction):
-
-            global start_state, start_label
-
-            # If there are multiple start labels:
-            if isinstance(start_label, list):
-                if label_name in start_label:
-                    self.set(**start_state)
-
-            # If there is only one start label:
-            elif label_name == start_label:
-                self.set(**start_state)
-
-        # Sets the properties to those from start_state and records properties into a global var.
-        # This var is rollback compatible, unlike this object, and is what makes rollback_check below work.
-        # Decorator excluded, it's only used in methods that have the decorator already.
-        def backup_properties(self):
-
-            global properties_copy
-            properties_copy = deepcopy(self.properties)
-            print("Properties recorded: {}".format(properties_copy))
-
-        # Compares the properties to their rollback-able version and updates the presence accordingly if they do not match.
-        # This is what makes the script rollback/rollforward compatible.
-        @presence_disabled
-        def rollback_check(self):
-
-            global properties_copy
-
-            if self.properties != properties_copy:
-
-                print("Properties do not match during this interaction. They will be set to Copy.")
-                print("Copy: {}".format(properties_copy))
-                print("This: {}".format(self.properties))
-
-                self.set(**properties_copy)
-
-        # Properly closes the connection with the Rich Presence.
-        # Internally clears the info, no need to call the clear method prior.
-        @presence_disabled
-        def close(self):
-
-            rich_print("Closing DRP connection.")
-
-            global presence_object
-            presence_object.close()
-
-            rich_print("Successfully closed.")
-
-# The object for interacting with Rich Presence defined.
-default discord = rich_presence.RenPyDiscord()
+    # Insert Time Elapsed into original properties if not provided.
+    if not "start" in original_properties:
+        original_properties["start"] = start_time
 
 # Dictionary mirroring the properties for Rollback reasons.
-default rich_presence.properties_copy = {}
+default discord.properties_copy = {}
