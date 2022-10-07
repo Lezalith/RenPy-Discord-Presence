@@ -237,7 +237,7 @@ init -950 python in discord:
         original_properties["start"] = "start_time"
 
 # Non-rollbackable variable holding a dict of current Presence properties.
-default discord.no_rollback = discord.RenPyDiscord()
+define discord.no_rollback = discord.RenPyDiscord()
 
-# Rollbackable variable holding a dict of current Presence properties.
+# Rollbackable and Saveable variable holding a dict of current Presence properties.
 default discord.rollback_properties = {}
