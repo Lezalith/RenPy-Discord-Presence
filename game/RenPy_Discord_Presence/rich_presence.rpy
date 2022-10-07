@@ -1,27 +1,22 @@
-﻿# TODO: time in second_example stays the same.
-# TODO: label_callback is NOT a list! BUT NEW VAR GOT ADDED NOT REMOVED SO ITS PROBABLY OKAY.
+﻿# Following are all functions being appended to different callbacks. Callbacks are lists of methods that are ran when something happens.
+# If you need one of these variables in your code, it should be deleted from here, defined in your desired place, and should include function included here.
 
-# Following are all methods being appended to different callbacks.
-# Callbacks are lists of methods that are ran when something happens.
-# As creators can define them themselves, they're accessed here and changed rather than overwritten.
+# Triggers upon quitting the game, properly closes connection to the Presence.
+define config.quit_callbacks = [discord.close] 
 
-# quit_callbacks trigger when quitting the game. Serves to properly close the connection to the Presence.
+# Triggers upon loading a saved game, updates properties to those in the save file.
+define config.after_load_callbacks = [discord.on_load] 
 
-# rollback_check is what makes rollback and save/load work.
-# after_load_callbacks trigger when a game is loaded.
-# interact_callbacks trigger on every interaction.
+# Triggers upon every interaction, check whether rollbackable and non-rollbackable properties match.
+# This is what makes Presence rollback compatible. 
+define config.interact_callbacks = [discord.rollback_check] 
 
-# start_callbacks trigger when the game is done launching. Records the presence's initial properties into a global var.
-# Even though record_into_rollback is triggered during init, the global var is overwritten afterwards by a default statement.
-
-# start_callbacks trigger when the game is done launching. Records the presence's initial properties into a global var.
-
-define config.quit_callbacks = [discord.close]
-define config.after_load_callbacks = [discord.on_load]
-define config.interact_callbacks = [discord.rollback_check]
+# Triggers when the game is done launching. Resets the properties to the default ones.
 define config.start_callbacks = [discord.reset]
+
+# Triggers when entering a new label. This is responsible for setting start_state.
 define config.label_callback = discord.set_start
-# define config.label_callbacks = [discord.set_start]
+# define config.label_callbacks = [discord.set_start] (Prepared for Ren'Py 8.0.4)
 
 init -950 python in discord:
 
