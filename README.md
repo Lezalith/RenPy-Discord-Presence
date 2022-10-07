@@ -1,5 +1,5 @@
 # Discord Rich Presence Support for Ren'Py Projects
-This script creates a `RenPyDiscord` object stored in the `discord` variable, which can be used to interact with Discord Rich Presence. It can only be run on Ren'Py 8 - Unlike Ren'Py 7, that one runs on Python 3, and the module this script depends on only has a Py3 version.
+This script contains a `discord` namespace containing functions used to interact with Discord Rich Presence. It is very intuitive and simple to use, but can only be run on Ren'Py 8, as the module this script depends on doesn't have a Py2 version.
 
 An Application set up on the [Discord Developer Portal](https://discord.com/developers) is required for every game supporting Rich Presence. After the App is created, you will receive the necessary **Application ID** to insert into **settings.rpy**, and it is also where all the images you plan on displaying in the presence need to be uploaded first. What it is and how to work with it is covered [under the **Wiki** tab](https://github.com/Lezalith/RenPy_Discord_Presence/wiki/Interacting-with-Discord-Developer-Portal) on this GitHub page, local copy of which is included in the code files.
 
@@ -18,7 +18,7 @@ To get the script, download one of the releases on the right side of the GitHub 
 There are two versions for every release:
 
 ## Project Version
-**Project Version** contains the whole code of this repository. It is a project that can be launched from the Ren'Py Launcher and that shows how simple it is to update the presence status from both **screens** and **labels**, utilizing the `set` and `update` [methods described below](https://github.com/Lezalith/RenPy_Discord_Presence#list-of-methods). Simply launch the project and keep an eye on your Discord profile.
+**Project Version** contains the whole code of this repository. It is a project that can be launched from the Ren'Py Launcher and that shows how simple it is to update the presence status from both **screens** and **labels**, utilizing the `set` and `update` [functions described below](https://github.com/Lezalith/RenPy_Discord_Presence#list-of-functions). Simply launch the project and keep an eye on your Discord profile.
 
 All of the project's code is located in its **script.rpy** file.
 
@@ -42,22 +42,39 @@ define rich_presence.main_menu_state = { "details" : "In the Main Menu.",
 ```
 
 There's also the `start_state`. Just like `main_menu_state`, this is a set of properties, ones that are set when the game starts.
-Script acknowledges this by reaching the start label, name of which you should set in the `start_label` variable.
+Script acknowledges this by reaching the start label, name of which you need to set in the `start_label` variable. It can also be a **list** of label names instead, in case you have multiple labels this game can **Start** at.
+
+Unlike `main_menu_state`, `start_state` doesn't *have to* be set, and `start_label` can be set to **None** to ignore its functionality.
 ```py
 define rich_presence.start_state = { "details" : "Reading the Story.",
                                        "large_image" : "lezalith"}
 
-define rich_presence.start_label = "label_example"
+define rich_presence.start_label = "start"
 ```
 
-# List of Methods
-Methods used to interact with the presence are bound to a defined `RenPyDiscord` instance stored in the `discord` variable.
+Finally, there are **log** variables controlling what is printed out. Prints are recorded in the game's console and in the **log.txt** file. There are three of them:
+
+```py
+# Shows whether the Presence was initialized and closed correctly.
+define discord.log_important = True 
+
+# Records properties whenever they change with set or update methods.
+define discord.log_properties = True 
+
+# Notes whenever the properties get rolled back or loaded from a save file, and what they were restored into.
+define discord.log_restore = True 
+```
+
+I recommend leaving these on, it's information your players can pass on to you in case they're having troubles with your game. 
+
+# List of Functions
+Functions used to interact with the presence are defined inside the `discord` namespace.
 Here are the core two:
 
 `discord.set` takes **property names** corresponding to presence elements for arguments. All elements [are listed below](https://github.com/Lezalith/RenPy_Discord_Presence#basic-rich-presence-elements).
 If some properties are already set in the presence, they are discarded and only the passed properties are kept.
 
-An exception to this is the `start` property, which sticks to time since the first launch unless specified.
+An exception to this is the `start` property, which sticks to time since this session's launch unless specified.
 ```py
 discord.set(details = "Setting new Discord Rich Presence.")
 ```
@@ -88,8 +105,8 @@ discord.update(state = "It's super easy in Ren'Py 8!")
 
 `start` is a time from which Time Elapsed is calculated. It can take four different values:
 
-- `"start_time"` which sets Time Elapsed to the time since this game session's launch.
-- `"new_time"` which resets Time Elapsed to 0:0. It does **not** overwrite the recorded `start_time` by itself, but you can change that one directly if you need to.
+- `"start_time"` makes Time Elapsed refer to the `start_time` variable, where time since this game session's launch is recorded.
+- `"new_time"` inserts a new unix timestamp, reseting Time Elapsed to 0:0. It does **not** overwrite the recorded `start_time` by itself, but you can change that one directly if you need to.
 - `None` which results in Time Elapsed being **hidden**.
 - **Unix timestamp** from which Time Elapsed is calculated.
 ```py
@@ -178,7 +195,7 @@ All presence properties are compatible with both saving games and rollbacking di
 ### Update Delays
 A Discord Desktop Application running on the same machine as the game that's updating the presence, has updates on the player's profile shown instantly. This is not always the case for other Discord Desktop Apps - even ones where the account of the **player** is logged in, curiously enough.
 
-How often this delay occurs seems to correlate with the frequency of the presence updates, but you shouldn't worry about it too much, as it seems to be about 12s on average when it does occur.
+How often this delay occurs seems to correlate with the frequency of the presence updates and especially affects the `clear` method, but you shouldn't worry about it too much, as it seems to be about 12s on average when it does occur.
 
 ### Too Many Connections
 Connecting to the Discord Rich Presence multiple times in quick succession will result in the connection not being established. In practice, this happens when you...
