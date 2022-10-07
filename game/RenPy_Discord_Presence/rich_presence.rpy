@@ -85,57 +85,59 @@ init -950 python in discord:
         rollback_properties = deepcopy(no_rollback.properties)
         print("Properties recorded: {}".format(rollback_properties))
 
+    # Changes "start_time" in start arg to the variable.
+    def clean_properties(d):
+
+        d = deepcopy(d)
+
+        global start_time
+
+        if "start" in d:
+            if d["start"] == "start_time":
+                d["start"] = start_time
+
+        return d
+
     # Sets the state to provided properties.
     @presence_disabled
     def set(**props):
 
-        # Records all the properties passed to the Presence.
-        global no_rollback
-        no_rollback.properties = deepcopy(props)
-
-        global start_time
-
         # If start is specified in the passed properties:
-        if "start" in no_rollback.properties:
+        if "start" in props:
 
-            # First special argument, restores start_time
-            if no_rollback.properties["start"] == "start_time":
-                no_rollback.properties["start"] = start_time
-
-            # Second special argument, resets time to 0:0.
-            elif no_rollback.properties["start"] == "new_time":
-                no_rollback.properties["start"] = time.time()
+            # Special argument, resets time to 0:0.
+            if props["start"] == "new_time":
+                props["start"] = time.time()
 
         # If "start" for calculating elapsed time is not provided in the state,
         # set it here to the recorded start_time.
         else:
 
             # if no_rollback.properties:
-            no_rollback.properties["start"] = start_time
+            props["start"] = "start_time"
+
+        # Records all the properties passed to the Presence.
+        global no_rollback
+        no_rollback.properties = deepcopy(props)
 
         # Record the updated properties into a global var.
         backup_properties()
 
         # Update the presence.
         global presence_object
-        presence_object.update(**no_rollback.properties)
+        presence_object.update(**clean_properties(no_rollback.properties))
 
     # Updates the provided properties, while leaving others as they are.
     @presence_disabled
     def update(**props):
 
-        global no_rollback, start_time
+        global no_rollback
 
         # If start is specified in the passed properties:
         if "start" in props:
 
-            # First special argument, restores start_time
-            if props["start"] == "start_time":
-                no_rollback.properties["start"] = start_time
-                del props["start"]    
-
-            # Second special argument, resets time to 0:0.
-            elif props["start"] == "new_time":
+            # Special argument, resets time to 0:0.
+            if props["start"] == "new_time":
                 no_rollback.properties["start"] = time.time()
                 del props["start"]          
 
@@ -148,7 +150,7 @@ init -950 python in discord:
 
         # Update the presence.
         global presence_object
-        presence_object.update(**no_rollback.properties)
+        presence_object.update(**clean_properties(no_rollback.properties))
 
     # Resets the presence to the original properties, gotten from discord.main_menu_state.
     @presence_disabled
@@ -175,9 +177,9 @@ init -950 python in discord:
 
         if no_rollback.properties != rollback_properties:
 
-            print("Properties do not match during this interaction. They will be set to Copy.")
-            print("Copy: {}".format(rollback_properties))
-            print("This: {}".format(no_rollback.properties))
+            print("Properties do not match during this interaction. They will be set to Rollback.")
+            print("Rollback: {}".format(rollback_properties))
+            print("No_Rollback: {}".format(no_rollback.properties))
 
             set(**rollback_properties)
 
@@ -252,7 +254,7 @@ init -950 python in discord:
 
     # Insert Time Elapsed into original properties if not provided.
     if not "start" in original_properties:
-        original_properties["start"] = start_time
+        original_properties["start"] = "start_time"
 
 default discord.no_rollback = discord.RenPyDiscord()
 

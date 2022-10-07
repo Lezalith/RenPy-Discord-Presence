@@ -88,7 +88,7 @@ discord.update(state = "It's super easy in Ren'Py 8!")
 
 `start` is a time from which Time Elapsed is calculated. It can take four different values:
 
-- `"start_time"` which sets Time Elapsed to the time since the game's launch.
+- `"start_time"` which sets Time Elapsed to the time since the game session's launch.
 - `"new_time"` which resets Time Elapsed to 0:0. It does **not** overwrite the recorded `start_time`.
 - `None` which results in Time Elapsed being **hidden**.
 - **Unix timestamp** from which Time Elapsed is calculated.
@@ -167,13 +167,11 @@ Discord presence only works for users who have the Discord desktop application i
 
 This means that players who have Discord can enjoy the benefits while those who do not aren't hindered in any way.
 
-## Saving and Loading
-All presence properties, along with time property that determines whether Time Elapsed is shown, are saved in save files and restored when the save is loaded.
+## Saving, Loading and Rollback
+All presence properties are compatible with both saving games and rollbacking dialogue:
 
-Upon loading a save, Time Elapsed is reset to 0:0.
- 
-## Rollback
-The presence *should* be fully compatible with rollback and rollforward features of Ren'Py. 
+- Loading a saved game will restore the properties that were present when the game was saved. `start` possibly preserves the value of `start_time` and refers to the **new** Time Elapsed.
+- Rollbacking past a change in the presence will return the presence to the original state, as would be expected.
 
 ## Limitations
 
