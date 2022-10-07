@@ -88,8 +88,8 @@ discord.update(state = "It's super easy in Ren'Py 8!")
 
 `start` is a time from which Time Elapsed is calculated. It can take four different values:
 
-- `"start_time"` which sets Time Elapsed to the time since the game session's launch.
-- `"new_time"` which resets Time Elapsed to 0:0. It does **not** overwrite the recorded `start_time`.
+- `"start_time"` which sets Time Elapsed to the time since this game session's launch.
+- `"new_time"` which resets Time Elapsed to 0:0. It does **not** overwrite the recorded `start_time` by itself, but you can change that one directly if you need to.
 - `None` which results in Time Elapsed being **hidden**.
 - **Unix timestamp** from which Time Elapsed is calculated.
 ```py
@@ -163,7 +163,7 @@ discord.set(state = "Reading a Chapter",
 
 # Important Notes
 ## Discord Not Installed
-Discord presence only works for users who have the Discord desktop application installed. For players that do not have Discord installed, this entire code will simply do nothing. `discord` variable is still defined as an instance of a `RenPyDiscord` object, but none of its methods do anything.
+Discord presence only works for users who have the Discord desktop application installed. For players that do not have Discord installed, this entire code will simply do nothing. `discord` variable is still defined with all the properties and methods, but none of the methods do anything.
 
 This means that players who have Discord can enjoy the benefits while those who do not aren't hindered in any way.
 

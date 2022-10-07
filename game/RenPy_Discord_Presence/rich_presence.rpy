@@ -12,7 +12,7 @@
 # interact_callbacks trigger on every interaction.
 
 # start_callbacks trigger when the game is done launching. Records the presence's initial properties into a global var.
-# Even though backup_properties is triggered during init, the global var is overwritten afterwards by a default statement.
+# Even though record_into_rollback is triggered during init, the global var is overwritten afterwards by a default statement.
 
 # start_callbacks trigger when the game is done launching. Records the presence's initial properties into a global var.
 
@@ -25,35 +25,50 @@ define config.label_callback = discord.set_start
 
 init -950 python in discord:
 
-    # Used instead of regular print across this code.
-    # Difference is that it only prints out text if `log` is set to True in settings.rpy
-    def rich_print(s):
-        global log
-        if log is True:
-            print(s)
+    # Functions used instead of `print` across this code.
+    # Difference is that these only prints out text if the appropriate `log` variable is set to True in settings.rpy
+    def print_important(s):
+        global log_important
+        if log_important is True:
+            print("\n" + s)
+    def print_properties(s):
+        global log_properties
+        if log_properties is True:
+            print("\n" + s)
+    def print_rollback(s):
+        global log_restore
+        if log_restore is True:
+            print("\n" + s)
+
+    # Takes dict, returns string with the dict better represented for printing purposes.
+    def format_properties(d):
+        s = ""
+        for key in d:
+            s += "\n{}: ".format(key).ljust(14) + " {}".format(d[key])
+        return s
 
     # Alpha and Omega of Rich Presence.
     import pypresence
 
     # Try to set up the Presence object and connect through it to the Discord Presence App.
     try:
-        rich_print("Attempting to connect to Discord Rich Presence...")
+        print_important("Attempting to connect to Discord Rich Presence...")
         presence_object = pypresence.Presence(application_id)
         presence_object.connect()
-        rich_print("Successfully connected.")
+        print_important("Successfully connected.")
 
     # Discord Desktop App was not found installed.
     except pypresence.DiscordNotFound:
-        rich_print("Discord Desktop App not found. Rich Presence will be disabled.")
+        print_important("Discord Desktop App not found. Rich Presence will be disabled.")
         presence_object = None
 
     # Error occured while connecting to the Presence App.
     # Note: This is also raised when the Desktop App is installed but no account is logged in.
     except pypresence.DiscordError:
-        rich_print("Error occured during connection. Rich Presence will be disabled.")
+        print_important("Error occured during connection. Rich Presence will be disabled.")
         presence_object = None
 
-    # For interacting with Rollback.
+    # For compatibility with Rollback.
     from store import NoRollback
 
     # Used to display time in the presence.
@@ -66,9 +81,6 @@ init -950 python in discord:
     # For copying dictionaries with properties.
     from copy import deepcopy
 
-    # Returns None, no matter the arguments.
-    def return_none(*_args, **_kwargs): pass
-
     # Decorator that is called before every RenPyDiscord method.
     # If DiscordNotFound or DiscordError were encountered during init, return_none follows rather than the method called originally.
     def presence_disabled(func):
@@ -78,127 +90,103 @@ init -950 python in discord:
         else:
             return func
 
-    # REWRITE
-    def backup_properties():
+    # Returns None, no matter the arguments.
+    def return_none(*_args, **_kwargs): pass
 
+    # Records properties from non-rollback var to rollback var.
+    def record_into_rollback():
         global no_rollback, rollback_properties
         rollback_properties = deepcopy(no_rollback.properties)
-        print("Properties recorded: {}".format(rollback_properties))
 
-    # Changes "start_time" in start arg to the variable.
+    # Takes properties, returns a string with them better formatted for printing purposes.
     def clean_properties(d):
-
         d = deepcopy(d)
 
         global start_time
-
         if "start" in d:
             if d["start"] == "start_time":
                 d["start"] = start_time
 
         return d
 
-    # Sets the state to provided properties.
+    # Sets the presence to provided properties.
+    # Prints out new properties if log is True.
     @presence_disabled
-    def set(**props):
+    def set(log = True, **props):
 
-        # If start is specified in the passed properties:
-        if "start" in props:
-
-            # Special argument, resets time to 0:0.
-            if props["start"] == "new_time":
+        if "start" in props: # If start is specified in the passed properties:
+            if props["start"] == "new_time": # Special argument, resets time to 0:0.
                 props["start"] = time.time()
 
         # If "start" for calculating elapsed time is not provided in the state,
         # set it here to the recorded start_time.
         else:
-
-            # if no_rollback.properties:
             props["start"] = "start_time"
 
         # Records all the properties passed to the Presence.
         global no_rollback
         no_rollback.properties = deepcopy(props)
 
-        # Record the updated properties into a global var.
-        backup_properties()
-
         # Update the presence.
         global presence_object
         presence_object.update(**clean_properties(no_rollback.properties))
 
+        # Record the updated properties into a rollbackable var.
+        record_into_rollback()
+
+        if log:
+            print_properties("Discord Presence Set:{}".format(format_properties(rollback_properties)))
+
     # Updates the provided properties, while leaving others as they are.
+    # Prints out new properties if log is True.
     @presence_disabled
     def update(**props):
-
-        global no_rollback
-
-        # If start is specified in the passed properties:
-        if "start" in props:
-
-            # Special argument, resets time to 0:0.
-            if props["start"] == "new_time":
-                no_rollback.properties["start"] = time.time()
-                del props["start"]          
+        if "start" in props: # If start is specified in the passed properties:
+            if props["start"] == "new_time": # Special argument, resets time to 0:0.
+                props["start"] = time.time()
 
         # Update properties passed.
+        global no_rollback
         for p in props:
             no_rollback.properties[p] = props[p]
 
-        # Record the updated properties into a global var.
-        backup_properties()
-
         # Update the presence.
         global presence_object
         presence_object.update(**clean_properties(no_rollback.properties))
+
+        # Record the updated properties into a rollbackable var.
+        record_into_rollback()
+
+        print_properties("Discord Presence Updated:{}".format(format_properties(rollback_properties)))
 
     # Resets the presence to the original properties, gotten from discord.main_menu_state.
     @presence_disabled
     def reset():
-
-        # Sets the initial state.
         global original_properties
         set(**original_properties)
 
-    # REWRITE.
+    # Sets Presence to properties found in the rollbackable var - that one is saved in save files.
     @presence_disabled
     def on_load():
+        print_rollback("Discord Presence has been loaded from a save file:{}".format(format_properties(rollback_properties)))
 
-        # Sets the initial state.
         global rollback_properties
-        set(**rollback_properties)
+        set(log = False, **rollback_properties)
 
-    # Compares the properties to their rollback-able version and updates the presence accordingly if they do not match.
+    # Compares the properties in rollbackable and non-rollbackable variables and restores the presence accordingly if they do not match.
     # This is what makes the script rollback/rollforward compatible.
     @presence_disabled
     def rollback_check():
-
         global no_rollback, rollback_properties
 
         if no_rollback.properties != rollback_properties:
+            print_rollback("Discord Presence does not match during this interaction. It is restored from the rollbackable variable:{}".format(format_properties(rollback_properties)))
 
-            print("Properties do not match during this interaction. They will be set to Rollback.")
-            print("Rollback: {}".format(rollback_properties))
-            print("No_Rollback: {}".format(no_rollback.properties))
+            set(log = False, **rollback_properties)
 
-            set(**rollback_properties)
-
-    # Properly closes the connection with the Rich Presence.
-    # Internally clears the info, no need to call the clear method prior.
-    @presence_disabled
-    def close():
-
-        rich_print("Closing DRP connection.")
-
-        global presence_object
-        presence_object.close()
-
-        rich_print("Successfully closed.")
-
-    # Sets the Presence to start_state properties.
+    # Sets the Presence to start_state properties when entering label(s) given in discord.start_label.
     @presence_disabled
     def set_start(label_name, interaction):
-
         global start_state, start_label
 
         # If there are multiple start labels:
@@ -210,41 +198,38 @@ init -950 python in discord:
         elif label_name == start_label:
             set(**start_state)
 
+    # Clears all the info in the presence, hiding the game being played.
+    @presence_disabled
+    def clear():
+        global no_rollback
+        no_rollback.properties = {}
+        
+        record_into_rollback()
+
+        global presence_object
+        presence_object.clear()
 
     ## NOTE: clear seems to have its effect delayed if called too soon
-    ##       after establishing the connection (first_setup) or another clear call.
+    ##       after establishing the connection or another clear call.
     ## 
     ##       The delay seems to be about 10s on average.
     ##       The minimum wait time to avoid this seems to be about 15s.
     ##
     ##       Same happens with the close method defined below.
 
-    # Clears all the info in the presence, hiding the game being played.
+    # Properly closes the connection with the Rich Presence.
+    # Internally clears the info, no need to call the clear method prior.
     @presence_disabled
-    def clear():
-
-        global no_rollback
-
-        print("clear called.")
-
-        # First, get rid of images if they're present.
-        # presence_object.update(large_image = None, small_image = None)
-
-        # Clear currently recorded properties.
-        no_rollback.properties = {}
-        
-        backup_properties()
-        # global rollback_properties
-        # rollback_properties = {}
+    def close():
+        print_important("Closing DRP connection.")
 
         global presence_object
-        presence_object.clear()
+        presence_object.close()
 
+        print_important("Successfully closed.")
 
-    # Class of object used for interacting with the Rich Presence.
+    # Subclass of the NoRollback, this holds the non-rollbackable variable of properties.
     class RenPyDiscord(NoRollback):
-
-        # Called when defined.
         def __init__(self):
             self.properties = {} 
 
@@ -256,7 +241,8 @@ init -950 python in discord:
     if not "start" in original_properties:
         original_properties["start"] = "start_time"
 
+# Non-rollbackable variable holding a dict of current Presence properties.
 default discord.no_rollback = discord.RenPyDiscord()
 
-# Dictionary mirroring the properties for Rollback reasons.
+# Rollbackable variable holding a dict of current Presence properties.
 default discord.rollback_properties = {}
