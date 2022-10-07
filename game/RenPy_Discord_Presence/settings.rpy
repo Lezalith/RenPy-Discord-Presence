@@ -43,4 +43,4 @@ define discord.start_label = "functionality_example"
 # Prints are shown inside game's console (if turned on) and in the game's log.txt file.
 define discord.log_important = True # Shows whether the Presence was initialized and closed correctly.
 define discord.log_properties = True # Records properties whenever they change with set or update methods.
-define discord.restore = True # Notes whenever the properties get rolled back or loaded from a save file, and what they were restored into.
+define discord.log_restore = True # Notes whenever the properties get rolled back or loaded from a save file, and what they were restored into.
