@@ -21,14 +21,15 @@ To get the script, download one of the releases on the right side of the GitHub 
 - **python-packages** folder contains the **pypresence** module that handles everything Discord-related. [![pypresence](https://img.shields.io/badge/using-pypresence-00bb88.svg?style=for-the-badge&logo=discord&logoWidth=20)](https://github.com/qwertyquerty/pypresence)
 
 - **RenPy_Discord_Presence** folder contains this script's files:
-    - **rich_presence.rpy**  holds the entire script code
+    - **rich_presence.rpy**  holds the entire script code.
     - **settings.rpy** contains the two [**Related Variables**](https://github.com/Lezalith/RenPy_Discord_Presence#related-variables) described below.
     - **discord_developer_portal.md** is a local copy of the [**Wiki** tab](https://github.com/Lezalith/RenPy_Discord_Presence/wiki/Interacting-with-Discord-Developer-Portal), as already mentioned.
+    - **LICENSE.TXT**, a file containing the MIT License that I ask you keep when downloading the files.
 
 There are two versions for every release:
 
 ## Project Version
-**Project Version** contains the whole code of this repository. It is a project that can be launched from the Ren'Py Launcher and that shows how simple it is to update the presence status from both **screens** and **labels**, utilizing the `set` and `update` [functions](https://github.com/Lezalith/RenPy_Discord_Presence#functions) and [screen actions](https://github.com/Lezalith/RenPy_Discord_Presence#screen-actions) described below. Simply launch the project and keep an eye on your Discord profile.
+**Project Version** contains the whole code of this repository. It is a project that can be launched from the Ren'Py Launcher and that shows how simple it is to update the presence status from both **screens** and **labels**, utilizing the `set` and `update` [functions](https://github.com/Lezalith/RenPy_Discord_Presence#functions) and their [screen actions](https://github.com/Lezalith/RenPy_Discord_Presence#screen-actions) counterparts, both described below. Simply launch the project and keep an eye on your Discord profile.
 
 All of the project's code is located in its **script.rpy** file.
 
