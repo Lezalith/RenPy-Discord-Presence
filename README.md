@@ -18,7 +18,7 @@ To get the script, download one of the releases on the right side of the GitHub 
 There are two versions for every release:
 
 ## Project Version
-**Project Version** contains the whole code of this repository. It is a project that can be launched from the Ren'Py Launcher and that shows how simple it is to update the presence status from both **screens** and **labels**, utilizing the `set` and `update` [functions described below](https://github.com/Lezalith/RenPy_Discord_Presence#functions). Simply launch the project and keep an eye on your Discord profile.
+**Project Version** contains the whole code of this repository. It is a project that can be launched from the Ren'Py Launcher and that shows how simple it is to update the presence status from both **screens** and **labels**, utilizing the `set` and `update` [functions](https://github.com/Lezalith/RenPy_Discord_Presence#functions) and [screen actions](https://github.com/Lezalith/RenPy_Discord_Presence#screen-actions) described below. Simply launch the project and keep an eye on your Discord profile.
 
 All of the project's code is located in its **script.rpy** file.
 
