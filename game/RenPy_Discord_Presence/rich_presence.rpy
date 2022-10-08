@@ -236,6 +236,80 @@ init -950 python in discord:
     if not "start" in original_properties:
         original_properties["start"] = "start_time"
 
+    from store import Action
+
+    # Custom Screen Action, replaces Function(discord.set). 
+    @presence_disabled
+    @renpy.pure
+    class Set(Action):
+
+        # Remembers the properties given.
+        def __init__(self, **properties):
+            self.properties = properties
+
+        # What happens when the Action is executed.
+        def __call__(self):
+            set(**self. properties)
+
+            # Refresh the screen.
+            renpy.restart_interaction()
+
+        # Determines whether button is sensitive. True if Presence was successfully initialized.
+        def get_sensitive(self):
+            global presence_object
+            return presence_object is not None
+
+        # Determines whether button is selected. True is current properties match those given to the Action.
+        # Exception to this is `start`. If it's not provided in the Action and but it's present in rollback_properties,
+        # it is ignored in the comparison.
+        def get_selected(self):
+            global rollback_properties
+
+            if "start" in rollback_properties and not "start" in self.properties:
+
+                a = deepcopy(rollback_properties)
+                del a["start"]
+
+                return self.properties == a
+
+            return self.properties == rollback_properties
+
+    # Custom Screen Action, replaces Function(discord.update). 
+    @presence_disabled
+    @renpy.pure
+    class Update(Action):
+
+        # Remembers the properties given.
+        def __init__(self, **properties):
+            self.properties = properties
+
+        # What happens when the Action is executed.
+        def __call__(self):
+            update(**self. properties)
+
+            # Refresh the screen.
+            renpy.restart_interaction()
+
+        # Determines whether button is sensitive. True if Presence was successfully initialized.
+        def get_sensitive(self):
+            global presence_object
+            return presence_object is not None
+
+        # Determines whether button is selected. True is current properties match those given to the Action.
+        # Exception to this is `start`. If it's not provided in the Action and but it's present in rollback_properties,
+        # it is ignored in the comparison.
+        def get_selected(self):
+            global rollback_properties
+
+            if "start" in rollback_properties and not "start" in self.properties:
+
+                a = deepcopy(rollback_properties)
+                del a["start"]
+
+                return self.properties == a
+
+            return self.properties == rollback_properties
+
 # Non-rollbackable variable holding a dict of current Presence properties.
 define discord.no_rollback = discord.RenPyDiscord()
 

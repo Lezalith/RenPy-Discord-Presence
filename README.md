@@ -18,7 +18,7 @@ To get the script, download one of the releases on the right side of the GitHub 
 There are two versions for every release:
 
 ## Project Version
-**Project Version** contains the whole code of this repository. It is a project that can be launched from the Ren'Py Launcher and that shows how simple it is to update the presence status from both **screens** and **labels**, utilizing the `set` and `update` [functions described below](https://github.com/Lezalith/RenPy_Discord_Presence#list-of-functions). Simply launch the project and keep an eye on your Discord profile.
+**Project Version** contains the whole code of this repository. It is a project that can be launched from the Ren'Py Launcher and that shows how simple it is to update the presence status from both **screens** and **labels**, utilizing the `set` and `update` [functions described below](https://github.com/Lezalith/RenPy_Discord_Presence#functions). Simply launch the project and keep an eye on your Discord profile.
 
 All of the project's code is located in its **script.rpy** file.
 
@@ -67,8 +67,9 @@ define discord.log_restore = True
 
 I recommend leaving these on, it's information your players can pass on to you in case they're having troubles with your game. 
 
-# List of Functions
-Functions used to interact with the presence are defined inside the `discord` namespace.
+# Interacting With The Presence
+## Functions
+Functions used to interact with the presence are defined inside the `discord` namespace. They're meant to be used inside `label`s and `init python` blocks.
 Here are the core two:
 
 `discord.set` takes **property names** corresponding to presence elements for arguments. All elements [are listed below](https://github.com/Lezalith/RenPy_Discord_Presence#basic-rich-presence-elements).
@@ -86,10 +87,32 @@ discord.set(details = "Setting new Discord Rich Presence.")
 discord.update(state = "State got changed while details stayed the same!")
 ```
 
+## Screen Actions
+`discord.set` and `discord.update` have Screen Actions counterparts, intuitive alternatives to `Function(discord.set)` and `Function(discord.update)`.
+
+Same rules apply for both Actions:
+
+- They are sensitive as long as Presence was successfully initialized.
+- They are selected if properties given to the Action inside the screen match currently shown properties. Exception to this is `start` - if it's not specified inside the screen but is present in currently shown properties, it is ignored in the comparison.
+
+Here's an example of a simple screen with both Actions present. [Almost identical example is below](https://github.com/Lezalith/RenPy_Discord_Presence#screen-example).
+```py
+screen both_screen_actions():
+
+    vbox:
+        align (0.5, 0.5)
+
+        textbutton "This one sets the state only.":
+            action discord.Set(state = "Example State set.")
+
+        textbutton "This sets details and leaves the state alone.":
+            action discord.Update(details = "Details added while state was kept!")
+```
+
 # Basic Rich Presence Elements
 There are many things that can be shown inside Rich Presence. Below is a screenshot of a couple elements of Rich Presence highlighted, with their **property name** equivalent below. All the **property names** are listed below the screenshot with a short example using `discord.update`.
 
-In the preview project, dictionary with all the properties for this example is stored in the `rich_presence.first_example` variable, and `rich_presence.main_menu_state` is redirected to it.
+In the preview project, dictionary with all the properties for this example is stored in the `rich_presence.first_example` variable.
 
 ![rich_presence_example](https://user-images.githubusercontent.com/56970124/190881237-3f1e0b72-d954-4af2-8a93-a35e59bdf51e.png)
 
@@ -216,6 +239,7 @@ This makes the game unresponsive for the approximate span since the oldest succe
 My guess is that it's a precaution against malicious exploits on Discord's part and cannot be affected by Python code, but as is the case with [Update Delays](https://github.com/Lezalith/RenPy_Discord_Presence#update-delays) it's not a big issue - players should fulfill these requirements incredibly rarely, if ever.
 
 # Examples
+## Screen Example
 Here is an example of two `textbutton`s in a screen, one with `discord.set` and other with `discord.update`.
 ```py
 screen screen_example():
@@ -224,12 +248,13 @@ screen screen_example():
         align (0.5, 0.5)
 
         textbutton "This one sets the state only.":
-            action Function(discord.set, state = "Example State.")
+            action discord.Set(state = "Example State.")
 
         textbutton "This sets details and leaves the state alone.":
-            action Function(discord.update, details = "Example Details.")
+            action discord.Set(details = "Example Details.")
 ```
 
+## Label Example
 And here is the example **label** used inside the preview project that showcases all of the functions. Everything is explained by the dialogue lines.
 ```py
 label functionality_example():
@@ -280,7 +305,7 @@ label functionality_example():
 ```
 
 # Support
-If you need help setting up this script or the App on Discord's Dev Portal, you can contact me on Discord. Either write me a DM, **Lezalith (LezCave.com)#2853**, or preferably **[join my server](https://discord.gg/Nnf6mMnfSe)**! It's a server dedicated to my website, **[LezCave.com](https://www.lezcave.com)**, where I post Ren'Py scripts and tutorials. 
+If you need help setting up this script or the App on Discord's Dev Portal, you can contact me on **Discord** itself. Either write me a DM, **Lezalith (LezCave.com)#2853**, or preferably **[join my server](https://discord.gg/Nnf6mMnfSe)**! It's a server dedicated to my website, **[LezCave.com](https://www.lezcave.com)**, where I post Ren'Py scripts and tutorials. 
 
 A good alternative is pinging me on the official **[Ren'Py Discord server](https://discord.gg/48k3g3pwkC)**, where I'm one of the Moderators, so I'm very active there.
 
