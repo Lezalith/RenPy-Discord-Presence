@@ -317,6 +317,6 @@ label functionality_example():
 # Support
 If you need help setting up this script or the App on Discord's Dev Portal, you can contact me on **Discord** itself. Either write me a DM, **Lezalith (LezCave.com)#2853**, or preferably **[join my server](https://discord.gg/Nnf6mMnfSe)**! It's a server dedicated to my website, **[LezCave.com](https://www.lezcave.com)**, where I post Ren'Py scripts and tutorials. 
 
-A good alternative is pinging me on the official **[Ren'Py Discord server](https://discord.gg/48k3g3pwkC)**, where I'm one of the Moderators, so I'm very active there.
+A good alternative is pinging me on the official **[Ren'Py Discord server](https://discord.gg/48k3g3pwkC)**, where I'm one of the Moderators, so I'm very active there. You can send me an email at **Lezalith@gmail.com** if you want to be extra formal, but I don't check my emails very often. Consider also letting me know on Discord that you've sent me one, so I notice it and can reply to it.
 
-Finally, you can send me an email at **Lezalith@gmail.com** if you want to be extra formal, but I don't check my emails very often. Consider also letting me know on Discord that you've sent me one, so I notice it and can reply to it!
+Finally, if you want to be extra supportive, you can donate a dollar or two to my [Paypal.me](https://paypal.me/Lezalith). I'll use the money to improve my website and dedicate more time to posting new scripts and tutorials!
