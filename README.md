@@ -5,6 +5,16 @@ An Application set up on the [Discord Developer Portal](https://discord.com/deve
 
 Finally, this project is under the **MIT License**. This means you can use, modify and/or distribute this script, as long as I am credited ("Lezalith" is enough, but a link to my website with Ren'Py content, LezCave.com, is greatly appreciated!) and as long as the **LICENSE.txt** file stays included.
 
+# Table of Contents:
+
+- [Download of one of two versions of a **Discord Rich Presence**.](https://github.com/Lezalith/RenPy_Discord_Presence#download)
+- [Variables that you need to check out before using this script.](https://github.com/Lezalith/RenPy_Discord_Presence#related-variables)
+- [Functions and Screen Actions that allow you to interact with the Discord Presence.](https://github.com/Lezalith/RenPy_Discord_Presence#interacting-with-the-presence)
+- [First part of the Rich Presence elements all described.](https://github.com/Lezalith/RenPy_Discord_Presence#basic-rich-presence-elements)
+- [Second part of the Rich Presence elements all described.](https://github.com/Lezalith/RenPy_Discord_Presence#advanced-rich-presence-elements)
+- [Notes about compatibility and limitations.](https://github.com/Lezalith/RenPy_Discord_Presence#important-notes)
+- [Examples of using this script inside both `screen` and `label`.](https://github.com/Lezalith/RenPy_Discord_Presence#examples)
+
 # Download
 To get the script, download one of the releases on the right side of the GitHub page, under the [**Releases** section](https://github.com/Lezalith/RenPy_Discord_Presence/releases). Here are the files that you need to put into your **game** folder:
 
