@@ -192,31 +192,10 @@ All presence properties are compatible with both saving games and rollbacking di
 
 ## Limitations
 
-### Callback Variables
-This script uses several `config` variables responsible for callbacks to make things work. They're used by creators very rarely, but if you do need them in your code:
+### config.label_callback Variable Taken
+This script uses the `config.label_callback` variable to set `start_state`, meaning you can't use it yourself. If you're fine with `start_state` functionality not present, you can delete its `define` statement in **rich_presence.rpy**.
 
-- Delete them from the **rich_presence.rpy** file and define them wherever you please.
-- Include the function that was present in **rich_presence.rpy** in your new definition.
-
-Here is their overview:
-```py
-# Triggers upon quitting the game, properly closes connection to the Presence.
-define config.quit_callbacks = [discord.close] 
-
-# Triggers upon loading a saved game, updates properties to those in the save file.
-define config.after_load_callbacks = [discord.on_load] 
-
-# Triggers upon every interaction, check whether rollbackable and non-rollbackable properties match.
-# This is what makes Presence rollback compatible. 
-define config.interact_callbacks = [discord.rollback_check] 
-
-# Triggers when the game is done launching. Resets the properties to the default ones.
-define config.start_callbacks = [discord.reset]
-
-# Triggers when entering a new label. This is responsible for setting start_state.
-define config.label_callback = discord.set_start
-# define config.label_callbacks = [discord.set_start] (Prepared for Ren'Py 8.0.4)
-```
+This will be fixed in Ren'Py 8.1 - a new variable called `config.label_callbacks` will be present, and that one can take multiple functions just like other callbacks. The line is already prepared in the file, and I'll release an updated version of this script myself once Ren'Py 8.1 comes out.
 
 ### Update Delays
 A Discord Desktop Application running on the same machine as the game that's updating the presence, has updates on the player's profile shown instantly. This is not always the case for other Discord Desktop Apps - even ones where the account of the **player** is logged in, curiously enough.
