@@ -125,9 +125,7 @@ There are many things that can be shown inside Rich Presence. Below is a screens
 
 In the preview project, dictionary with all the properties for this example is stored in the `rich_presence.first_example` variable.
 
-![rich_presence_example](https://user-images.githubusercontent.com/56970124/190881237-3f1e0b72-d954-4af2-8a93-a35e59bdf51e.png)
-
-`details` takes a **string**, and is the upper line of text shown in the Presence.
+![first_presence_example](https://user-images.githubusercontent.com/56970124/194740336-aeeeafa1-9f9a-49a0-a598-f539761044e6.png)
 ```py
 discord.update(details = "Testing Discord Rich Presence.")
 ```
@@ -178,7 +176,7 @@ The final screenshot covers all the remaining rich presence properties. `state` 
 
 In the preview project, dictionary with all the properties for this example is stored in the `rich_presence.second_example` variable.
 
-![rich_presence_example](https://user-images.githubusercontent.com/56970124/190882416-25642658-8823-4d05-8dd9-ee9f9e6d62bf.png)
+![second_presence_example](https://user-images.githubusercontent.com/56970124/194740611-7b59bba5-783c-49c8-a91f-65f9b5eab612.png)
 
 `end` takes an **unix timestamp** and calculates Time Left until that timestamp. 
 
