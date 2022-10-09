@@ -1,9 +1,0 @@
-log.txt
-traceback.txt
-errors.txt
-*.rpyc
-*.bak
-game/cache/
-game/saves/
-.rpymc
-game/tl/
