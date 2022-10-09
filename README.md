@@ -41,14 +41,14 @@ There are some important variables in the **settings.rpy** file that you need to
 
 `application_id` takes a **string** with an Application ID of your Application set up on Discord Developer Portal. This **has to** be set in order for this script to work, having an invalid ID set **will throw an error** when launching the game.
 ```py
-define rich_presence.application_id = "10208ABCDEFGHIJ2795"
+define discord.application_id = "10208ABCDEFGHIJ2795"
 ```
 
 `main_menu_state` takes a dictionary. Keys are **strings** of properties corresponding to [presence elements](https://github.com/Lezalith/RenPy_Discord_Presence#basic-rich-presence-elements), and values are their values.
 
 This is the state shown in the presence anytime the game launches and/or enters the main menu. Below is what it looks like by default.
 ```py
-define rich_presence.main_menu_state = { "details" : "In the Main Menu.",
+define discord.main_menu_state = { "details" : "In the Main Menu.",
                                        "large_image" : "lezalith"}
 ```
 
@@ -57,10 +57,10 @@ Script acknowledges this by reaching the start label, name of which you need to 
 
 Unlike `main_menu_state`, `start_state` doesn't *have to* be set, and `start_label` can be set to **None** to ignore its functionality.
 ```py
-define rich_presence.start_state = { "details" : "Reading the Story.",
+define discord.start_state = { "details" : "Reading the Story.",
                                        "large_image" : "lezalith"}
 
-define rich_presence.start_label = "start"
+define discord.start_label = "start"
 ```
 
 Finally, there are **log** variables controlling what is printed out. Prints are recorded in the game's console and in the **log.txt** file. There are three of them:
@@ -123,7 +123,7 @@ screen both_screen_actions():
 # Basic Rich Presence Elements
 There are many things that can be shown inside Rich Presence. Below is a screenshot of a couple elements of Rich Presence highlighted, with their **property name** equivalent below. All the **property names** are listed below the screenshot with a short example using `discord.update`.
 
-In the preview project, dictionary with all the properties for this example is stored in the `rich_presence.first_example` variable.
+In the preview project, dictionary with all the properties for this example is stored in the `discord.first_example` variable and `discord.main_menu_state` is redirected to it.
 
 ![first_presence_example](https://user-images.githubusercontent.com/56970124/194740336-aeeeafa1-9f9a-49a0-a598-f539761044e6.png)
 
@@ -178,7 +178,7 @@ As you can see, there are two more **property names** included there that I have
 # Advanced Rich Presence Elements
 The final screenshot covers all the remaining rich presence properties. `state` was already covered above, however it is required for the `party_size` property to work.
 
-In the preview project, dictionary with all the properties for this example is stored in the `rich_presence.second_example` variable.
+In the preview project, dictionary with all the properties for this example is stored in the `discord.second_example` variable.
 
 ![second_presence_example](https://user-images.githubusercontent.com/56970124/194740611-7b59bba5-783c-49c8-a91f-65f9b5eab612.png)
 
@@ -267,14 +267,85 @@ screen screen_example():
             action discord.Set(details = "Example Details.")
 ```
 
-## Label Example
-And here is an example **label** used inside the preview project that showcases all of the functionality. Everything is explained by the dialogue lines.
+## Label Examples
+Below are the two example **label**s found inside this preview project.
+
+### Long Basic Label
+Here is the first label, showcasing rollback and save/load functionality.
+
+```py
+label long_example():
+
+    $ discord.set(details = "Inside a Preview", state = "Save & Load")
+
+    "Welcome to the Save/Load preview label."
+
+    "Feel free to save in any of the following places - just right-click and select a save slot."
+
+    scene scarian_island
+
+    $ discord.set(details = "Hanging out on Scarian Island", state = "Swimming")
+
+    "An island in the middle of the ocean."
+
+    "Swim around as much as you want, you won't find any sharks here!"
+
+    "Moving on..."
+
+    scene cerise_chantry
+
+    $ discord.set(details = "Walking around Cerise", state = "Visiting the Garden")
+
+    "A peaceful chantry with a rose garden."
+
+    "Can you hear the sound of silence?"
+
+    "Of course you can, this project has no audio."
+
+    "Moving on..."
+
+    scene gamboge_peninsula
+
+    $ discord.set(details = "On Gamboge Peninsula", state = "Sunbathing")
+
+    "A desert oasis with a strange name."
+
+    "Be careful not to get a heatstroke."
+
+    "Moving on..."
+
+    scene minty_meadows
+
+    $ discord.set(details = "Traversing Minty Meadows", state = "Chasing Cats")
+
+    "A beautiful land filled with flowers and bushes."
+
+    "For some reason, there are cats running everywhere around you."
+
+    "Okay, that's all the locations. Ready to head back?"
+
+    scene 
+
+    $ discord.set(details = "Inside a Preview", state = "Save & Load")
+
+    "You can now right-click again and {b}load{/b} a previously saved game."
+
+    "Presence properties will be reverted to those present when you saved, and you can even rollback further from there!"
+
+    "Moving past this line returns you to the main screen, restoring {b}`main_menu_state{/b} with {b}start{/b} set to {b}\"start_time\"{/b}."
+
+    return
+```
+
+### Functionality Label
+And here is the second label, showing off all the functionality. Everything is explained by the dialogue lines.
+
 ```py
 label functionality_example():
 
     "This label shows how discord presence can be changed inside labels!"
 
-    "Since it is set as the {b}start_label{/b} in {b}settings.rpy{/b}, entering it sets the presence to {b}start_state{/b}."
+    "Since it is set as the {b}start_label{/b} in {b}settings.rpy{/b}, entering it has already set presence to {b}start_state{/b}."
 
     "After this line, {b}discord.set{/b} will be called to set presence to only contain a {b}state{/b} text line."
 
@@ -306,13 +377,15 @@ label functionality_example():
 
     "As you can see, Time Elapsed is no longer visible."
 
-    "Last method is {b}discord.clear{/b}, which can be called to clear the presence."
+    "Last method is {b}discord.clear{/b}, which can be called to clear the presence of all properties."
+
+    "This hides the game completely, as if nothing was being played."
 
     $ discord.clear()
 
     "Presence all cleared and hidden!"
 
-    "You will now return to the main menu. {b}main_menu_state{/b} will be restored and Time Elapsed will go back to the time of first launch."
+    "You will now return to the main menu. {b}main_menu_state{/b} will be restored with {b}start{/b} being automatically set to {b}\"start_time\"{/b}."
 
     return
 ```

@@ -1,16 +1,11 @@
-## Main Menu screen ############################################################
-##
-## Used to display the main menu when Ren'Py starts.
-##
-## https://www.renpy.org/doc/html/screen_special.html#main-menu
-
+# Examples on the main menu. ###########################################################################
 init -900:
 
     # First example featured in Readme.
     define discord.first_example = { "details" : "Testing Discord Rich Presence.",
-                                           "state" : "It's super easy in Ren'Py 8!",
-                                           "large_image" : "lezalith", 
-                                           "small_image" : "lezalith"} # small_image is not visible without large_image also set.
+                                     "state" : "It's super easy in Ren'Py 8!",
+                                     "large_image" : "lezalith", 
+                                     "small_image" : "lezalith"} # small_image is not visible without large_image also set.
 
     # time gets the timestamp for end property.
     python:
@@ -18,17 +13,18 @@ init -900:
 
     # Second example featured in Readme.
     define discord.second_example = { "state" : "Reading a Chapter",
-                                           "end" : time.time() + 3000,
-                                           "party_size" : [1, 5],
-                                           "buttons" : [ dict(label = "Discord Presence Example Button", url = "https://github.com/Lezalith/RenPy_Discord_Presence"),
-                                                         dict(label = "Lezalith's Promotion Button!", url = "https://www.lezcave.com") ]}
+                                       "end" : time.time() + 3000,
+                                       "party_size" : [1, 5],
+                                       "buttons" : [ dict(label = "Discord Presence Example Button", url = "https://github.com/Lezalith/RenPy_Discord_Presence"),
+                                                     dict(label = "Lezalith's Promotion Button!", url = "https://www.lezcave.com") ]}
 
     # Originally defined in settings.rpy, it is overwritten for this project
     # here and controlled from main_menu to display one of the two examples defined above.
-    define discord.initial_state = discord.first_example
+    define discord.initial_state = discord.main_menu_state
 
-# TODO: Mention saving/loading in the preview, maybe make a separate label for people to try it out?
+## Main Menu screen, taken from screens.rpy ############################################################
 
+# Background images.
 define g = Solid("808080")
 define f = Frame("gui/frame.png")
 
@@ -36,6 +32,7 @@ screen main_menu():
 
     add g
 
+    # Main frame.
     frame:
         align (0.5, 0.5)
         padding (80, 100)
@@ -59,6 +56,7 @@ screen main_menu():
 
             null height 15
 
+            # Two example buttons with Screen Actions.
             hbox:
                 xalign 0.5
                 spacing 100
@@ -74,6 +72,7 @@ screen main_menu():
 
             null height 15
 
+            # Two example labels.
             hbox:
                 xalign 0.5
                 spacing 100
@@ -97,7 +96,7 @@ label functionality_example():
 
     "This label shows how discord presence can be changed inside labels!"
 
-    "Since it is set as the {b}start_label{/b} in {b}settings.rpy{/b}, entering it sets the presence to {b}start_state{/b}."
+    "Since it is set as the {b}start_label{/b} in {b}settings.rpy{/b}, entering it has already set presence to {b}start_state{/b}."
 
     "After this line, {b}discord.set{/b} will be called to set presence to only contain a {b}state{/b} text line."
 
@@ -133,12 +132,11 @@ label functionality_example():
 
     "This hides the game completely, as if nothing was being played."
 
-    $ print("\n\n")
     $ discord.clear()
 
     "Presence all cleared and hidden!"
 
-    "You will now return to the main menu. {b}main_menu_state{/b} will be restored and Time Elapsed will go back to the time of first launch."
+    "You will now return to the main menu. {b}main_menu_state{/b} will be restored with {b}start{/b} being automatically set to {b}\"start_time\"{/b}."
 
     return
 
@@ -190,16 +188,16 @@ label long_example():
 
     "For some reason, there are cats running everywhere around you."
 
-    "Okay, that's it. Ready to head back?"
+    "Okay, that's all the locations. Ready to head back?"
 
     scene 
 
     $ discord.set(details = "Inside a Preview", state = "Save & Load")
 
-    "You can now right-click again and {b}load{/b} the previous saved game."
+    "You can now right-click again and {b}load{/b} a previously saved game."
 
-    "Presence properties will be reverted, too!"
+    "Presence properties will be reverted to those present when you saved, and you can even rollback further from there!"
 
-    "Moving past this line returns you to the main screen."
+    "Moving past this line returns you to the main screen, restoring {b}`main_menu_state{/b} with {b}start{/b} set to {b}\"start_time\"{/b}."
 
     return
