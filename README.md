@@ -23,7 +23,8 @@ To get the script, download one of the releases on the right side of the GitHub 
 - **RenPy_Discord_Presence** folder contains this script's files:
     - **rich_presence.rpy** holds the entire script's code.
     - **settings.rpy** contains the two [**Related Variables**](https://github.com/Lezalith/RenPy_Discord_Presence#related-variables) described below.
-    - **discord_developer_portal.md** is a local copy of the [**Wiki** tab](https://github.com/Lezalith/RenPy_Discord_Presence/wiki/Interacting-with-Discord-Developer-Portal), as already mentioned.
+    - **discord_developer_portal.md**, local copy of the [**Wiki** tab](https://github.com/Lezalith/RenPy_Discord_Presence/wiki/Interacting-with-Discord-Developer-Portal).
+    - **README.md**, local copy of this document (in **Clean Versions** only, it is in the base folder in **Project Versions**).
     - **LICENSE.TXT**, a file containing the MIT License that I ask you keep when downloading the files.
 
 There are two versions for every release:
