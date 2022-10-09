@@ -104,7 +104,7 @@ discord.update(state = "State got changed while details stayed the same!")
 Same rules apply for both Actions:
 
 - They are sensitive as long as Presence was successfully initialized.
-- They are selected if properties given to the Action inside the screen match currently shown properties. Exception to this is `start` - if it's not specified inside the screen but is present in currently shown properties, it is ignored in the comparison.
+- They are selected if properties given to the Action inside the screen match currently shown properties. Exception to this is `start` - if it's not specified inside the screen but is present in currently shown properties, it is considered to be `"start_time` in the comparison.
 
 Here's an example of a simple screen with both Actions present. [Almost identical example is below](https://github.com/Lezalith/RenPy_Discord_Presence#screen-example).
 ```py
@@ -218,7 +218,7 @@ discord.set(state = "Reading a Chapter",
 ## Discord Not Installed
 Discord presence only works for users who have the Discord desktop application installed. For players that do not have Discord installed, this entire code will simply do nothing. `discord` namespace is still defined with all the properties and methods, but none of the methods do anything.
 
-This means that players who have Discord can enjoy the benefits while those who do not aren't hindered in any way.
+This means that players who have Discord (or have it but aren't logged in) can enjoy the benefits while those who do not aren't hindered in any way.
 
 ## Saving, Loading and Rollback
 All presence properties are compatible with both saving games and rollbacking dialogue:

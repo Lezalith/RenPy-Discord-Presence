@@ -1,5 +1,4 @@
 ﻿# Following are all functions being appended to different callbacks. Callbacks are lists of methods that are ran when something happens.
-# If you need one of these variables in your code, it should be deleted from here, defined in your desired place, and should include function included here.
 
 # Triggers upon quitting the game, properly closes connection to the Presence.
 define config.quit_callbacks += [discord.close] 
@@ -21,7 +20,7 @@ define config.label_callback = discord.set_start  # Delete this line in Ren'Py 8
 init -950 python in discord:
 
     # Functions used instead of `print` across this code.
-    # Difference is that these only prints out text if the appropriate `log` variable is set to True in settings.rpy
+    # Difference is that these only prints out text if the correlating `log` variable is set to True in settings.rpy.
     def print_important(s):
         global log_important
         if log_important is True:
@@ -35,7 +34,7 @@ init -950 python in discord:
         if log_restore is True:
             print("\n" + s)
 
-    # Takes dict, returns string with the dict better represented for printing purposes.
+    # Takes dict of properties, returns string with the dict better represented for printing by print_properties and print_rollback.
     def format_properties(d):
         s = ""
         for key in d:
@@ -76,7 +75,7 @@ init -950 python in discord:
     # For copying dictionaries with properties.
     from copy import deepcopy
 
-    # Decorator that is called before every RenPyDiscord method.
+    # Decorator that is called before every functions, except those only called from functions that already have it.
     # If DiscordNotFound or DiscordError were encountered during init, return_none follows rather than the method called originally.
     def presence_disabled(func):
         global presence_object
@@ -88,24 +87,23 @@ init -950 python in discord:
     # Returns None, no matter the arguments.
     def return_none(*_args, **_kwargs): pass
 
-    # Records properties from non-rollback var to rollback var.
+    # Copies properties from non-rollback var to rollback var.
     def record_into_rollback():
         global no_rollback, rollback_properties
         rollback_properties = deepcopy(no_rollback.properties)
 
-    # Takes properties, returns a string with them better formatted for printing purposes.
+    # Inserts a timestamp for the `start` in case it has the value of "start_time".
+    # Used by set and update.
     def clean_properties(d):
         d = deepcopy(d)
-
         global start_time
         if "start" in d:
             if d["start"] == "start_time":
                 d["start"] = start_time
-
         return d
 
     # Sets the presence to provided properties.
-    # Prints out new properties if log is True.
+    # Prints out new properties if log is True, used by on_load and rollback_check functions.
     @presence_disabled
     def set(log = True, **props):
 
@@ -113,8 +111,7 @@ init -950 python in discord:
             if props["start"] == "new_time": # Special argument, resets time to 0:0.
                 props["start"] = time.time()
 
-        # If "start" for calculating elapsed time is not provided in the state,
-        # set it here to the recorded start_time.
+        # If "start" for calculating elapsed time is not provided in the state, set it here to "start_time".
         else:
             props["start"] = "start_time"
 
@@ -135,7 +132,7 @@ init -950 python in discord:
     # Updates the provided properties, while leaving others as they are.
     # Prints out new properties if log is True.
     @presence_disabled
-    def update(**props):
+    def update(log = True, **props):
         if "start" in props: # If start is specified in the passed properties:
             if props["start"] == "new_time": # Special argument, resets time to 0:0.
                 props["start"] = time.time()
@@ -152,9 +149,10 @@ init -950 python in discord:
         # Record the updated properties into a rollbackable var.
         record_into_rollback()
 
-        print_properties("Discord Presence Updated:{}".format(format_properties(rollback_properties)))
+        if log:
+            print_properties("Discord Presence Updated:{}".format(format_properties(rollback_properties)))
 
-    # Resets the presence to the original properties, gotten from discord.main_menu_state.
+    # Resets the presence to the properties first shown, gotten from discord.main_menu_state.
     @presence_disabled
     def reset():
         global original_properties
@@ -197,20 +195,12 @@ init -950 python in discord:
     @presence_disabled
     def clear():
         global no_rollback
-        no_rollback.properties = {}
+        no_rollback.properties = {} # Clear the non-rollbackable var.
         
-        record_into_rollback()
+        record_into_rollback() # Clear the rollbackable var.
 
         global presence_object
         presence_object.clear()
-
-    ## NOTE: clear seems to have its effect delayed if called too soon
-    ##       after establishing the connection or another clear call.
-    ## 
-    ##       The delay seems to be about 10s on average.
-    ##       The minimum wait time to avoid this seems to be about 15s.
-    ##
-    ##       Same happens with the close method defined below.
 
     # Properly closes the connection with the Rich Presence.
     # Internally clears the info, no need to call the clear method prior.
@@ -223,12 +213,12 @@ init -950 python in discord:
 
         print_important("Successfully closed.")
 
-    # Subclass of the NoRollback, this holds the non-rollbackable variable of properties.
+    # Subclass of NoRollback, this holds the non-rollbackable variable of properties.
     class RenPyDiscord(NoRollback):
         def __init__(self):
             self.properties = {} 
 
-    # First properties displayed.
+    # First properties to be displayed.
     global original_properties, main_menu_state    
     original_properties = deepcopy(main_menu_state)
 
@@ -236,9 +226,10 @@ init -950 python in discord:
     if not "start" in original_properties:
         original_properties["start"] = "start_time"
 
+    # For creating custom Screen Actions.
     from store import Action
 
-    # Custom Screen Action, replaces Function(discord.set). 
+    # Custom Screen Action, equivalent of Function(discord.set). 
     @presence_disabled
     @renpy.pure
     class Set(Action):
@@ -261,20 +252,25 @@ init -950 python in discord:
 
         # Determines whether button is selected. True is current properties match those given to the Action.
         # Exception to this is `start`. If it's not provided in the Action and but it's present in rollback_properties,
-        # it is ignored in the comparison.
+        # it is inserted as "start_time" for the comparison.
         def get_selected(self):
             global rollback_properties
 
-            if "start" in rollback_properties and not "start" in self.properties:
+            # Determines whether "start_time" should be included in the comparison.
+            if "start" in rollback_properties:
 
-                a = deepcopy(rollback_properties)
-                del a["start"]
+                if not "start" in self.properties:
 
-                return self.properties == a
+                    a = deepcopy(self.properties)
+                    a["start"] = "start_time"
 
+                # Returns the comparison.
+                return a == rollback_properties
+
+            # Same here.
             return self.properties == rollback_properties
 
-    # Custom Screen Action, replaces Function(discord.update). 
+    # Custom Screen Action, equivalent of Function(discord.update). 
     @presence_disabled
     @renpy.pure
     class Update(Action):
@@ -297,17 +293,22 @@ init -950 python in discord:
 
         # Determines whether button is selected. True is current properties match those given to the Action.
         # Exception to this is `start`. If it's not provided in the Action and but it's present in rollback_properties,
-        # it is ignored in the comparison.
+        # it is inserted as "start_time" for the comparison.
         def get_selected(self):
             global rollback_properties
 
-            if "start" in rollback_properties and not "start" in self.properties:
+            # Determines whether "start_time" should be included in the comparison.
+            if "start" in rollback_properties:
 
-                a = deepcopy(rollback_properties)
-                del a["start"]
+                if not "start" in self.properties:
 
-                return self.properties == a
+                    a = deepcopy(self.properties)
+                    a["start"] = "start_time"
 
+                # Returns the comparison.
+                return a == rollback_properties
+
+            # Same here.
             return self.properties == rollback_properties
 
 # Non-rollbackable variable holding a dict of current Presence properties.
